@@ -2,387 +2,977 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dinar Smart - إدارة مالية ذكية</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#082C60">
+  <title>Dinar Smart — إدارة مالية ذكية</title>
   <style>
-    body { font-family: 'Cairo', sans-serif; background-color: #f4f7fb; }
-    .bg-custom-navy { background-color: #003366; }
-    .bg-soft-blue { background-color: #eef4ff; }
+    :root {
+      --navy: #082C60;
+      --blue: #1677C8;
+      --sky: #e8f3ff;
+      --bg: #f3f6fb;
+      --white: #fff;
+      --ink: #18263b;
+      --muted: #6d7888;
+      --green: #09845a;
+      --red: #c43b50;
+      --amber: #b66b00;
+      --line: #e2e8f0;
+      --shadow: 0 8px 24px rgba(8, 44, 96, .08);
+      font-family: system-ui, -apple-system, "Segoe UI", Tahoma, Arial, sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink); }
+    button, input, select { font: inherit; }
+    button { cursor: pointer; }
+    [hidden] { display: none !important; }
+    .top {
+      color: white; background: var(--navy); padding: 18px 5vw 76px;
+      border-radius: 0 0 30px 30px;
+    }
+    .topbar, .brand, .top-actions, .row, .between { display: flex; align-items: center; }
+    .topbar, .between { justify-content: space-between; }
+    .brand { gap: 12px; font-weight: 800; font-size: 1.4rem; }
+    .brand-mark {
+      display: grid; place-items: center; border: 2px solid #a9d7ff;
+      border-radius: 50%; width: 46px; height: 46px; font-size: 1.35rem;
+    }
+    .brand span:last-child b { color: #54b5ff; }
+    .top-actions { gap: 10px; }
+    .top-title { margin: 34px 0 0; font-size: clamp(1.2rem, 4vw, 2rem); }
+    .shell { width: min(1160px, 94vw); margin: -48px auto 40px; }
+    .panel, .card {
+      background: var(--white); border: 1px solid var(--line);
+      border-radius: 20px; box-shadow: var(--shadow);
+    }
+    .panel { padding: 20px; margin-bottom: 18px; }
+    .lang-btn, .mode-btn, .nav-btn {
+      border: 0; border-radius: 12px; padding: 10px 14px; background: transparent;
+    }
+    .lang-btn { color: white; border: 1px solid #ffffff55; }
+    .lang-btn.active { background: white; color: var(--navy); }
+    .mode-switch { display: flex; background: #eaf0f8; padding: 4px; border-radius: 14px; gap: 3px; }
+    .mode-btn { color: var(--muted); flex: 1; }
+    .mode-btn.active { color: white; background: var(--navy); }
+    .nav { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+    .nav-btn { color: var(--muted); background: white; border: 1px solid var(--line); }
+    .nav-btn.active { color: white; background: var(--navy); border-color: var(--navy); }
+    .grid { display: grid; gap: 16px; }
+    .stats { grid-template-columns: repeat(3, 1fr); margin: 18px 0; }
+    .stat { padding: 22px; min-height: 130px; }
+    .stat h3, .subtle { color: var(--muted); font-size: .96rem; margin: 0 0 12px; }
+    .amount { font-size: clamp(1.35rem, 4vw, 2rem); font-weight: 800; direction: ltr; text-align: start; }
+    .income { color: var(--green); }
+    .expense { color: var(--red); }
+    .balance { color: var(--navy); }
+    .two-col { grid-template-columns: 1.2fr .8fr; }
+    h2 { margin: 0 0 16px; font-size: 1.25rem; }
+    h3 { margin-top: 0; }
+    .alert { border-radius: 14px; padding: 14px 16px; margin: 14px 0; }
+    .alert.warn { color: #704600; background: #fff5dc; border: 1px solid #f0d495; }
+    .alert.danger { color: #8a2433; background: #fff0f2; border: 1px solid #f0c2ca; }
+    .alert.info { color: #234d76; background: #edf6ff; border: 1px solid #cce4ff; }
+    .bar-bg { height: 12px; border-radius: 99px; background: #e9eef5; overflow: hidden; }
+    .bar { height: 100%; border-radius: inherit; background: var(--blue); transition: width .25s ease; }
+    .bar.over { background: var(--red); }
+    .category-row { margin: 13px 0; }
+    .category-row .between { margin-bottom: 7px; gap: 10px; }
+    .category-row small { color: var(--muted); }
+    .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    label { display: block; font-weight: 650; font-size: .9rem; margin-bottom: 6px; }
+    input, select {
+      width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid #ccd5e1;
+      border-radius: 11px; color: var(--ink); background: white;
+    }
+    input:focus, select:focus { outline: 3px solid #1677c822; border-color: var(--blue); }
+    .field { margin-bottom: 12px; }
+    .btn {
+      border: 0; border-radius: 11px; padding: 11px 16px; color: white;
+      background: var(--blue); font-weight: 700;
+    }
+    .btn:hover { filter: brightness(.95); }
+    .btn.primary { background: var(--navy); }
+    .btn.light { color: var(--navy); background: var(--sky); }
+    .btn.danger { background: var(--red); }
+    .btn.small { padding: 7px 10px; font-size: .86rem; }
+    .actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 620px; }
+    th, td { text-align: start; padding: 12px 10px; border-bottom: 1px solid var(--line); }
+    th { color: var(--muted); font-size: .88rem; }
+    .tag { display: inline-block; border-radius: 99px; padding: 4px 9px; font-size: .8rem; background: #eef3fa; }
+    .goal { border: 1px solid var(--line); border-radius: 15px; padding: 15px; margin-bottom: 12px; }
+    .goal h3 { margin: 0; font-size: 1rem; }
+    .goal-meta { color: var(--muted); font-size: .9rem; margin: 8px 0; }
+    .muted { color: var(--muted); }
+    .center { text-align: center; }
+    .auth-wrap { min-height: 100vh; display: grid; place-items: center; padding: 18px; }
+    .auth-card { width: min(430px, 100%); padding: 26px; }
+    .auth-brand { justify-content: center; color: var(--navy); margin-bottom: 22px; }
+    .password-wrap { display: flex; gap: 6px; }
+    .password-wrap input { flex: 1; }
+    .show-pass { border: 1px solid var(--line); background: white; border-radius: 10px; padding: 0 12px; }
+    .link-btn { color: var(--blue); background: none; border: 0; padding: 8px 0; text-decoration: underline; }
+    .footer-note { font-size: .82rem; color: var(--muted); line-height: 1.6; margin-top: 16px; }
+    .overlay { position: fixed; inset: 0; display: grid; place-items: center; padding: 16px; background: #061a35aa; z-index: 5; }
+    .dialog { width: min(500px, 100%); max-height: 90vh; overflow: auto; background: white; padding: 22px; border-radius: 18px; }
+    .recovery-key { direction: ltr; text-align: center; padding: 14px; border-radius: 12px; background: #eef4fb; font: 700 1.2rem monospace; word-break: break-all; }
+    .empty { text-align: center; padding: 24px; color: var(--muted); }
+    @media (max-width: 760px) {
+      .stats, .two-col { grid-template-columns: 1fr; }
+      .stat { min-height: auto; }
+      .top { padding: 14px 4vw 70px; }
+      .top-title { margin-top: 24px; }
+      .shell { width: 94vw; }
+      .panel { padding: 16px; }
+    }
+    @media (max-width: 480px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .topbar { align-items: flex-start; gap: 10px; }
+      .brand { font-size: 1.14rem; }
+      .brand-mark { width: 40px; height: 40px; }
+      .lang-btn { padding: 8px 10px; }
+      .nav { display: grid; grid-template-columns: repeat(2, 1fr); }
+      .nav-btn { text-align: center; }
+    }
   </style>
 </head>
-<body class="min-h-screen text-slate-800 flex flex-col font-sans pb-24 select-none">
+<body>
 
-  <!-- 1. شاشة الدخول والحماية -->
-  <div id="loginScreen" class="fixed inset-0 z-50 bg-slate-900 flex items-center justify-center p-4">
-    <div class="w-full max-w-sm bg-slate-800 rounded-3xl p-6 border border-slate-700 shadow-2xl space-y-5">
-      <div class="text-center space-y-2">
-        <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto text-white font-black text-xl shadow-lg border border-blue-400">
-          DS
-        </div>
-        <h1 class="text-2xl font-black text-white">Dinar Smart</h1>
-        <p class="text-xs text-slate-400">إدارة مالية ذكية - تسجيل دخول المالك</p>
+  <!-- تسجيل الدخول -->
+  <section id="loginScreen" class="auth-wrap">
+    <div class="panel auth-card">
+      <div class="brand auth-brand">
+        <span class="brand-mark">↗</span>
+        <span>Dinar <b>Smart</b></span>
       </div>
-
-      <form onsubmit="handleLogin(event)" class="space-y-4">
-        <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1">البريد الإلكتروني</label>
-          <input type="email" id="loginEmail" value="jouinibelhassen715@gmail.com" required class="w-full p-3 bg-slate-700 border border-slate-600 rounded-xl text-sm text-white outline-none focus:border-blue-500">
+      <h2 data-t="loginTitle"></h2>
+      <p class="muted" data-t="loginSubtitle"></p>
+      <form id="loginForm">
+        <div class="field">
+          <label for="loginEmail" data-t="email"></label>
+          <input id="loginEmail" type="email" autocomplete="username" required>
         </div>
-
-        <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1">كلمة المرور</label>
-          <div class="relative">
-            <input type="password" id="loginPassword" placeholder="أدخل كلمة المرور" required class="w-full p-3 pl-10 bg-slate-700 border border-slate-600 rounded-xl text-sm text-white outline-none focus:border-blue-500">
-            <button type="button" onclick="togglePassword('loginPassword', 'eyeIcon')" class="absolute left-3 top-3 text-slate-400 hover:text-white text-sm">
-              <span id="eyeIcon">👁️</span>
-            </button>
+        <div class="field">
+          <label for="loginPassword" data-t="password"></label>
+          <div class="password-wrap">
+            <input id="loginPassword" type="password" autocomplete="current-password" required>
+            <button class="show-pass" type="button" data-toggle="loginPassword" data-t="show"></button>
           </div>
         </div>
-
-        <div id="loginError" class="text-xs text-red-400 bg-red-950/50 p-2.5 rounded-xl hidden text-center border border-red-900"></div>
-
-        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl transition text-sm shadow-md">
-          تسجيل الدخول (Se connecter)
-        </button>
+        <button class="btn primary" type="submit" style="width:100%" data-t="login"></button>
       </form>
-
-      <div class="text-center">
-        <button onclick="toggleResetModal()" class="text-xs text-blue-400 hover:underline">Mot de passe oublié / تعيين كلمة المرور للأدمين</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal تعيين كلمة المرور للأدمين -->
-  <div id="resetModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-slate-800 rounded-2xl p-5 w-full max-w-xs space-y-4 text-white border border-slate-700">
-      <h3 class="text-sm font-bold">تعيين كلمة المرور للأدمين</h3>
-      <div>
-        <label class="block text-xs text-slate-400 mb-1">تأكيد بريد المالك</label>
-        <input type="email" id="resetEmail" value="jouinibelhassen715@gmail.com" class="w-full p-2 bg-slate-700 rounded-lg text-sm border border-slate-600">
-      </div>
-      <div>
-        <label class="block text-xs text-slate-400 mb-1">كلمة المرور الجديدة</label>
-        <div class="relative">
-          <input type="password" id="newPass" placeholder="كلمة المرور الجديدة" class="w-full p-2 pl-8 bg-slate-700 rounded-lg text-sm border border-slate-600">
-          <button type="button" onclick="togglePassword('newPass', 'eyeReset')" class="absolute left-2 top-2 text-slate-400">
-            <span id="eyeReset">👁️</span>
-          </button>
+      <div class="between">
+        <button id="openRecovery" class="link-btn" type="button" data-t="forgot"></button>
+        <div>
+          <button class="lang-btn active" type="button" data-lang="ar">عربي</button>
+          <button class="lang-btn" type="button" data-lang="fr">Français</button>
         </div>
       </div>
-      <div class="flex justify-end space-x-2 space-x-reverse pt-2">
-        <button onclick="savePassword()" class="bg-blue-600 px-3 py-1.5 rounded-lg text-xs font-bold">حفظ</button>
-        <button onclick="toggleResetModal()" class="bg-slate-700 px-3 py-1.5 rounded-lg text-xs font-bold">إلغاء</button>
-      </div>
+      <p class="footer-note" data-t="initialHint"></p>
+      <p class="footer-note" data-t="localNotice"></p>
     </div>
-  </div>
+  </section>
 
-  <!-- Modal تعديل المدخول والمصاريف -->
-  <div id="transactionModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-3xl p-6 w-full max-w-xs space-y-4 text-slate-800 shadow-2xl">
-      <h3 class="text-base font-black text-center text-slate-900" id="txModalTitle">تعديل المبلغ</h3>
-      
-      <div>
-        <label class="block text-xs font-bold text-slate-500 mb-1">النوع</label>
-        <select id="txType" class="w-full p-2.5 bg-slate-100 rounded-xl text-sm font-bold outline-none border border-slate-200">
-          <option value="income">الدخل الإجمالي (Entrée)</option>
-          <option value="expense">المصاريف الإجمالية (Dépense)</option>
-        </select>
-      </div>
-
-      <div>
-        <label class="block text-xs font-bold text-slate-500 mb-1">المبلغ (TND)</label>
-        <input type="number" step="0.001" min="0" id="txAmount" placeholder="0.000" class="w-full p-2.5 bg-slate-100 rounded-xl text-sm font-bold outline-none border border-slate-200">
-      </div>
-
-      <div class="flex space-x-2 space-x-reverse pt-2">
-        <button onclick="saveTransaction()" class="w-1/2 bg-blue-600 hover:bg-blue-500 text-white py-2.5 rounded-xl text-xs font-black shadow-md">حفظ والتحديث</button>
-        <button onclick="closeTransactionModal()" class="w-1/2 bg-slate-200 hover:bg-slate-300 text-slate-700 py-2.5 rounded-xl text-xs font-bold">إلغاء</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- 2. الواجهة الرئيسية المطابقة بالكامل للصورة -->
-  <div id="appContainer" class="w-full max-w-md mx-auto flex-1 flex flex-col hidden">
-    
-    <!-- الهيدر الأزرق الدائري العلوي -->
-    <header class="bg-custom-navy text-white px-5 pt-6 pb-8 rounded-b-[35px] shadow-md space-y-5">
-      
-      <!-- أعلى الهيدر: الشعار الأصلي الدائري + زر اللغة -->
-      <div class="flex items-center justify-between">
-        <!-- زران عربي/فرنساوي في كبسولة ناعمة -->
-        <div class="bg-slate-800/60 p-1 rounded-full flex items-center text-xs font-bold border border-slate-700/50">
-          <button onclick="setLanguage('ar')" id="langArBtn" class="px-4 py-1 rounded-full bg-white text-slate-900 font-extrabold shadow-sm">عربي</button>
-          <button onclick="setLanguage('fr')" id="langFrBtn" class="px-3 py-1 rounded-full text-slate-300">Français</button>
-        </div>
-
-        <!-- الشعار الأصلي في الجهة المقابلة -->
-        <div class="flex items-center space-x-3 space-x-reverse">
-          <div class="text-right">
-            <h1 class="text-xl font-black tracking-tight leading-none">Dinar <span class="text-blue-400">Smart</span></h1>
-            <p class="text-[10px] text-slate-300 font-semibold mt-0.5">إدارة مالية ذكية</p>
-          </div>
-          <!-- أيقونة الشعار الدائرية الدقيقة -->
-          <div class="w-11 h-11 rounded-full border-2 border-blue-400 flex items-center justify-center bg-blue-900/50 shadow-inner">
-            <svg class="w-6 h-6 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-            </svg>
+  <!-- تغيير كلمة المرور لأول مرة -->
+  <section id="changeScreen" class="auth-wrap" hidden>
+    <div class="panel auth-card">
+      <div class="brand auth-brand"><span class="brand-mark">↗</span><span>Dinar <b>Smart</b></span></div>
+      <h2 data-t="changeTitle"></h2>
+      <p class="muted" data-t="changeHint"></p>
+      <form id="changeForm">
+        <div class="field">
+          <label for="newPassword" data-t="newPassword"></label>
+          <div class="password-wrap">
+            <input id="newPassword" type="password" minlength="8" required autocomplete="new-password">
+            <button class="show-pass" type="button" data-toggle="newPassword" data-t="show"></button>
           </div>
         </div>
-      </div>
+        <div class="field">
+          <label for="confirmPassword" data-t="confirmPassword"></label>
+          <input id="confirmPassword" type="password" minlength="8" required autocomplete="new-password">
+        </div>
+        <button class="btn primary" type="submit" style="width:100%" data-t="savePassword"></button>
+      </form>
+    </div>
+  </section>
 
-      <!-- مبدل الوضع: موظف / حرفي -->
-      <div class="bg-slate-900/60 p-1 rounded-full flex items-center text-xs font-bold border border-slate-700/40">
-        <button onclick="setMode('employee')" id="modeEmployeeBtn" class="w-1/2 py-2.5 rounded-full flex items-center justify-center space-x-1.5 space-x-reverse bg-white text-slate-900 shadow-md font-extrabold">
-          <span>👨‍💼</span>
-          <span>موظف</span>
-        </button>
-        <button onclick="setMode('artisan')" id="modeArtisanBtn" class="w-1/2 py-2.5 rounded-full flex items-center justify-center space-x-1.5 space-x-reverse text-slate-200">
-          <span>🛠️</span>
-          <span>حرفي</span>
-        </button>
+  <!-- واجهة التطبيق -->
+  <div id="appScreen" hidden>
+    <header class="top">
+      <div class="topbar">
+        <div class="brand">
+          <span class="brand-mark">↗</span>
+          <span>Dinar <b>Smart</b></span>
+        </div>
+        <div class="top-actions">
+          <button class="lang-btn active" type="button" data-lang="ar">عربي</button>
+          <button class="lang-btn" type="button" data-lang="fr">Français</button>
+          <button id="logout" class="lang-btn" type="button" data-t="logout"></button>
+        </div>
       </div>
-
-      <!-- ملخص الشهر -->
-      <div class="text-center pt-1">
-        <p class="text-xs text-slate-300 font-bold">ملخص الشهر</p>
-        <h2 class="text-2xl font-black text-white tracking-wide mt-0.5" id="monthLabel">أكتوبر 2026</h2>
+      <h1 class="top-title" data-t="dashboardTitle"></h1>
+      <div class="mode-switch" style="max-width:360px;margin-top:18px">
+        <button class="mode-btn active" type="button" data-mode="employee" data-t="employee"></button>
+        <button class="mode-btn" type="button" data-mode="artisan" data-t="artisan"></button>
       </div>
-
     </header>
 
-    <!-- المحتوى الداخلي الكروت -->
-    <main class="p-4 space-y-4 flex-1">
-      
-      <!-- كروتين الدخل والمصاريف -->
-      <div class="grid grid-cols-2 gap-3.5">
-        
-        <!-- كارت الدخل الإجمالي -->
-        <div onclick="openTransactionModal('income')" class="bg-white p-4 rounded-[28px] shadow-sm border border-slate-100/80 flex flex-col justify-between cursor-pointer active:scale-95 transition">
-          <div class="flex items-center justify-between mb-3">
-            <div class="w-7 h-7 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center font-black text-xs">↗</div>
-            <span class="text-[11px] font-extrabold text-emerald-600" id="incomeTitle">الدخل الإجمالي</span>
+    <main class="shell">
+      <nav class="nav">
+        <button class="nav-btn active" data-page="dashboard" data-t="navDashboard"></button>
+        <button class="nav-btn" data-page="transactions" data-t="navTransactions"></button>
+        <button class="nav-btn" data-page="budget" data-t="navBudget"></button>
+        <button class="nav-btn" data-page="goals" data-t="navGoals"></button>
+      </nav>
+
+      <section id="page-dashboard">
+        <div id="alerts"></div>
+        <div class="grid stats">
+          <article class="card stat">
+            <h3 data-t="totalIncome"></h3><div id="totalIncome" class="amount income"></div>
+          </article>
+          <article class="card stat">
+            <h3 data-t="totalExpense"></h3><div id="totalExpense" class="amount expense"></div>
+          </article>
+          <article class="card stat">
+            <h3 data-t="balance"></h3><div id="balance" class="amount balance"></div>
+            <small id="balancePercent" class="muted"></small>
+          </article>
+        </div>
+
+        <section id="artisanSummary" class="panel" hidden>
+          <h2 data-t="artisanSummary"></h2>
+          <div class="grid stats">
+            <article class="card stat"><h3 data-t="serviceIncome"></h3><div id="serviceIncome" class="amount income"></div></article>
+            <article class="card stat"><h3 data-t="professionalExpense"></h3><div id="professionalExpense" class="amount expense"></div></article>
+            <article class="card stat"><h3 data-t="estimatedProfit"></h3><div id="profit" class="amount balance"></div></article>
           </div>
-          <p class="text-lg font-black text-slate-900 text-left dir-ltr"><span class="text-xs text-slate-400 font-bold mr-1">TND</span><span id="totalIncome">2,850.000</span></p>
-        </div>
+        </section>
 
-        <!-- كارت المصاريف الإجمالية -->
-        <div onclick="openTransactionModal('expense')" class="bg-white p-4 rounded-[28px] shadow-sm border border-slate-100/80 flex flex-col justify-between cursor-pointer active:scale-95 transition">
-          <div class="flex items-center justify-between mb-3">
-            <div class="w-7 h-7 bg-red-100 text-red-500 rounded-full flex items-center justify-center font-black text-xs">↘</div>
-            <span class="text-[11px] font-extrabold text-red-500" id="expenseTitle">المصاريف الإجمالية</span>
+        <div class="grid two-col">
+          <section class="panel">
+            <div class="between">
+              <h2 data-t="monthlyBudget"></h2>
+              <span id="monthLabel" class="muted"></span>
+            </div>
+            <div id="budgetSummary"></div>
+            <div class="bar-bg"><div id="budgetBar" class="bar" style="width:0%"></div></div>
+            <p class="muted" id="budgetNumbers"></p>
+            <button class="btn light" data-go="budget" data-t="manageBudget"></button>
+          </section>
+          <section class="panel">
+            <h2 data-t="expenseByCategory"></h2>
+            <div id="categoryChart"></div>
+          </section>
+        </div>
+        <section class="panel">
+          <div class="between">
+            <h2 data-t="recentTransactions"></h2>
+            <button class="btn small" data-go="transactions" data-t="viewAll"></button>
           </div>
-          <p class="text-lg font-black text-slate-900 text-left dir-ltr"><span class="text-xs text-slate-400 font-bold mr-1">TND</span><span id="totalExpenses">1,620.000</span></p>
-        </div>
+          <div id="recentList"></div>
+        </section>
+      </section>
 
-      </div>
-
-      <!-- كارت الرصيد المتبقي -->
-      <div class="bg-white p-4 rounded-[28px] shadow-sm border border-slate-100/80 flex items-center justify-between">
-        <div class="w-12 h-12 bg-soft-blue text-pink-500 rounded-2xl flex items-center justify-center text-2xl">
-          👛
-        </div>
-        <div class="text-right">
-          <p class="text-[11px] font-bold text-slate-400" id="balanceTitle">الرصيد المتبقي</p>
-          <p class="text-2xl font-black text-slate-900 mt-0.5 dir-ltr"><span id="currentBalance">1,230.000</span> <span class="text-xs text-slate-400 font-bold">TND</span></p>
-          <p class="text-[10px] text-slate-400 font-bold mt-0.5" id="balanceRatio">43% من الدخل</p>
-        </div>
-      </div>
-
-      <!-- كارت التنبيه الصفراء -->
-      <div id="alertBox" class="bg-amber-50/90 border border-amber-200/80 p-3.5 rounded-2xl flex items-center justify-between text-amber-800 text-xs">
-        <button onclick="closeAlert()" class="text-amber-500 hover:text-amber-900 font-bold text-sm px-1">✕</button>
-        <div class="flex items-center space-x-2 space-x-reverse text-right">
-          <p class="font-bold leading-relaxed"><span class="font-black text-amber-900">تنبيه:</span> استهلكت 80% من ميزانية المواصلات. حافظ على توازن مصاريفك.</p>
-          <span class="text-base">⚠️</span>
-        </div>
-      </div>
-
-      <!-- توزيع المصاريف - الدائرة التوضيحية -->
-      <div class="bg-white p-5 rounded-[28px] shadow-sm border border-slate-100/80 space-y-3">
-        <div class="flex items-center justify-end space-x-1.5 space-x-reverse text-slate-700">
-          <h3 class="text-xs font-extrabold">توزيع المصاريف</h3>
-          <span class="text-sm">🕒</span>
-        </div>
-
-        <div class="relative w-36 h-36 mx-auto flex items-center justify-center pt-1">
-          <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-            <path class="text-slate-100" stroke-width="4" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-            <path class="text-blue-900" stroke-dasharray="50, 100" stroke-width="4.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-            <path class="text-emerald-500" stroke-dasharray="25, 100" stroke-dashoffset="-50" stroke-width="4.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-            <path class="text-orange-500" stroke-dasharray="15, 100" stroke-dashoffset="-75" stroke-width="4.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-            <path class="text-purple-400" stroke-dasharray="10, 100" stroke-dashoffset="-90" stroke-width="4.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-          </svg>
-          <div class="absolute text-center">
-            <p class="text-[9px] text-slate-400 font-bold">المجموع</p>
-            <p class="text-sm font-black text-slate-900" id="chartTotal">1,620.00</p>
-            <p class="text-[8px] text-slate-400 font-bold">TND</p>
+      <section id="page-transactions" hidden>
+        <section class="panel">
+          <div class="between">
+            <h2 data-t="transactionsTitle"></h2>
+            <div class="actions">
+              <button id="exportCsv" class="btn light" data-t="exportCsv"></button>
+              <button id="addTransaction" class="btn" data-t="addTransaction"></button>
+            </div>
           </div>
-        </div>
-      </div>
+          <div class="form-grid">
+            <div class="field"><label for="filterMonth" data-t="filterMonth"></label><input id="filterMonth" type="month"></div>
+            <div class="field"><label for="filterCategory" data-t="category"></label><select id="filterCategory"></select></div>
+          </div>
+          <div id="transactionList"></div>
+        </section>
+      </section>
 
+      <section id="page-budget" hidden>
+        <section class="panel">
+          <h2 data-t="budgetPageTitle"></h2>
+          <p class="muted" data-t="budgetHint"></p>
+          <form id="budgetForm">
+            <div class="form-grid">
+              <div class="field"><label for="budgetMonth" data-t="month"></label><input id="budgetMonth" type="month" required></div>
+              <div class="field"><label for="budgetAmount" data-t="budgetAmount"></label><input id="budgetAmount" type="number" min="0" step="0.01" required></div>
+            </div>
+            <button class="btn primary" type="submit" data-t="saveBudget"></button>
+          </form>
+          <div id="budgetDetail" style="margin-top:22px"></div>
+        </section>
+      </section>
+
+      <section id="page-goals" hidden>
+        <section class="panel">
+          <h2 data-t="goalsTitle"></h2>
+          <form id="goalForm">
+            <div class="form-grid">
+              <div class="field"><label for="goalName" data-t="goalName"></label><input id="goalName" required maxlength="60"></div>
+              <div class="field"><label for="goalTarget" data-t="goalTarget"></label><input id="goalTarget" type="number" min="0.01" step="0.01" required></div>
+              <div class="field"><label for="goalSaved" data-t="goalSaved"></label><input id="goalSaved" type="number" min="0" step="0.01" value="0"></div>
+            </div>
+            <button class="btn primary" type="submit" data-t="addGoal"></button>
+          </form>
+          <div id="goalList" style="margin-top:22px"></div>
+        </section>
+      </section>
     </main>
+  </div>
 
-    <!-- شريط التنقل السفلي الأصلي والجميل -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200/80 py-2.5 px-6 flex items-center justify-between z-40 max-w-md mx-auto">
-      <button onclick="navigate('home')" class="flex flex-col items-center text-blue-600 font-black space-y-0.5">
-        <span class="text-xl">🧑‍🌾</span>
-        <span class="text-[10px]">الرئيسية</span>
-      </button>
-      <button onclick="openTransactionModal('income')" class="flex flex-col items-center text-slate-400 hover:text-slate-700 font-bold space-y-0.5">
-        <span class="text-xl">⇆</span>
-        <span class="text-[10px]">المعاملات</span>
-      </button>
-      <button onclick="navigate('budget')" class="flex flex-col items-center text-slate-400 hover:text-slate-700 font-bold space-y-0.5">
-        <span class="text-xl">📋</span>
-        <span class="text-[10px]">الميزانية</span>
-      </button>
-      <button onclick="navigate('goals')" class="flex flex-col items-center text-slate-400 hover:text-slate-700 font-bold space-y-0.5">
-        <span class="text-xl">🎯</span>
-        <span class="text-[10px]">الأهداف</span>
-      </button>
-    </nav>
+  <!-- إضافة/تعديل معاملة -->
+  <div id="transactionDialog" class="overlay" hidden>
+    <div class="dialog">
+      <div class="between"><h2 id="transactionDialogTitle" data-t="addTransaction"></h2><button class="btn light small" data-close="transactionDialog" data-t="close"></button></div>
+      <form id="transactionForm">
+        <input id="transactionId" type="hidden">
+        <div class="form-grid">
+          <div class="field"><label for="txType" data-t="type"></label>
+            <select id="txType"><option value="income" data-t="income"></option><option value="expense" data-t="expense"></option></select>
+          </div>
+          <div class="field"><label for="txAmount" data-t="amount"></label><input id="txAmount" type="number" min="0.01" step="0.01" required></div>
+          <div class="field"><label for="txCategory" data-t="category"></label><select id="txCategory" required></select></div>
+          <div class="field"><label for="txDate" data-t="date"></label><input id="txDate" type="date" required></div>
+        </div>
+        <div class="field"><label for="txNote" data-t="description"></label><input id="txNote" maxlength="120"></div>
+        <button class="btn primary" type="submit" data-t="save"></button>
+      </form>
+    </div>
+  </div>
+
+  <!-- استعادة كلمة المرور -->
+  <div id="recoveryDialog" class="overlay" hidden>
+    <div class="dialog">
+      <div class="between"><h2 data-t="forgot"></h2><button class="btn light small" data-close="recoveryDialog" data-t="close"></button></div>
+      <p class="muted" data-t="recoveryHint"></p>
+      <form id="recoveryForm">
+        <div class="field"><label for="recoveryEmail" data-t="email"></label><input id="recoveryEmail" type="email" required></div>
+        <div class="field"><label for="recoveryKey" data-t="recoveryKey"></label><input id="recoveryKey" required autocomplete="off"></div>
+        <div class="field"><label for="recoveryNewPassword" data-t="newPassword"></label><input id="recoveryNewPassword" type="password" minlength="8" required autocomplete="new-password"></div>
+        <button class="btn primary" type="submit" data-t="resetPassword"></button>
+      </form>
+    </div>
+  </div>
+
+  <div id="keyDialog" class="overlay" hidden>
+    <div class="dialog center">
+      <h2 data-t="saveRecoveryKey"></h2>
+      <p class="muted" data-t="keyOneTime"></p>
+      <div id="shownKey" class="recovery-key"></div>
+      <button id="copyKey" class="btn light" style="margin:12px" data-t="copyKey"></button>
+      <button id="closeKeyDialog" class="btn primary" data-t="understood"></button>
+    </div>
   </div>
 
   <script>
-    let currentMode = 'employee';
-    let currentLang = 'ar';
-    let defaultPass = '2026';
-    let adminEmail = 'jouinibelhassen715@gmail.com';
+    "use strict";
 
-    let incomeAmount = parseFloat(localStorage.getItem('ds_income') || '2850.000');
-    let expenseAmount = parseFloat(localStorage.getItem('ds_expense') || '1620.000');
+    /*
+      تطبيق بملف واحد: الحساب والبيانات محفوظان محليًا في هذا المتصفح فقط.
+      هذا مناسب للاستعمال الشخصي والتجربة، وليس نظام مصادقة أو تخزينًا سحابيًا آمنًا.
+      لا يمكن لملف HTML وحده إرسال رسائل استعادة أو ضمان عزل المستخدمين على خادم.
+    */
 
-    function updateUI() {
-      document.getElementById('totalIncome').innerText = incomeAmount.toFixed(3);
-      document.getElementById('totalExpenses').innerText = expenseAmount.toFixed(3);
-      document.getElementById('chartTotal').innerText = expenseAmount.toFixed(2);
+    const ADMIN_EMAIL = "jouinibelhassen715@gmail.com";
+    const ACCOUNT_KEY = "dinar-smart-account-v1";
+    const DATA_PREFIX = "dinar-smart-data-v1:";
+    const INITIAL_PASSWORD = "2026";
 
-      let balance = incomeAmount - expenseAmount;
-      document.getElementById('currentBalance').innerText = balance.toFixed(3);
+    const translations = {
+      ar: {
+        loginTitle:"تسجيل الدخول", loginSubtitle:"إدارة أموالك ببساطة ووضوح.",
+        email:"البريد الإلكتروني", password:"كلمة المرور", login:"دخول", forgot:"نسيت كلمة المرور؟",
+        initialHint:"البريد الأولي: jouinibelhassen715@gmail.com — كلمة المرور الأولية: 2026. سيُطلب تغييرها عند أول دخول.",
+        localNotice:"تنبيه: البيانات محفوظة محليًا في هذا المتصفح. لا تستخدم هذا الملف وحده لحفظ بيانات مالية حساسة أو لإدارة عدة مستخدمين.",
+        changeTitle:"غيّر كلمة المرور الآن", changeHint:"لأمان أفضل، اختر كلمة مرور جديدة لا تقل عن 8 أحرف.",
+        newPassword:"كلمة المرور الجديدة", confirmPassword:"تأكيد كلمة المرور", savePassword:"حفظ كلمة المرور",
+        show:"إظهار", hide:"إخفاء", dashboardTitle:"ملخصك المالي", employee:"موظف", artisan:"حرفي",
+        logout:"خروج", navDashboard:"الرئيسية", navTransactions:"المعاملات", navBudget:"الميزانية", navGoals:"الأهداف",
+        totalIncome:"مجموع المداخيل", totalExpense:"مجموع المصاريف", balance:"الرصيد المتبقي",
+        artisanSummary:"ملخص نشاط الحرفي", serviceIncome:"مداخيل الخدمات", professionalExpense:"المصاريف المهنية",
+        estimatedProfit:"الربح التقديري", monthlyBudget:"ميزانية الشهر", manageBudget:"إدارة الميزانية",
+        expenseByCategory:"المصاريف حسب الفئة", recentTransactions:"أحدث المعاملات", viewAll:"عرض الكل",
+        transactionsTitle:"المعاملات المالية", exportCsv:"تصدير CSV", addTransaction:"إضافة معاملة",
+        filterMonth:"تصفية حسب الشهر", category:"الفئة", budgetPageTitle:"الميزانية الشهرية",
+        budgetHint:"أدخل الحدّ الشهري للمصاريف. ستظهر تنبيهات عند استهلاك 80% وعند تجاوز الميزانية.",
+        month:"الشهر", budgetAmount:"قيمة الميزانية (TND)", saveBudget:"حفظ الميزانية",
+        goalsTitle:"أهداف التوفير", goalName:"اسم الهدف", goalTarget:"المبلغ المستهدف (TND)",
+        goalSaved:"المبلغ المدخر حاليًا (TND)", addGoal:"إضافة هدف", type:"النوع", income:"دخل",
+        expense:"مصروف", amount:"المبلغ (TND)", date:"التاريخ", description:"الوصف", save:"حفظ",
+        close:"إغلاق", recoveryHint:"أدخل البريد الإلكتروني ورمز الاستعادة الذي حفظته عند تغيير كلمة المرور.",
+        recoveryKey:"رمز الاستعادة", resetPassword:"إعادة تعيين كلمة المرور",
+        saveRecoveryKey:"احفظ رمز الاستعادة", keyOneTime:"سيظهر هذا الرمز مرة واحدة. احتفظ به خارج هذا الجهاز.",
+        copyKey:"نسخ الرمز", understood:"حفظته", used:"المستخدم", remaining:"المتبقي",
+        budgetUsed:"المستهلك", ofBudget:"من الميزانية", spent80:"تنبيه: استهلكت 80% أو أكثر من ميزانيتك الشهرية.",
+        budgetExceeded:"تجاوزت ميزانيتك الشهرية.", noBudget:"لم تُحدّد ميزانية لهذا الشهر.",
+        noTransactions:"لا توجد معاملات بعد.", noGoals:"لم تضف أهداف توفير بعد.", delete:"حذف",
+        edit:"تعديل", addSaving:"إضافة توفير", saved:"المدخر", target:"الهدف", percentage:"الإنجاز",
+        allCategories:"كل الفئات", savedOk:"تم الحفظ.", deletedOk:"تم الحذف.", invalidLogin:"البريد أو كلمة المرور غير صحيحين.",
+        emailMismatch:"هذا التطبيق مُهيأ للحساب الإداري المحدد فقط.", minPassword:"كلمة المرور يجب أن تكون 8 أحرف على الأقل.",
+        passwordsMismatch:"كلمتا المرور غير متطابقتين.", resetFailed:"تعذر الاستعادة. تحقق من البريد ورمز الاستعادة.",
+        recoverySaved:"تم تحديث كلمة المرور. احفظ رمز الاستعادة الجديد.", confirmDelete:"هل تريد حذف هذه المعاملة؟",
+        confirmGoalDelete:"هل تريد حذف هذا الهدف؟", budgetSaved:"تم حفظ الميزانية.", goalSavedOk:"تم حفظ الهدف.",
+        monthLabel:"الشهر", noBudgetYet:"أدخل ميزانية الشهر لعرض مستوى الاستهلاك.",
+        goalProgress:"التقدم", invalidAmount:"أدخل مبلغًا صحيحًا أكبر من صفر.", browserCrypto:"المتصفح لا يدعم التشفير المطلوب. افتح الصفحة في متصفح حديث.",
+        initialOnly:"كلمة المرور الأولية 2026 صالحة للدخول الأول فقط. استخدم رمز الاستعادة بعد تغييرها.",
+        businessMode:"المعاملات المسجلة في وضع الحرفي تدخل في حساب دخل الخدمات والمصاريف المهنية.",
+        loginAgain:"انتهت الجلسة. سجل الدخول مجددًا."
+      },
+      fr: {
+        loginTitle:"Connexion", loginSubtitle:"Gérez vos finances simplement et clairement.",
+        email:"Adresse e-mail", password:"Mot de passe", login:"Se connecter", forgot:"Mot de passe oublié ?",
+        initialHint:"E-mail initial : jouinibelhassen715@gmail.com — mot de passe initial : 2026. Vous devrez le changer à la première connexion.",
+        localNotice:"Attention : les données restent dans ce navigateur. Ce fichier seul ne sécurise pas des données financières sensibles et ne gère pas plusieurs utilisateurs.",
+        changeTitle:"Changez votre mot de passe", changeHint:"Choisissez un nouveau mot de passe d’au moins 8 caractères.",
+        newPassword:"Nouveau mot de passe", confirmPassword:"Confirmer le mot de passe", savePassword:"Enregistrer",
+        show:"Voir", hide:"Masquer", dashboardTitle:"Votre résumé financier", employee:"Salarié", artisan:"Artisan",
+        logout:"Déconnexion", navDashboard:"Accueil", navTransactions:"Transactions", navBudget:"Budget", navGoals:"Objectifs",
+        totalIncome:"Revenus totaux", totalExpense:"Dépenses totales", balance:"Solde restant",
+        artisanSummary:"Résumé de l’activité artisanale", serviceIncome:"Revenus des services",
+        professionalExpense:"Dépenses professionnelles", estimatedProfit:"Bénéfice estimé",
+        monthlyBudget:"Budget du mois", manageBudget:"Gérer le budget",
+        expenseByCategory:"Dépenses par catégorie", recentTransactions:"Transactions récentes", viewAll:"Tout voir",
+        transactionsTitle:"Transactions financières", exportCsv:"Exporter CSV", addTransaction:"Ajouter une transaction",
+        filterMonth:"Filtrer par mois", category:"Catégorie", budgetPageTitle:"Budget mensuel",
+        budgetHint:"Définissez la limite mensuelle des dépenses. Une alerte apparaît à 80 % et en cas de dépassement.",
+        month:"Mois", budgetAmount:"Montant du budget (TND)", saveBudget:"Enregistrer le budget",
+        goalsTitle:"Objectifs d’épargne", goalName:"Nom de l’objectif", goalTarget:"Montant cible (TND)",
+        goalSaved:"Montant déjà épargné (TND)", addGoal:"Ajouter un objectif", type:"Type", income:"Revenu",
+        expense:"Dépense", amount:"Montant (TND)", date:"Date", description:"Description", save:"Enregistrer",
+        close:"Fermer", recoveryHint:"Saisissez l’adresse e-mail et le code de récupération conservé lors du changement de mot de passe.",
+        recoveryKey:"Code de récupération", resetPassword:"Réinitialiser le mot de passe",
+        saveRecoveryKey:"Conservez le code de récupération", keyOneTime:"Ce code ne s’affichera qu’une fois. Conservez-le ailleurs que sur cet appareil.",
+        copyKey:"Copier le code", understood:"J’ai compris", used:"Utilisé", remaining:"Restant",
+        budgetUsed:"Dépensé", ofBudget:"du budget", spent80:"Attention : vous avez utilisé au moins 80 % de votre budget mensuel.",
+        budgetExceeded:"Votre budget mensuel est dépassé.", noBudget:"Aucun budget défini pour ce mois.",
+        noTransactions:"Aucune transaction pour le moment.", noGoals:"Aucun objectif d’épargne ajouté.", delete:"Supprimer",
+        edit:"Modifier", addSaving:"Ajouter une épargne", saved:"Épargné", target:"Cible", percentage:"Progression",
+        allCategories:"Toutes les catégories", savedOk:"Enregistré.", deletedOk:"Supprimé.", invalidLogin:"Adresse e-mail ou mot de passe incorrect.",
+        emailMismatch:"Cette application est configurée uniquement pour le compte administrateur indiqué.",
+        minPassword:"Le mot de passe doit contenir au moins 8 caractères.", passwordsMismatch:"Les mots de passe ne correspondent pas.",
+        resetFailed:"Récupération impossible. Vérifiez l’adresse et le code.", recoverySaved:"Mot de passe modifié. Conservez le nouveau code de récupération.",
+        confirmDelete:"Supprimer cette transaction ?", confirmGoalDelete:"Supprimer cet objectif ?", budgetSaved:"Budget enregistré.",
+        goalSavedOk:"Objectif enregistré.", monthLabel:"Mois", noBudgetYet:"Définissez le budget du mois pour voir son utilisation.",
+        goalProgress:"Progression", invalidAmount:"Saisissez un montant supérieur à zéro.",
+        browserCrypto:"Ce navigateur ne prend pas en charge le chiffrement requis. Utilisez un navigateur récent.",
+        initialOnly:"Le mot de passe initial 2026 n’est valable que pour la première connexion. Utilisez le code de récupération après modification.",
+        businessMode:"Les transactions ajoutées en mode artisan alimentent les revenus de services et les dépenses professionnelles.",
+        loginAgain:"Session terminée. Veuillez vous reconnecter."
+      }
+    };
 
-      let ratio = incomeAmount > 0 ? Math.round((balance / incomeAmount) * 100) : 0;
-      document.getElementById('balanceRatio').innerText = ratio + "% من الدخل";
+    const categories = {
+      ar: {
+        Salary:"راتب", Services:"خدمات", OtherIncome:"مداخيل أخرى", Food:"طعام", Housing:"سكن وفواتير",
+        Transport:"تنقل", Health:"صحة", Shopping:"تسوق", Education:"تعليم", Leisure:"ترفيه",
+        Materials:"مواد أولية", Tools:"معدات وأدوات", BusinessTransport:"تنقل مهني",
+        Fees:"رسوم مهنية", OtherExpense:"مصروف آخر"
+      },
+      fr: {
+        Salary:"Salaire", Services:"Services", OtherIncome:"Autres revenus", Food:"Alimentation",
+        Housing:"Logement et factures", Transport:"Transport", Health:"Santé", Shopping:"Achats",
+        Education:"Éducation", Leisure:"Loisirs", Materials:"Matières premières", Tools:"Outils et équipement",
+        BusinessTransport:"Transport professionnel", Fees:"Frais professionnels", OtherExpense:"Autre dépense"
+      }
+    };
+
+    let lang = localStorage.getItem("dinar-smart-lang") || "ar";
+    let account = null;
+    let data = { transactions: [], goals: [], budgets: {} };
+    let mode = "employee";
+    const $ = id => document.getElementById(id);
+    const t = key => translations[lang][key] || key;
+    const localMonth = () => {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+    };
+    const localDate = () => {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    };
+    const money = n => new Intl.NumberFormat(lang === "ar" ? "ar-TN" : "fr-TN", {
+      minimumFractionDigits: 2, maximumFractionDigits: 2
+    }).format(Number(n) || 0) + " TND";
+    const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({
+      "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+    }[c]));
+    const acctDataKey = email => DATA_PREFIX + encodeURIComponent(email.toLowerCase());
+
+    function applyLanguage() {
+      document.documentElement.lang = lang;
+      document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+      document.querySelectorAll("[data-t]").forEach(el => {
+        el.textContent = t(el.dataset.t);
+      });
+      document.querySelectorAll("[data-lang]").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.lang === lang);
+      });
+      if ($("filterCategory")) fillCategorySelect($("filterCategory"), true);
+      if ($("txCategory")) updateTransactionCategories();
+      if (!$("appScreen").hidden) render();
     }
 
-    function openTransactionModal(defaultType) {
-      document.getElementById('txType').value = defaultType || 'income';
-      document.getElementById('txAmount').value = defaultType === 'income' ? incomeAmount : expenseAmount;
-      document.getElementById('transactionModal').classList.remove('hidden');
+    function setLang(next) {
+      lang = next;
+      localStorage.setItem("dinar-smart-lang", lang);
+      applyLanguage();
     }
 
-    function closeTransactionModal() {
-      document.getElementById('transactionModal').classList.add('hidden');
+    async function hashPassword(password, saltHex) {
+      if (!window.crypto?.subtle) throw new Error("NO_CRYPTO");
+      const enc = new TextEncoder();
+      const salt = Uint8Array.from(saltHex.match(/.{1,2}/g).map(b => parseInt(b, 16)));
+      const key = await crypto.subtle.importKey("raw", enc.encode(password), "PBKDF2", false, ["deriveBits"]);
+      const bits = await crypto.subtle.deriveBits({ name:"PBKDF2", salt, iterations:150000, hash:"SHA-256" }, key, 256);
+      return [...new Uint8Array(bits)].map(b => b.toString(16).padStart(2, "0")).join("");
+    }
+    function randomHex(bytes = 16) {
+      const arr = new Uint8Array(bytes);
+      crypto.getRandomValues(arr);
+      return [...arr].map(b => b.toString(16).padStart(2, "0")).join("");
+    }
+    async function initAccount() {
+      account = JSON.parse(localStorage.getItem(ACCOUNT_KEY) || "null");
+      if (!account) {
+        const salt = randomHex();
+        account = {
+          email: ADMIN_EMAIL, salt,
+          hash: await hashPassword(INITIAL_PASSWORD, salt),
+          mustChange: true, recoverySalt: "", recoveryHash: ""
+        };
+        localStorage.setItem(ACCOUNT_KEY, JSON.stringify(account));
+      }
+      $("loginEmail").value = account.email;
+    }
+    function saveAccount() {
+      localStorage.setItem(ACCOUNT_KEY, JSON.stringify(account));
+    }
+    function persist() {
+      localStorage.setItem(acctDataKey(account.email), JSON.stringify(data));
+    }
+    function loadData() {
+      try {
+        data = JSON.parse(localStorage.getItem(acctDataKey(account.email)) || "null") ||
+          { transactions: [], goals: [], budgets: {} };
+      } catch {
+        data = { transactions: [], goals: [], budgets: {} };
+      }
+      if (!Array.isArray(data.transactions)) data.transactions = [];
+      if (!Array.isArray(data.goals)) data.goals = [];
+      if (!data.budgets || typeof data.budgets !== "object") data.budgets = {};
     }
 
-    function saveTransaction() {
-      let type = document.getElementById('txType').value;
-      let amt = parseFloat(document.getElementById('txAmount').value);
+    function showOnly(id) {
+      ["loginScreen", "changeScreen", "appScreen"].forEach(x => $(x).hidden = x !== id);
+    }
+    function openDialog(id) { $(id).hidden = false; }
+    function closeDialog(id) { $(id).hidden = true; }
+    function showRecoveryKey(key) {
+      $("shownKey").textContent = key;
+      openDialog("keyDialog");
+    }
+    function newRecoveryKey() {
+      return randomHex(12).toUpperCase().match(/.{1,4}/g).join("-");
+    }
+    async function setNewPassword(password, mustChange = false) {
+      const salt = randomHex();
+      account.salt = salt;
+      account.hash = await hashPassword(password, salt);
+      account.mustChange = mustChange;
+      const recovery = newRecoveryKey();
+      account.recoverySalt = randomHex();
+      account.recoveryHash = await hashPassword(recovery, account.recoverySalt);
+      saveAccount();
+      return recovery;
+    }
 
-      if (isNaN(amt) || amt < 0) {
-        alert('يرجى كتابة مبلغ صحيح');
-        return;
+    function formatCategory(code) {
+      return categories[lang][code] || code || "—";
+    }
+    function categoriesFor(type, selectedMode = mode) {
+      if (type === "income") return ["Salary", "Services", "OtherIncome"];
+      if (selectedMode === "artisan") return ["Materials", "Tools", "BusinessTransport", "Fees", "OtherExpense"];
+      return ["Food", "Housing", "Transport", "Health", "Shopping", "Education", "Leisure", "OtherExpense"];
+    }
+    function fillCategorySelect(select, includeAll = false) {
+      const previous = select.value;
+      const all = includeAll ? `<option value="">${esc(t("allCategories"))}</option>` : "";
+      const list = [...new Set([...categoriesFor("income", "employee"), ...categoriesFor("expense", "employee"),
+        ...categoriesFor("expense", "artisan")])];
+      select.innerHTML = all + list.map(c => `<option value="${esc(c)}">${esc(formatCategory(c))}</option>`).join("");
+      if ([...select.options].some(o => o.value === previous)) select.value = previous;
+    }
+    function updateTransactionCategories() {
+      const type = $("txType").value;
+      const previous = $("txCategory").value;
+      $("txCategory").innerHTML = categoriesFor(type).map(c =>
+        `<option value="${esc(c)}">${esc(formatCategory(c))}</option>`).join("");
+      if ([...$("txCategory").options].some(o => o.value === previous)) $("txCategory").value = previous;
+    }
+
+    function monthTransactions(month) {
+      return data.transactions.filter(tx => (tx.date || "").slice(0, 7) === month);
+    }
+    function total(list, type) {
+      return list.filter(tx => tx.type === type).reduce((s, tx) => s + Number(tx.amount || 0), 0);
+    }
+    function render() {
+      const month = localMonth();
+      const monthTx = monthTransactions(month);
+      const income = total(data.transactions, "income");
+      const expense = total(data.transactions, "expense");
+      const balance = income - expense;
+      $("totalIncome").textContent = money(income);
+      $("totalExpense").textContent = money(expense);
+      $("balance").textContent = money(balance);
+      $("balancePercent").textContent = income > 0
+        ? `${Math.max(0, Math.round((balance / income) * 100))}% ${t("remaining")}`
+        : "";
+
+      $("monthLabel").textContent = new Intl.DateTimeFormat(lang === "ar" ? "ar-TN" : "fr-TN", {
+        month: "long", year: "numeric"
+      }).format(new Date(`${month}-01T12:00:00`));
+
+      const budget = Number(data.budgets[month] || 0);
+      const spent = total(monthTx, "expense");
+      const pct = budget > 0 ? Math.min(100, Math.round(spent / budget * 100)) : 0;
+      $("budgetBar").style.width = `${pct}%`;
+      $("budgetBar").classList.toggle("over", budget > 0 && spent > budget);
+      $("budgetNumbers").textContent = budget > 0
+        ? `${t("budgetUsed")}: ${money(spent)} / ${money(budget)} (${Math.round(spent / budget * 100)}%)`
+        : t("noBudgetYet");
+      $("budgetSummary").innerHTML = budget > 0
+        ? `<p>${esc(t("budgetUsed"))}: <b>${esc(money(spent))}</b> ${esc(t("ofBudget"))} ${esc(money(budget))}</p>`
+        : `<p class="muted">${esc(t("noBudget"))}</p>`;
+
+      const alerts = [];
+      if (budget > 0 && spent > budget) alerts.push(`<div class="alert danger">${esc(t("budgetExceeded"))}</div>`);
+      else if (budget > 0 && spent >= budget * .8) alerts.push(`<div class="alert warn">${esc(t("spent80"))}</div>`);
+      $("alerts").innerHTML = alerts.join("");
+
+      const isArtisan = mode === "artisan";
+      $("artisanSummary").hidden = !isArtisan;
+      if (isArtisan) {
+        const business = data.transactions.filter(tx => tx.mode === "artisan");
+        const serviceIncome = total(business, "income");
+        const proExpense = total(business, "expense");
+        $("serviceIncome").textContent = money(serviceIncome);
+        $("professionalExpense").textContent = money(proExpense);
+        $("profit").textContent = money(serviceIncome - proExpense);
       }
 
-      if (type === 'income') {
-        incomeAmount = amt;
-        localStorage.setItem('ds_income', incomeAmount);
-      } else {
-        expenseAmount = amt;
-        localStorage.setItem('ds_expense', expenseAmount);
+      const expenseByCat = {};
+      data.transactions.filter(tx => tx.type === "expense").forEach(tx => {
+        expenseByCat[tx.category] = (expenseByCat[tx.category] || 0) + Number(tx.amount || 0);
+      });
+      const catEntries = Object.entries(expenseByCat).sort((a,b) => b[1] - a[1]);
+      const maxCat = catEntries[0]?.[1] || 1;
+      $("categoryChart").innerHTML = catEntries.length ? catEntries.slice(0, 8).map(([cat, val]) =>
+        `<div class="category-row"><div class="between"><span>${esc(formatCategory(cat))}</span><small>${esc(money(val))}</small></div>
+        <div class="bar-bg"><div class="bar" style="width:${Math.max(4, val/maxCat*100)}%"></div></div></div>`
+      ).join("") : `<div class="empty">${esc(t("noTransactions"))}</div>`;
+
+      renderTransactionLists();
+      renderBudgetDetail();
+      renderGoals();
+      applyPageLabels();
+    }
+
+    function transactionMarkup(tx, includeActions = true) {
+      const typeClass = tx.type === "income" ? "income" : "expense";
+      const typeLabel = tx.type === "income" ? t("income") : t("expense");
+      return `<tr>
+        <td>${esc(tx.date || "")}</td>
+        <td>${esc(tx.description || "—")}</td>
+        <td><span class="tag">${esc(formatCategory(tx.category))}</span></td>
+        <td class="${typeClass}">${esc(typeLabel)}</td>
+        <td>${esc(money(tx.amount))}</td>
+        ${includeActions ? `<td><div class="actions">
+          <button class="btn light small" data-edit="${esc(tx.id)}">${esc(t("edit"))}</button>
+          <button class="btn danger small" data-delete-tx="${esc(tx.id)}">${esc(t("delete"))}</button>
+        </div></td>` : ""}
+      </tr>`;
+    }
+
+    function renderTransactionLists() {
+      const recent = [...data.transactions].sort((a,b) => (b.date || "").localeCompare(a.date || "")).slice(0, 5);
+      $("recentList").innerHTML = recent.length
+        ? `<div class="table-wrap"><table><thead><tr>
+            <th>${esc(t("date"))}</th><th>${esc(t("description"))}</th><th>${esc(t("category"))}</th>
+            <th>${esc(t("type"))}</th><th>${esc(t("amount"))}</th></tr></thead><tbody>
+            ${recent.map(tx => transactionMarkup(tx, false)).join("")}</tbody></table></div>`
+        : `<div class="empty">${esc(t("noTransactions"))}</div>`;
+
+      const month = $("filterMonth").value;
+      const cat = $("filterCategory").value;
+      const list = [...data.transactions]
+        .filter(tx => (!month || (tx.date || "").slice(0,7) === month))
+        .filter(tx => (!cat || tx.category === cat))
+        .sort((a,b) => (b.date || "").localeCompare(a.date || ""));
+      $("transactionList").innerHTML = list.length
+        ? `<div class="table-wrap"><table><thead><tr>
+            <th>${esc(t("date"))}</th><th>${esc(t("description"))}</th><th>${esc(t("category"))}</th>
+            <th>${esc(t("type"))}</th><th>${esc(t("amount"))}</th><th></th></tr></thead><tbody>
+            ${list.map(tx => transactionMarkup(tx, true)).join("")}</tbody></table></div>`
+        : `<div class="empty">${esc(t("noTransactions"))}</div>`;
+    }
+
+    function renderBudgetDetail() {
+      const month = $("budgetMonth").value || localMonth();
+      const budget = Number(data.budgets[month] || 0);
+      const spent = total(monthTransactions(month), "expense");
+      const pct = budget > 0 ? Math.round(spent / budget * 100) : 0;
+      $("budgetDetail").innerHTML = budget > 0
+        ? `<h3>${esc(month)} — ${esc(money(budget))}</h3>
+           <p>${esc(t("budgetUsed"))}: ${esc(money(spent))} (${pct}%)</p>
+           <div class="bar-bg"><div class="bar ${spent > budget ? "over" : ""}" style="width:${Math.min(100,pct)}%"></div></div>`
+        : `<div class="empty">${esc(t("noBudget"))}</div>`;
+    }
+
+    function renderGoals() {
+      $("goalList").innerHTML = data.goals.length ? data.goals.map(goal => {
+        const target = Number(goal.target) || 0;
+        const saved = Number(goal.saved) || 0;
+        const pct = target > 0 ? Math.min(100, Math.round(saved / target * 100)) : 0;
+        return `<article class="goal">
+          <div class="between"><h3>${esc(goal.name)}</h3><button class="btn danger small" data-delete-goal="${esc(goal.id)}">${esc(t("delete"))}</button></div>
+          <div class="goal-meta">${esc(t("saved"))}: ${esc(money(saved))} · ${esc(t("target"))}: ${esc(money(target))} · ${esc(t("goalProgress"))}: ${pct}%</div>
+          <div class="bar-bg"><div class="bar" style="width:${pct}%"></div></div>
+          <div class="actions" style="margin-top:10px">
+            <input type="number" min="0.01" step="0.01" placeholder="${esc(t("amount"))}" id="contrib-${esc(goal.id)}" style="max-width:180px">
+            <button class="btn light small" data-contribute="${esc(goal.id)}">${esc(t("addSaving"))}</button>
+          </div>
+        </article>`;
+      }).join("") : `<div class="empty">${esc(t("noGoals"))}</div>`;
+    }
+
+    function applyPageLabels() {
+      document.querySelectorAll("[data-t]").forEach(el => { el.textContent = t(el.dataset.t); });
+      document.querySelectorAll("[data-lang]").forEach(btn => btn.classList.toggle("active", btn.dataset.lang === lang));
+    }
+
+    function openTransaction(tx = null) {
+      $("transactionForm").reset();
+      $("transactionId").value = tx?.id || "";
+      $("txDate").value = tx?.date || localDate();
+      $("txType").value = tx?.type || "expense";
+      $("txAmount").value = tx?.amount || "";
+      $("txNote").value = tx?.description || "";
+      $("transactionDialogTitle").textContent = tx ? t("edit") : t("addTransaction");
+      updateTransactionCategories();
+      if (tx) $("txCategory").value = tx.category;
+      openDialog("transactionDialog");
+    }
+
+    function setPage(page) {
+      document.querySelectorAll("[id^='page-']").forEach(p => p.hidden = p.id !== `page-${page}`);
+      document.querySelectorAll("[data-page]").forEach(b => b.classList.toggle("active", b.dataset.page === page));
+      if (page === "transactions") renderTransactionLists();
+      if (page === "budget") renderBudgetDetail();
+    }
+
+    function downloadCsv() {
+      const rows = [[t("date"), t("type"), t("category"), t("description"), t("amount"), "TND", "mode"]];
+      [...data.transactions].sort((a,b) => (a.date || "").localeCompare(b.date || "")).forEach(tx => {
+        rows.push([tx.date || "", tx.type === "income" ? t("income") : t("expense"),
+          formatCategory(tx.category), tx.description || "", Number(tx.amount).toFixed(2), "TND",
+          tx.mode === "artisan" ? t("artisan") : t("employee")]);
+      });
+      const csv = "\uFEFF" + rows.map(row => row.map(value =>
+        `"${String(value).replace(/"/g, '""')}"`
+      ).join(";")).join("\r\n");
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(new Blob([csv], { type:"text/csv;charset=utf-8" }));
+      link.download = `dinar-smart-${localDate()}.csv`;
+      link.click();
+      URL.revokeObjectURL(link.href);
+    }
+
+    document.addEventListener("click", async event => {
+      const langBtn = event.target.closest("[data-lang]");
+      if (langBtn) setLang(langBtn.dataset.lang);
+
+      const modeBtn = event.target.closest("[data-mode]");
+      if (modeBtn) {
+        mode = modeBtn.dataset.mode;
+        document.querySelectorAll("[data-mode]").forEach(b => b.classList.toggle("active", b === modeBtn));
+        render();
       }
 
-      updateUI();
-      closeTransactionModal();
-    }
+      const pageBtn = event.target.closest("[data-page]");
+      if (pageBtn) setPage(pageBtn.dataset.page);
+      const goBtn = event.target.closest("[data-go]");
+      if (goBtn) setPage(goBtn.dataset.go);
 
-    function getActivePassword() {
-      return localStorage.getItem('ds_pass') || defaultPass;
-    }
+      const closeBtn = event.target.closest("[data-close]");
+      if (closeBtn) closeDialog(closeBtn.dataset.close);
 
-    function togglePassword(inputId, iconId) {
-      const input = document.getElementById(inputId);
-      const icon = document.getElementById(iconId);
-      if (input.type === 'password') {
-        input.type = 'text';
-        icon.innerText = '🙈';
-      } else {
-        input.type = 'password';
-        icon.innerText = '👁️';
+      const toggle = event.target.closest("[data-toggle]");
+      if (toggle) {
+        const field = $(toggle.dataset.toggle);
+        field.type = field.type === "password" ? "text" : "password";
+        toggle.textContent = field.type === "password" ? t("show") : t("hide");
       }
-    }
 
-    function handleLogin(e) {
-      e.preventDefault();
-      const email = document.getElementById('loginEmail').value;
-      const pass = document.getElementById('loginPassword').value;
-      const err = document.getElementById('loginError');
+      const editBtn = event.target.closest("[data-edit]");
+      if (editBtn) openTransaction(data.transactions.find(tx => tx.id === editBtn.dataset.edit));
 
-      if (email.toLowerCase() === adminEmail && pass === getActivePassword()) {
-        document.getElementById('loginScreen').classList.add('hidden');
-        document.getElementById('appContainer').classList.remove('hidden');
-        updateUI();
-      } else {
-        err.innerText = "البريد أو كلمة المرور غير صحيحة!";
-        err.classList.remove('hidden');
+      const deleteTx = event.target.closest("[data-delete-tx]");
+      if (deleteTx && confirm(t("confirmDelete"))) {
+        data.transactions = data.transactions.filter(tx => tx.id !== deleteTx.dataset.deleteTx);
+        persist(); render();
       }
-    }
 
-    function toggleResetModal() {
-      document.getElementById('resetModal').classList.toggle('hidden');
-    }
-
-    function savePassword() {
-      const email = document.getElementById('resetEmail').value;
-      const pass = document.getElementById('newPass').value;
-      if (email.toLowerCase() === adminEmail && pass.trim()) {
-        localStorage.setItem('ds_pass', pass.trim());
-        alert('تم تحديث كلمة المرور للأدمين بنجاح!');
-        toggleResetModal();
-      } else {
-        alert('يرجى كتابة بريد الأدمين الصحيح وكلمة مرور صالحة.');
+      const deleteGoal = event.target.closest("[data-delete-goal]");
+      if (deleteGoal && confirm(t("confirmGoalDelete"))) {
+        data.goals = data.goals.filter(goal => goal.id !== deleteGoal.dataset.deleteGoal);
+        persist(); render();
       }
-    }
 
-    function setMode(mode) {
-      currentMode = mode;
-      const empBtn = document.getElementById('modeEmployeeBtn');
-      const artBtn = document.getElementById('modeArtisanBtn');
-
-      if (mode === 'employee') {
-        empBtn.className = "w-1/2 py-2.5 rounded-full flex items-center justify-center space-x-1.5 space-x-reverse bg-white text-slate-900 shadow-md font-extrabold";
-        artBtn.className = "w-1/2 py-2.5 rounded-full flex items-center justify-center space-x-1.5 space-x-reverse text-slate-200 font-bold";
-      } else {
-        artBtn.className = "w-1/2 py-2.5 rounded-full flex items-center justify-center space-x-1.5 space-x-reverse bg-white text-slate-900 shadow-md font-extrabold";
-        empBtn.className = "w-1/2 py-2.5 rounded-full flex items-center justify-center space-x-1.5 space-x-reverse text-slate-200 font-bold";
+      const contribute = event.target.closest("[data-contribute]");
+      if (contribute) {
+        const input = $(`contrib-${contribute.dataset.contribute}`);
+        const value = Number(input.value);
+        if (value > 0) {
+          const goal = data.goals.find(g => g.id === contribute.dataset.contribute);
+          if (goal) goal.saved = Number(goal.saved || 0) + value;
+          persist(); render();
+        }
       }
-    }
+    });
 
-    function setLanguage(lang) {
-      currentLang = lang;
-      const arBtn = document.getElementById('langArBtn');
-      const frBtn = document.getElementById('langFrBtn');
-
-      if (lang === 'ar') {
-        arBtn.className = "px-4 py-1 rounded-full bg-white text-slate-900 font-extrabold shadow-sm";
-        frBtn.className = "px-3 py-1 rounded-full text-slate-300";
-        document.documentElement.dir = "rtl";
-      } else {
-        frBtn.className = "px-4 py-1 rounded-full bg-white text-slate-900 font-extrabold shadow-sm";
-        arBtn.className = "px-3 py-1 rounded-full text-slate-300";
-        document.documentElement.dir = "ltr";
+    $("loginForm").addEventListener("submit", async event => {
+      event.preventDefault();
+      try {
+        const email = $("loginEmail").value.trim().toLowerCase();
+        const password = $("loginPassword").value;
+        if (email !== account.email.toLowerCase()) return alert(t("emailMismatch"));
+        if (await hashPassword(password, account.salt) !== account.hash) return alert(t("invalidLogin"));
+        if (account.mustChange) showOnly("changeScreen");
+        else {
+          loadData();
+          showOnly("appScreen");
+          $("filterMonth").value = localMonth();
+          $("budgetMonth").value = localMonth();
+          render();
+        }
+      } catch (error) {
+        alert(error.message === "NO_CRYPTO" ? t("browserCrypto") : t("invalidLogin"));
       }
-    }
+    });
 
-    function closeAlert() {
-      document.getElementById('alertBox').classList.add('hidden');
-    }
+    $("changeForm").addEventListener("submit", async event => {
+      event.preventDefault();
+      const password = $("newPassword").value;
+      if (password.length < 8) return alert(t("minPassword"));
+      if (password !== $("confirmPassword").value) return alert(t("passwordsMismatch"));
+      try {
+        const key = await setNewPassword(password, false);
+        $("changeForm").reset();
+        showRecoveryKey(key);
+      } catch { alert(t("browserCrypto")); }
+    });
 
-    function navigate(page) {
-      if(page === 'home') return;
-      alert("قسم " + page + " شغال وجاهز!");
-    }
+    $("openRecovery").addEventListener("click", () => openDialog("recoveryDialog"));
+    $("recoveryForm").addEventListener("submit", async event => {
+      event.preventDefault();
+      const email = $("recoveryEmail").value.trim().toLowerCase();
+      const keyInput = $("recoveryKey").value.trim().toUpperCase();
+      const newPassword = $("recoveryNewPassword").value;
+      if (newPassword.length < 8) return alert(t("minPassword"));
+      if (email !== account.email.toLowerCase()) return alert(t("resetFailed"));
+      try {
+        let valid = false;
+        if (account.recoveryHash && account.recoverySalt) {
+          valid = await hashPassword(keyInput, account.recoverySalt) === account.recoveryHash;
+        } else if (account.mustChange) {
+          valid = await hashPassword(keyInput, account.salt) === account.hash;
+        }
+        if (!valid) return alert(t("resetFailed"));
+        const key = await setNewPassword(newPassword, false);
+        $("recoveryForm").reset();
+        closeDialog("recoveryDialog");
+        alert(t("recoverySaved"));
+        showRecoveryKey(key);
+      } catch { alert(t("browserCrypto")); }
+    });
+
+    $("closeKeyDialog").addEventListener("click", () => {
+      closeDialog("keyDialog");
+      loadData();
+      $("filterMonth").value = localMonth();
+      $("budgetMonth").value = localMonth();
+      showOnly("appScreen");
+      render();
+    });
+    $("copyKey").addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText($("shownKey").textContent);
+        $("copyKey").textContent = lang === "ar" ? "تم النسخ" : "Copié";
+      } catch {
+        alert($("shownKey").textContent);
+      }
+    });
+
+    $("logout").addEventListener("click", () => {
+      $("loginPassword").value = "";
+      showOnly("loginScreen");
+    });
+    $("addTransaction").addEventListener("click", () => openTransaction());
+    $("txType").addEventListener("change", updateTransactionCategories);
+    $("filterMonth").addEventListener("change", renderTransactionLists);
+    $("filterCategory").addEventListener("change", renderTransactionLists);
+    $("exportCsv").addEventListener("click", downloadCsv);
+
+    $("transactionForm").addEventListener("submit", event => {
+      event.preventDefault();
+      const amount = Number($("txAmount").value);
+      if (!(amount > 0)) return alert(t("invalidAmount"));
+      const id = $("transactionId").value || (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()));
+      const tx = {
+        id, type: $("txType").value, amount, category: $("txCategory").value,
+        date: $("txDate").value, description: $("txNote").value.trim(), mode
+      };
+      const index = data.transactions.findIndex(item => item.id === id);
+      if (index >= 0) data.transactions[index] = tx;
+      else data.transactions.push(tx);
+      persist(); closeDialog("transactionDialog"); render();
+    });
+
+    $("budgetForm").addEventListener("submit", event => {
+      event.preventDefault();
+      const month = $("budgetMonth").value;
+      const amount = Number($("budgetAmount").value);
+      if (!month || amount < 0) return;
+      data.budgets[month] = amount;
+      persist(); render();
+      alert(t("budgetSaved"));
+    });
+    $("budgetMonth").addEventListener("change", renderBudgetDetail);
+
+    $("goalForm").addEventListener("submit", event => {
+      event.preventDefault();
+      const target = Number($("goalTarget").value);
+      const saved = Number($("goalSaved").value || 0);
+      if (!(target > 0) || saved < 0) return alert(t("invalidAmount"));
+      data.goals.push({
+        id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+        name: $("goalName").value.trim(), target, saved
+      });
+      persist(); $("goalForm").reset(); $("goalSaved").value = "0"; render();
+    });
+
+    $("filterCategory").innerHTML = "";
+    fillCategorySelect($("filterCategory"), true);
+    $("filterMonth").value = localMonth();
+    $("budgetMonth").value = localMonth();
+    applyLanguage();
+
+    initAccount().catch(() => alert(t("browserCrypto")));
   </script>
 </body>
 </html>
