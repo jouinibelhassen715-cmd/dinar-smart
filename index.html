@@ -21,18 +21,23 @@
           DS
         </div>
         <h1 class="text-2xl font-extrabold text-white">Dinar Smart</h1>
-        <p class="text-xs text-slate-400">إدارة مالية ذكية - المالك والمؤسس</p>
+        <p class="text-xs text-slate-400">إدارة مالية ذكية - حساب الأدمين (Admin)</p>
       </div>
 
       <form onsubmit="handleLogin(event)" class="space-y-4">
         <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1">البريد الإلكتروني</label>
+          <label class="block text-xs font-bold text-slate-300 mb-1">البريد الإلكتروني للأدمين</label>
           <input type="email" id="loginEmail" value="jouinibelhassen715@gmail.com" required class="w-full p-3 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white outline-none focus:border-blue-500">
         </div>
 
         <div>
           <label class="block text-xs font-bold text-slate-300 mb-1">كلمة المرور</label>
-          <input type="password" id="loginPassword" placeholder="أدخل كلمة المرور" required class="w-full p-3 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white outline-none focus:border-blue-500">
+          <div class="relative">
+            <input type="password" id="loginPassword" placeholder="أدخل كلمة المرور" required class="w-full p-3 pl-10 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white outline-none focus:border-blue-500">
+            <button type="button" onclick="togglePasswordVisibility('loginPassword', 'eyeIcon1')" class="absolute left-3 top-3 text-slate-400 hover:text-white text-sm">
+              <span id="eyeIcon1">👁️</span>
+            </button>
+          </div>
         </div>
 
         <div id="loginError" class="text-xs text-red-400 bg-red-950/50 p-2.5 rounded-xl hidden text-center border border-red-900"></div>
@@ -43,19 +48,37 @@
       </form>
 
       <div class="text-center pt-2">
-        <button onclick="togglePasswordResetModal()" class="text-xs text-blue-400 hover:underline">نسيت أو ترغب في إعادة تهيئة كلمة المرور؟</button>
+        <button onclick="togglePasswordResetModal()" class="text-xs text-blue-400 hover:underline">Mot de passe oublié / تعيين كلمة المرور للأدمين</button>
       </div>
     </div>
   </div>
 
-  <!-- Modal إعادة تهيئة كلمة المرور -->
+  <!-- Modal إعادة تعيين كلمة المرور للأدمين -->
   <div id="resetModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 w-full max-w-sm space-y-4">
-      <h3 class="text-sm font-bold text-white">إعادة تهيئة كلمة المرور</h3>
-      <p class="text-xs text-slate-400">أدخل كلمة المرور الجديدة الخاصة بك لحفظها محلياً:</p>
-      <input type="password" id="newPassInput" placeholder="كلمة المرور الجديدة" class="w-full p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white">
-      <div class="flex space-x-2 space-x-reverse justify-end">
-        <button onclick="saveNewPassword()" class="bg-blue-600 hover:bg-blue-500 text-xs font-bold px-4 py-2 rounded-xl">حفظ</button>
+      <h3 class="text-sm font-bold text-white flex items-center justify-between">
+        <span>تأكيد هوية الأدمين ورست كلمة المرور</span>
+        <span class="text-xs text-blue-400">Admin</span>
+      </h3>
+      <p class="text-xs text-slate-400">تأكيد البريد الإلكتروني الخاص بالمالك وإدخال كلمة المرور الجديدة:</p>
+      
+      <div>
+        <label class="block text-[11px] font-bold text-slate-400 mb-1">بريد الأدمين للتأكيد</label>
+        <input type="email" id="resetAdminEmail" value="jouinibelhassen715@gmail.com" class="w-full p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white">
+      </div>
+
+      <div>
+        <label class="block text-[11px] font-bold text-slate-400 mb-1">كلمة المرور الجديدة</label>
+        <div class="relative">
+          <input type="password" id="newPassInput" placeholder="كلمة المرور الجديدة" class="w-full p-2.5 pl-10 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white">
+          <button type="button" onclick="togglePasswordVisibility('newPassInput', 'eyeIcon2')" class="absolute left-3 top-2.5 text-slate-400 hover:text-white text-sm">
+            <span id="eyeIcon2">👁️</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="flex space-x-2 space-x-reverse justify-end pt-2">
+        <button onclick="saveNewPassword()" class="bg-blue-600 hover:bg-blue-500 text-xs font-bold px-4 py-2 rounded-xl">تأكيد وتعيين</button>
         <button onclick="togglePasswordResetModal()" class="bg-slate-800 hover:bg-slate-700 text-xs font-bold px-4 py-2 rounded-xl text-slate-300">إلغاء</button>
       </div>
     </div>
@@ -76,18 +99,14 @@
         </div>
 
         <div class="flex items-center space-x-2 space-x-reverse">
-          <!-- Language Switcher -->
           <button onclick="toggleLanguage()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 rounded-lg border border-slate-700" id="langBtn">
             Français
           </button>
-          <!-- User Mode Switcher -->
           <select id="userModeSelect" onchange="changeMode(this.value)" class="bg-slate-800 border border-slate-700 text-xs font-bold text-slate-200 rounded-lg p-1.5 outline-none">
             <option value="employee">👨‍💼 موظف (Employé)</option>
             <option value="artisan">🛠️ حرفي (Artisan)</option>
           </select>
-          <!-- Reset Pass Button inside App -->
-          <button onclick="togglePasswordResetModal()" title="تغيير كلمة المرور" class="p-2 text-slate-400 hover:text-blue-400">🔑</button>
-          <!-- Logout -->
+          <button onclick="togglePasswordResetModal()" title="تغيير كلمة المرور بالأدمين" class="p-2 text-slate-400 hover:text-blue-400">🔑</button>
           <button onclick="logout()" title="تسجيل الخروج" class="p-2 text-slate-400 hover:text-red-400">🚪</button>
         </div>
       </div>
@@ -99,40 +118,35 @@
       <!-- KPI Cards Summary -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-          <p class="text-xs text-slate-400 font-semibold" id="lblIncome">إجمالي المداخيل المقبوضة</p>
+          <p class="text-xs text-slate-400 font-semibold">إجمالي المداخيل المقبوضة</p>
           <p class="text-xl font-extrabold text-emerald-400 mt-1" id="totalIncome">0.000 TND</p>
         </div>
         <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-          <p class="text-xs text-slate-400 font-semibold" id="lblExpenses">إجمالي المصاريف المدفوعة</p>
+          <p class="text-xs text-slate-400 font-semibold">إجمالي المصاريف المدفوعة</p>
           <p class="text-xl font-extrabold text-red-400 mt-1" id="totalExpenses">0.000 TND</p>
         </div>
         <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-          <p class="text-xs text-slate-400 font-semibold" id="lblBalance">السيولة المتبقية</p>
+          <p class="text-xs text-slate-400 font-semibold">السيولة المتبقية</p>
           <p class="text-xl font-extrabold text-blue-400 mt-1" id="currentBalance">0.000 TND</p>
         </div>
-        <!-- Artisan specific metric -->
         <div id="artisanExtraCard" class="bg-slate-900 border border-slate-800 p-4 rounded-2xl hidden">
           <p class="text-xs text-slate-400 font-semibold">فواتير غير مدفوعة (Unpaid)</p>
           <p class="text-xl font-extrabold text-amber-400 mt-1" id="unpaidAmount">0.000 TND</p>
         </div>
       </div>
 
-      <!-- Quick Action Forms -->
+      <!-- Actions & Transactions -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        
-        <!-- Add Transaction Form -->
         <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-4">
           <h2 class="text-sm font-bold text-white flex items-center space-x-2 space-x-reverse">
             <span>➕</span>
-            <span id="lblAddTx">إضافة معاملة جديدة</span>
+            <span>إضافة معاملة جديدة</span>
           </h2>
-          
           <form onsubmit="addTransaction(event)" class="space-y-3">
             <div>
               <label class="block text-[11px] font-bold text-slate-400 mb-1">المبلغ (TND)</label>
               <input type="number" step="0.001" min="0.001" id="txAmount" required placeholder="0.000" class="w-full p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white outline-none">
             </div>
-
             <div class="grid grid-cols-2 gap-2">
               <div>
                 <label class="block text-[11px] font-bold text-slate-400 mb-1">النوع</label>
@@ -147,30 +161,24 @@
                 <input type="text" id="txCategory" required placeholder="أجر، نقل، مواد..." class="w-full p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white outline-none">
               </div>
             </div>
-
             <div>
               <label class="block text-[11px] font-bold text-slate-400 mb-1">الوصف (اختياري)</label>
               <input type="text" id="txDesc" placeholder="ملاحظات..." class="w-full p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white outline-none">
             </div>
-
-            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 font-bold py-2.5 rounded-xl text-xs text-white transition">
-              حفظ المعاملة
-            </button>
+            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 font-bold py-2.5 rounded-xl text-xs text-white transition">حفظ المعاملة</button>
           </form>
         </div>
 
-        <!-- Budget & Alerts -->
         <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-4">
           <h2 class="text-sm font-bold text-white flex items-center space-x-2 space-x-reverse">
             <span>🎯</span>
-            <span id="lblBudget">الميزانية والتنبيهات الشهريّة</span>
+            <span>الميزانية والتنبيهات الشهريّة</span>
           </h2>
           <div id="budgetAlerts" class="space-y-3 text-xs">
             <p class="text-slate-400">لا توجد تنبيهات ميزانية حالياً. أضف معاملات لتفعيل التنبيهات.</p>
           </div>
         </div>
 
-        <!-- WhatsApp Integration Helper -->
         <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-4">
           <div class="flex items-center justify-between">
             <h2 class="text-sm font-bold text-white flex items-center space-x-2 space-x-reverse">
@@ -179,19 +187,8 @@
             </h2>
             <span class="text-[9px] bg-blue-900/60 text-blue-300 border border-blue-700 px-2 py-0.5 rounded-full font-bold">ميزة مستقبلية</span>
           </div>
-          <p class="text-xs text-slate-400">يمكنك مستقبلاً تسجيل المعاملات عبر إرسال رسائل نصية قصيرة مثل:</p>
-          <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-2 text-xs">
-            <div class="flex justify-between text-emerald-400 font-mono">
-              <span>"خدمة 80 دينار"</span>
-              <span class="text-[10px] text-slate-500">(مدخول)</span>
-            </div>
-            <div class="flex justify-between text-red-400 font-mono">
-              <span>"صرف 12 دينار نقل"</span>
-              <span class="text-[10px] text-slate-500">(مصروف)</span>
-            </div>
-          </div>
+          <p class="text-xs text-slate-400">يمكنك مستقبلاً تسجيل المعاملات عبر إرسال رسائل نصية قصيرة.</p>
         </div>
-
       </div>
 
       <!-- Transactions Table -->
@@ -199,18 +196,7 @@
         <h2 class="text-sm font-bold text-white">سجل المعاملات اليومية</h2>
         <div class="overflow-x-auto">
           <table class="w-full text-right text-xs text-slate-300">
-            <thead class="bg-slate-800 text-slate-400 uppercase text-[10px]">
-              <tr>
-                <th class="p-3">التاريخ</th>
-                <th class="p-3">الفئة والوصف</th>
-                <th class="p-3">النوع</th>
-                <th class="p-3">المبلغ (TND)</th>
-                <th class="p-3 text-center">إجراءات</th>
-              </tr>
-            </thead>
-            <tbody id="txTableBody" class="divide-y divide-slate-800">
-              <!-- Transactions dynamically rendered -->
-            </tbody>
+            <tbody id="txTableBody" class="divide-y divide-slate-800"></tbody>
           </table>
         </div>
       </div>
@@ -222,51 +208,69 @@
     let currentLang = 'ar';
     let currentMode = 'employee';
     let defaultPass = '2026';
+    let adminEmail = 'jouinibelhassen715@gmail.com';
     let transactions = JSON.parse(localStorage.getItem('ds_transactions') || '[]');
 
     function getActivePassword() {
       return localStorage.getItem('ds_pass') || defaultPass;
     }
 
+    function togglePasswordVisibility(inputId, iconId) {
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+      if (input.type === 'password') {
+        input.type = 'text';
+        icon.innerText = '🙈';
+      } else {
+        input.type = 'password';
+        icon.innerText = '👁️';
+      }
+    }
+
     function handleLogin(e) {
       e.preventDefault();
+      const email = document.getElementById('loginEmail').value;
       const pass = document.getElementById('loginPassword').value;
       const err = document.getElementById('loginError');
 
-      if (pass === getActivePassword()) {
+      if (email.toLowerCase() === adminEmail && pass === getActivePassword()) {
         document.getElementById('loginScreen').classList.add('hidden');
         document.getElementById('appContainer').classList.remove('hidden');
         renderApp();
       } else {
-        err.innerText = "كلمة المرور غير صحيحة!";
+        err.innerText = "البريد أو كلمة المرور غير صحيحة!";
         err.classList.remove('hidden');
       }
     }
 
     function togglePasswordResetModal() {
-      const modal = document.getElementById('resetModal');
-      modal.classList.toggle('hidden');
+      document.getElementById('resetModal').classList.toggle('hidden');
     }
 
     function saveNewPassword() {
+      const confirmEmail = document.getElementById('resetAdminEmail').value;
       const newPass = document.getElementById('newPassInput').value;
+
+      if (confirmEmail.toLowerCase() !== adminEmail) {
+        alert('تنبيه: فقط بريد الأدمين ' + adminEmail + ' مخول بتعيين كلمة المرور!');
+        return;
+      }
+
       if (newPass.trim().length > 0) {
         localStorage.setItem('ds_pass', newPass.trim());
-        alert('تم تغيير كلمة المرور بنجاح!');
+        alert('تم تعيين كلمة المرور الجديدة للأدمين بنجاح!');
         togglePasswordResetModal();
         document.getElementById('newPassInput').value = '';
       } else {
-        alert('يرجى إدخال كلمة مرور صالحة.');
+        alert('يرجى كتابة كلمة مرور صالحة.');
       }
     }
 
     function changeMode(mode) {
       currentMode = mode;
       document.getElementById('modeLabel').innerText = mode === 'employee' ? 'وضع الموظف (Employé)' : 'وضع الحرفي (Artisan)';
-      
       const artisanElements = document.querySelectorAll('.artisan-only');
       const artisanCard = document.getElementById('artisanExtraCard');
-
       if (mode === 'artisan') {
         artisanElements.forEach(el => el.classList.remove('hidden'));
         artisanCard.classList.remove('hidden');
@@ -290,37 +294,22 @@
       const type = document.getElementById('txType').value;
       const category = document.getElementById('txCategory').value;
       const desc = document.getElementById('txDesc').value;
-
       if (amount <= 0) return;
 
       const tx = {
         id: Date.now(),
         date: new Date().toLocaleDateString('fr-TN'),
-        amount,
-        type,
-        category,
-        desc,
-        mode: currentMode
+        amount, type, category, desc, mode: currentMode
       };
-
       transactions.unshift(tx);
       localStorage.setItem('ds_transactions', JSON.stringify(transactions));
       e.target.reset();
       renderApp();
     }
 
-    function deleteTx(id) {
-      if (confirm('هل أنت تأكد من مسح هذه المعاملة؟')) {
-        transactions = transactions.filter(t => t.id !== id);
-        localStorage.setItem('ds_transactions', JSON.stringify(transactions));
-        renderApp();
-      }
-    }
-
     function renderApp() {
       const filtered = transactions.filter(t => t.mode === currentMode);
       let income = 0, expense = 0, unpaid = 0;
-
       const tbody = document.getElementById('txTableBody');
       tbody.innerHTML = '';
 
@@ -334,15 +323,8 @@
         tr.innerHTML = `
           <td class="p-3 text-slate-400">${t.date}</td>
           <td class="p-3 font-semibold text-white">${t.category} <span class="text-slate-500 font-normal">(${t.desc || '-'})</span></td>
-          <td class="p-3">
-            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${t.type === 'income' ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : t.type === 'expense' ? 'bg-red-950 text-red-400 border border-red-800' : 'bg-amber-950 text-amber-400 border border-amber-800'}">
-              ${t.type === 'income' ? 'مدخول' : t.type === 'expense' ? 'مصروف' : 'غير مدفوع'}
-            </span>
-          </td>
+          <td class="p-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${t.type === 'income' ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : t.type === 'expense' ? 'bg-red-950 text-red-400 border border-red-800' : 'bg-amber-950 text-amber-400 border border-amber-800'}">${t.type === 'income' ? 'مدخول' : t.type === 'expense' ? 'مصروف' : 'غير مدفوع'}</span></td>
           <td class="p-3 font-mono font-bold ${t.type === 'income' ? 'text-emerald-400' : 'text-red-400'}">${t.amount.toFixed(3)} TND</td>
-          <td class="p-3 text-center">
-            <button onclick="deleteTx(${t.id})" class="text-red-400 hover:text-red-300 font-bold">🗑️</button>
-          </td>
         `;
         tbody.appendChild(tr);
       });
