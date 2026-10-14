@@ -5,241 +5,228 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dinar Smart - إدارة مالية ذكية</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     body { font-family: 'Cairo', sans-serif; }
-    .ltr-mode { dir: ltr; text-align: left; }
+    .bg-header { background-color: #003366; }
+    .bg-card-light { background-color: #f4f7fa; }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans">
+<body class="bg-slate-100 min-h-screen text-slate-800 flex flex-col font-sans pb-20">
 
-  <!-- 1. شاشة تسجيل الدخول والحماية -->
-  <div id="loginScreen" class="min-h-screen w-full flex items-center justify-center p-4 bg-slate-950">
-    <div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl space-y-6">
-      
-      <!-- الشعار المصلح بوضوح احترافي -->
-      <div class="text-center space-y-3">
-        <div class="w-32 h-32 mx-auto drop-shadow-2xl flex items-center justify-center">
-          <svg viewBox="0 0 300 300" class="w-full h-full">
-            <defs>
-              <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#002b66" />
-                <stop offset="50%" stop-color="#0066ff" />
-                <stop offset="100%" stop-color="#00aaff" />
-              </linearGradient>
-            </defs>
-            <!-- الحلقة والأسهم الرسمية للشعار -->
-            <path d="M 150 30 A 110 110 0 1 1 50 150" fill="none" stroke="url(#blueGrad)" stroke-width="22" stroke-linecap="round"/>
-            <!-- الأعمدة الماليّة -->
-            <rect x="90" y="150" width="22" height="60" fill="#0066ff" rx="6"/>
-            <rect x="125" y="110" width="22" height="100" fill="#0052cc" rx="6"/>
-            <rect x="160" y="80" width="22" height="130" fill="#003399" rx="6"/>
-            <!-- سهم النمو -->
-            <path d="M 60 210 Q 130 190 200 100" fill="none" stroke="#0088ff" stroke-width="18" stroke-linecap="round"/>
-            <polygon points="215,80 185,95 200,120" fill="#0088ff"/>
-            <!-- عملة الدينار DT -->
-            <circle cx="210" cy="65" r="28" fill="#002b66" stroke="#00aaff" stroke-width="4"/>
-            <text x="210" y="74" font-size="24" fill="#ffffff" font-weight="900" text-anchor="middle" font-family="'Cairo', sans-serif">DT</text>
-          </svg>
+  <!-- 1. شاشة الدخول والحماية -->
+  <div id="loginScreen" class="fixed inset-0 z-50 bg-slate-900 flex items-center justify-center p-4">
+    <div class="w-full max-w-sm bg-slate-800 rounded-3xl p-6 border border-slate-700 shadow-2xl space-y-5">
+      <div class="text-center space-y-2">
+        <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mx-auto text-white font-black text-xl shadow-lg border border-blue-400">
+          DS
         </div>
-        <h1 class="text-3xl font-black text-white tracking-tight">Dinar Smart</h1>
-        <p class="text-xs font-semibold text-blue-400">إدارة مالية ذكية لحياة أفضل</p>
+        <h1 class="text-2xl font-black text-white">Dinar Smart</h1>
+        <p class="text-xs text-slate-400">إدارة مالية ذكية - تسجيل دخول المالك</p>
       </div>
 
-      <form onsubmit="handleLogin(event)" class="space-y-4 pt-2">
+      <form onsubmit="handleLogin(event)" class="space-y-4">
         <div>
-          <label class="block text-xs font-bold text-slate-300 mb-1">البريد الإلكتروني للأدمين</label>
-          <input type="email" id="loginEmail" value="jouinibelhassen715@gmail.com" required class="w-full p-3 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white outline-none focus:border-blue-500">
+          <label class="block text-xs font-bold text-slate-300 mb-1">البريد الإلكتروني</label>
+          <input type="email" id="loginEmail" value="jouinibelhassen715@gmail.com" required class="w-full p-3 bg-slate-700 border border-slate-600 rounded-xl text-sm text-white outline-none focus:border-blue-500">
         </div>
 
         <div>
           <label class="block text-xs font-bold text-slate-300 mb-1">كلمة المرور</label>
           <div class="relative">
-            <input type="password" id="loginPassword" placeholder="أدخل كلمة المرور" required class="w-full p-3 pl-10 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white outline-none focus:border-blue-500">
-            <button type="button" onclick="togglePasswordVisibility('loginPassword', 'eyeIcon1')" class="absolute left-3 top-3 text-slate-400 hover:text-white text-sm">
-              <span id="eyeIcon1">👁️</span>
+            <input type="password" id="loginPassword" placeholder="أدخل كلمة المرور" required class="w-full p-3 pl-10 bg-slate-700 border border-slate-600 rounded-xl text-sm text-white outline-none focus:border-blue-500">
+            <button type="button" onclick="togglePassword('loginPassword', 'eyeIcon')" class="absolute left-3 top-3 text-slate-400 hover:text-white text-sm">
+              <span id="eyeIcon">👁️</span>
             </button>
           </div>
         </div>
 
         <div id="loginError" class="text-xs text-red-400 bg-red-950/50 p-2.5 rounded-xl hidden text-center border border-red-900"></div>
 
-        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl transition shadow-lg text-sm">
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-xl transition text-sm shadow-md">
           تسجيل الدخول (Se connecter)
         </button>
       </form>
 
-      <div class="text-center pt-2">
-        <button onclick="togglePasswordResetModal()" class="text-xs text-blue-400 hover:underline">Mot de passe oublié / تعيين كلمة المرور للأدمين</button>
+      <div class="text-center">
+        <button onclick="toggleResetModal()" class="text-xs text-blue-400 hover:underline">Mot de passe oublié / تعيين كلمة المرور للأدمين</button>
       </div>
     </div>
   </div>
 
-  <!-- Modal إعادة تعيين كلمة المرور للأدمين -->
-  <div id="resetModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 w-full max-w-sm space-y-4">
-      <h3 class="text-sm font-bold text-white flex items-center justify-between">
-        <span>تأكيد هوية الأدمين ورست كلمة المرور</span>
-        <span class="text-xs text-blue-400">Admin</span>
-      </h3>
-      <p class="text-xs text-slate-400">تأكيد البريد الإلكتروني الخاص بالمالك وإدخال كلمة المرور الجديدة:</p>
-      
+  <!-- Modal تعيين كلمة المرور -->
+  <div id="resetModal" class="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 hidden">
+    <div class="bg-slate-800 rounded-2xl p-5 w-full max-w-xs space-y-4 text-white border border-slate-700">
+      <h3 class="text-sm font-bold">تعيين كلمة المرور للأدمين</h3>
       <div>
-        <label class="block text-[11px] font-bold text-slate-400 mb-1">بريد الأدمين للتأكيد</label>
-        <input type="email" id="resetAdminEmail" value="jouinibelhassen715@gmail.com" class="w-full p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white">
+        <label class="block text-xs text-slate-400 mb-1">تأكيد بريد المالك</label>
+        <input type="email" id="resetEmail" value="jouinibelhassen715@gmail.com" class="w-full p-2 bg-slate-700 rounded-lg text-sm border border-slate-600">
       </div>
-
       <div>
-        <label class="block text-[11px] font-bold text-slate-400 mb-1">كلمة المرور الجديدة</label>
+        <label class="block text-xs text-slate-400 mb-1">كلمة المرور الجديدة</label>
         <div class="relative">
-          <input type="password" id="newPassInput" placeholder="كلمة المرور الجديدة" class="w-full p-2.5 pl-10 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white">
-          <button type="button" onclick="togglePasswordVisibility('newPassInput', 'eyeIcon2')" class="absolute left-3 top-2.5 text-slate-400 hover:text-white text-sm">
-            <span id="eyeIcon2">👁️</span>
+          <input type="password" id="newPass" placeholder="كلمة المرور الجديدة" class="w-full p-2 pl-8 bg-slate-700 rounded-lg text-sm border border-slate-600">
+          <button type="button" onclick="togglePassword('newPass', 'eyeReset')" class="absolute left-2 top-2 text-slate-400">
+            <span id="eyeReset">👁️</span>
           </button>
         </div>
       </div>
-
-      <div class="flex space-x-2 space-x-reverse justify-end pt-2">
-        <button onclick="saveNewPassword()" class="bg-blue-600 hover:bg-blue-500 text-xs font-bold px-4 py-2 rounded-xl">تأكيد وتعيين</button>
-        <button onclick="togglePasswordResetModal()" class="bg-slate-800 hover:bg-slate-700 text-xs font-bold px-4 py-2 rounded-xl text-slate-300">إلغاء</button>
+      <div class="flex justify-end space-x-2 space-x-reverse pt-2">
+        <button onclick="savePassword()" class="bg-blue-600 px-3 py-1.5 rounded-lg text-xs font-bold">حفظ</button>
+        <button onclick="toggleResetModal()" class="bg-slate-700 px-3 py-1.5 rounded-lg text-xs font-bold">إلغاء</button>
       </div>
     </div>
   </div>
 
-  <!-- 2. التطبيق الرئيسي Dinar Smart -->
-  <div id="appContainer" class="min-h-screen w-full flex flex-col hidden bg-slate-950">
+  <!-- 2. الواجهة الرئيسية للبرنامج -->
+  <div id="appContainer" class="w-full flex-1 flex flex-col hidden">
     
-    <!-- Navbar -->
-    <header class="bg-slate-900 border-b border-slate-800 p-4 sticky top-0 z-40">
-      <div class="max-w-6xl mx-auto flex items-center justify-between">
-        <div class="flex items-center space-x-3 space-x-reverse">
-          <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center font-bold text-white text-sm shadow-md">
-            DS
+    <!-- الهيدر الأزرق الداكن الداعم للتصميم -->
+    <header class="bg-header text-white p-5 rounded-b-3xl shadow-lg space-y-4">
+      
+      <!-- أعلى الهيدر: الشعار + مبدل اللغة -->
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-2 space-x-reverse">
+          <div class="w-10 h-10 border-2 border-blue-400 rounded-full flex items-center justify-center bg-blue-900/40">
+            <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+            </svg>
           </div>
           <div>
-            <h1 class="font-extrabold text-lg text-white">Dinar Smart</h1>
-            <p class="text-[10px] text-blue-400 font-semibold" id="modeLabel">وضع الموظف (Employé)</p>
+            <h1 class="text-xl font-black tracking-tight leading-none">Dinar <span class="text-blue-400">Smart</span></h1>
+            <p class="text-[10px] text-slate-300">إدارة مالية ذكية</p>
           </div>
         </div>
 
-        <div class="flex items-center space-x-2 space-x-reverse">
-          <button onclick="toggleLanguage()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-bold text-slate-200 rounded-lg border border-slate-700" id="langBtn">
-            Français
-          </button>
-          <select id="userModeSelect" onchange="changeMode(this.value)" class="bg-slate-800 border border-slate-700 text-xs font-bold text-slate-200 rounded-lg p-1.5 outline-none">
-            <option value="employee">👨‍💼 موظف (Employé)</option>
-            <option value="artisan">🛠️ حرفي (Artisan)</option>
-          </select>
-          <button onclick="togglePasswordResetModal()" title="تغيير كلمة المرور بالأدمين" class="p-2 text-slate-400 hover:text-blue-400">🔑</button>
-          <button onclick="logout()" title="تسجيل الخروج" class="p-2 text-slate-400 hover:text-red-400">🚪</button>
+        <!-- زر تغيير اللغة -->
+        <div class="bg-slate-800/80 p-1 rounded-2xl flex items-center text-xs font-bold border border-slate-700">
+          <button onclick="setLanguage('fr')" id="langFrBtn" class="px-3 py-1 rounded-xl text-slate-400">Français</button>
+          <button onclick="setLanguage('ar')" id="langArBtn" class="px-3 py-1 rounded-xl bg-white text-slate-900 shadow">عربي</button>
         </div>
       </div>
+
+      <!-- اختيار الوضع: موظف / حرفي -->
+      <div class="bg-white/10 p-1 rounded-2xl flex items-center text-sm font-bold backdrop-blur-sm">
+        <button onclick="setMode('artisan')" id="modeArtisanBtn" class="w-1/2 py-2 rounded-xl flex items-center justify-center space-x-1 space-x-reverse text-slate-300">
+          <span>🛠️</span>
+          <span>حرفي</span>
+        </button>
+        <button onclick="setMode('employee')" id="modeEmployeeBtn" class="w-1/2 py-2 rounded-xl flex items-center justify-center space-x-1 space-x-reverse bg-white text-slate-900 shadow">
+          <span>👨‍💼</span>
+          <span>موظف</span>
+        </button>
+      </div>
+
+      <!-- ملخص الشهر -->
+      <div class="text-center pt-1">
+        <p class="text-xs text-slate-300 font-semibold">ملخص الشهر</p>
+        <h2 class="text-2xl font-black text-white" id="monthLabel">أكتوبر 2026</h2>
+      </div>
+
     </header>
 
-    <!-- Main Content -->
-    <main class="flex-1 max-w-6xl w-full mx-auto p-4 md:p-6 space-y-6">
+    <!-- المحتوى الداخلي -->
+    <main class="p-4 space-y-4 max-w-md mx-auto w-full flex-1">
       
-      <!-- KPI Cards Summary -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-          <p class="text-xs text-slate-400 font-semibold">إجمالي المداخيل المقبوضة</p>
-          <p class="text-xl font-extrabold text-emerald-400 mt-1" id="totalIncome">0.000 TND</p>
+      <!-- كروت المداخيل والمصاريف -->
+      <div class="grid grid-cols-2 gap-3">
+        <div class="bg-white p-4 rounded-3xl shadow-sm border border-slate-100 flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold text-emerald-600" id="incomeTitle">الدخل الإجمالي</span>
+            <div class="w-7 h-7 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center font-bold text-xs">↗</div>
+          </div>
+          <p class="text-xl font-black text-slate-900" id="totalIncome">2,850.000 <span class="text-xs text-slate-400 font-normal">TND</span></p>
         </div>
-        <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-          <p class="text-xs text-slate-400 font-semibold">إجمالي المصاريف المدفوعة</p>
-          <p class="text-xl font-extrabold text-red-400 mt-1" id="totalExpenses">0.000 TND</p>
-        </div>
-        <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl">
-          <p class="text-xs text-slate-400 font-semibold">السيولة المتبقية</p>
-          <p class="text-xl font-extrabold text-blue-400 mt-1" id="currentBalance">0.000 TND</p>
-        </div>
-        <div id="artisanExtraCard" class="bg-slate-900 border border-slate-800 p-4 rounded-2xl hidden">
-          <p class="text-xs text-slate-400 font-semibold">فواتير غير مدفوعة (Unpaid)</p>
-          <p class="text-xl font-extrabold text-amber-400 mt-1" id="unpaidAmount">0.000 TND</p>
+
+        <div class="bg-white p-4 rounded-3xl shadow-sm border border-slate-100 flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold text-red-500" id="expenseTitle">المصاريف الإجمالية</span>
+            <div class="w-7 h-7 bg-red-100 text-red-500 rounded-full flex items-center justify-center font-bold text-xs">↘</div>
+          </div>
+          <p class="text-xl font-black text-slate-900" id="totalExpenses">1,620.000 <span class="text-xs text-slate-400 font-normal">TND</span></p>
         </div>
       </div>
 
-      <!-- Actions & Transactions -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-4">
-          <h2 class="text-sm font-bold text-white flex items-center space-x-2 space-x-reverse">
-            <span>➕</span>
-            <span>إضافة معاملة جديدة</span>
-          </h2>
-          <form onsubmit="addTransaction(event)" class="space-y-3">
-            <div>
-              <label class="block text-[11px] font-bold text-slate-400 mb-1">المبلغ (TND)</label>
-              <input type="number" step="0.001" min="0.001" id="txAmount" required placeholder="0.000" class="w-full p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white outline-none">
-            </div>
-            <div class="grid grid-cols-2 gap-2">
-              <div>
-                <label class="block text-[11px] font-bold text-slate-400 mb-1">النوع</label>
-                <select id="txType" class="w-full p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white outline-none">
-                  <option value="income">مدخول (Entrée)</option>
-                  <option value="expense">مصروف (Dépense)</option>
-                  <option value="unpaid" class="artisan-only hidden">فاتورة غير مدفوعة</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-[11px] font-bold text-slate-400 mb-1">الفئة</label>
-                <input type="text" id="txCategory" required placeholder="أجر، نقل، مواد..." class="w-full p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white outline-none">
-              </div>
-            </div>
-            <div>
-              <label class="block text-[11px] font-bold text-slate-400 mb-1">الوصف (اختياري)</label>
-              <input type="text" id="txDesc" placeholder="ملاحظات..." class="w-full p-2.5 bg-slate-800 border border-slate-700 rounded-xl text-sm text-white outline-none">
-            </div>
-            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 font-bold py-2.5 rounded-xl text-xs text-white transition">حفظ المعاملة</button>
-          </form>
+      <!-- كارت الرصيد المتبقي -->
+      <div class="bg-white p-4 rounded-3xl shadow-sm border border-slate-100 flex items-center justify-between">
+        <div>
+          <p class="text-xs font-bold text-slate-500" id="balanceTitle">الرصيد المتبقي</p>
+          <p class="text-2xl font-black text-slate-900 mt-1" id="currentBalance">1,230.000 <span class="text-xs text-slate-400 font-normal">TND</span></p>
+          <p class="text-[10px] text-slate-400 font-bold mt-1" id="balanceRatio">43% من الدخل</p>
         </div>
-
-        <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-4">
-          <h2 class="text-sm font-bold text-white flex items-center space-x-2 space-x-reverse">
-            <span>🎯</span>
-            <span>الميزانية والتنبيهات الشهريّة</span>
-          </h2>
-          <div id="budgetAlerts" class="space-y-3 text-xs">
-            <p class="text-slate-400">لا توجد تنبيهات ميزانية حالياً. أضف معاملات لتفعيل التنبيهات.</p>
-          </div>
-        </div>
-
-        <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl space-y-4">
-          <div class="flex items-center justify-between">
-            <h2 class="text-sm font-bold text-white flex items-center space-x-2 space-x-reverse">
-              <span>💬</span>
-              <span>تجهيز واتساب (WhatsApp)</span>
-            </h2>
-            <span class="text-[9px] bg-blue-900/60 text-blue-300 border border-blue-700 px-2 py-0.5 rounded-full font-bold">ميزة مستقبلية</span>
-          </div>
-          <p class="text-xs text-slate-400">يمكنك مستقبلاً تسجيل المعاملات عبر إرسال رسائل نصية قصيرة.</p>
+        <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-xl shadow-inner">
+          👛
         </div>
       </div>
 
-      <!-- Transactions Table -->
-      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 space-y-4">
-        <h2 class="text-sm font-bold text-white">سجل المعاملات اليومية</h2>
-        <div class="overflow-x-auto">
-          <table class="w-full text-right text-xs text-slate-300">
-            <tbody id="txTableBody" class="divide-y divide-slate-800"></tbody>
-          </table>
+      <!-- كارت التنبيه -->
+      <div id="alertBox" class="bg-amber-50 border border-amber-200 p-3.5 rounded-2xl flex items-center justify-between text-amber-800 text-xs">
+        <div class="flex items-center space-x-2 space-x-reverse">
+          <span class="text-base">⚠️</span>
+          <p class="font-bold"><span class="font-extrabold text-amber-900">تنبيه:</span> استهلكت 80% من ميزانية المواصلات. حافظ على توازن مصاريفك.</p>
+        </div>
+        <button onclick="closeAlert()" class="text-amber-500 hover:text-amber-900 font-bold px-1">✕</button>
+      </div>
+
+      <!-- الرسم البياني وتوزيع المصاريف -->
+      <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-100 space-y-4">
+        <div class="flex items-center justify-between">
+          <h3 class="text-sm font-bold text-slate-900 flex items-center space-x-1 space-x-reverse">
+            <span>توزيع المصاريف</span>
+            <span>🕒</span>
+          </h3>
+        </div>
+
+        <div class="relative w-40 h-40 mx-auto flex items-center justify-center">
+          <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
+            <path class="text-slate-100" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            <path class="text-blue-900" stroke-dasharray="50, 100" stroke-width="4" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            <path class="text-emerald-500" stroke-dasharray="25, 100" stroke-dashoffset="-50" stroke-width="4" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            <path class="text-orange-500" stroke-dasharray="15, 100" stroke-dashoffset="-75" stroke-width="4" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            <path class="text-purple-400" stroke-dasharray="10, 100" stroke-dashoffset="-90" stroke-width="4" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+          </svg>
+          <div class="absolute text-center">
+            <p class="text-[10px] text-slate-400 font-bold">المجموع</p>
+            <p class="text-base font-black text-slate-900">1,620.000</p>
+            <p class="text-[9px] text-slate-400">TND</p>
+          </div>
         </div>
       </div>
 
     </main>
+
+    <!-- شريط التنقل السفلي المثبت -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 py-2.5 px-6 flex items-center justify-between text-slate-400 z-40 max-w-md mx-auto">
+      <button onclick="navigate('home')" class="flex flex-col items-center text-blue-600 font-bold space-y-1">
+        <span class="text-lg">🏠</span>
+        <span class="text-[10px]">الرئيسية</span>
+      </button>
+      <button onclick="navigate('transactions')" class="flex flex-col items-center hover:text-slate-700 space-y-1">
+        <span class="text-lg">⇆</span>
+        <span class="text-[10px]">المعاملات</span>
+      </button>
+      <button onclick="navigate('budget')" class="flex flex-col items-center hover:text-slate-700 space-y-1">
+        <span class="text-lg">📋</span>
+        <span class="text-[10px]">الميزانية</span>
+      </button>
+      <button onclick="navigate('goals')" class="flex flex-col items-center hover:text-slate-700 space-y-1">
+        <span class="text-lg">🎯</span>
+        <span class="text-[10px]">الأهداف</span>
+      </button>
+    </nav>
   </div>
 
   <script>
-    let currentLang = 'ar';
     let currentMode = 'employee';
+    let currentLang = 'ar';
     let defaultPass = '2026';
     let adminEmail = 'jouinibelhassen715@gmail.com';
-    let transactions = JSON.parse(localStorage.getItem('ds_transactions') || '[]');
 
     function getActivePassword() {
       return localStorage.getItem('ds_pass') || defaultPass;
     }
 
-    function togglePasswordVisibility(inputId, iconId) {
+    function togglePassword(inputId, iconId) {
       const input = document.getElementById(inputId);
       const icon = document.getElementById(iconId);
       if (input.type === 'password') {
@@ -260,108 +247,64 @@
       if (email.toLowerCase() === adminEmail && pass === getActivePassword()) {
         document.getElementById('loginScreen').classList.add('hidden');
         document.getElementById('appContainer').classList.remove('hidden');
-        renderApp();
       } else {
         err.innerText = "البريد أو كلمة المرور غير صحيحة!";
         err.classList.remove('hidden');
       }
     }
 
-    function togglePasswordResetModal() {
+    function toggleResetModal() {
       document.getElementById('resetModal').classList.toggle('hidden');
     }
 
-    function saveNewPassword() {
-      const confirmEmail = document.getElementById('resetAdminEmail').value;
-      const newPass = document.getElementById('newPassInput').value;
-
-      if (confirmEmail.toLowerCase() !== adminEmail) {
-        alert('تنبيه: فقط بريد الأدمين ' + adminEmail + ' مخول بتعيين كلمة المرور!');
-        return;
-      }
-
-      if (newPass.trim().length > 0) {
-        localStorage.setItem('ds_pass', newPass.trim());
-        alert('تم تعيين كلمة المرور الجديدة للأدمين بنجاح!');
-        togglePasswordResetModal();
-        document.getElementById('newPassInput').value = '';
+    function savePassword() {
+      const email = document.getElementById('resetEmail').value;
+      const pass = document.getElementById('newPass').value;
+      if (email.toLowerCase() === adminEmail && pass.trim()) {
+        localStorage.setItem('ds_pass', pass.trim());
+        alert('تم تحديث كلمة المرور للأدمين بنجاح!');
+        toggleResetModal();
       } else {
-        alert('يرجى كتابة كلمة مرور صالحة.');
+        alert('يرجى كتابة بريد الأدمين الصحيح وكلمة مرور صالحة.');
       }
     }
 
-    function changeMode(mode) {
+    function setMode(mode) {
       currentMode = mode;
-      document.getElementById('modeLabel').innerText = mode === 'employee' ? 'وضع الموظف (Employé)' : 'وضع الحرفي (Artisan)';
-      const artisanElements = document.querySelectorAll('.artisan-only');
-      const artisanCard = document.getElementById('artisanExtraCard');
-      if (mode === 'artisan') {
-        artisanElements.forEach(el => el.classList.remove('hidden'));
-        artisanCard.classList.remove('hidden');
+      const empBtn = document.getElementById('modeEmployeeBtn');
+      const artBtn = document.getElementById('modeArtisanBtn');
+
+      if (mode === 'employee') {
+        empBtn.className = "w-1/2 py-2 rounded-xl flex items-center justify-center space-x-1 space-x-reverse bg-white text-slate-900 shadow font-bold";
+        artBtn.className = "w-1/2 py-2 rounded-xl flex items-center justify-center space-x-1 space-x-reverse text-slate-300 font-bold";
       } else {
-        artisanElements.forEach(el => el.classList.add('hidden'));
-        artisanCard.classList.add('hidden');
+        artBtn.className = "w-1/2 py-2 rounded-xl flex items-center justify-center space-x-1 space-x-reverse bg-white text-slate-900 shadow font-bold";
+        empBtn.className = "w-1/2 py-2 rounded-xl flex items-center justify-center space-x-1 space-x-reverse text-slate-300 font-bold";
       }
-      renderApp();
     }
 
-    function toggleLanguage() {
-      currentLang = currentLang === 'ar' ? 'fr' : 'ar';
-      document.documentElement.lang = currentLang;
-      document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
-      document.getElementById('langBtn').innerText = currentLang === 'ar' ? 'Français' : 'العربية';
+    function setLanguage(lang) {
+      currentLang = lang;
+      const arBtn = document.getElementById('langArBtn');
+      const frBtn = document.getElementById('langFrBtn');
+
+      if (lang === 'ar') {
+        arBtn.className = "px-3 py-1 rounded-xl bg-white text-slate-900 shadow";
+        frBtn.className = "px-3 py-1 rounded-xl text-slate-400";
+        document.documentElement.dir = "rtl";
+      } else {
+        frBtn.className = "px-3 py-1 rounded-xl bg-white text-slate-900 shadow";
+        arBtn.className = "px-3 py-1 rounded-xl text-slate-400";
+        document.documentElement.dir = "ltr";
+      }
     }
 
-    function addTransaction(e) {
-      e.preventDefault();
-      const amount = parseFloat(document.getElementById('txAmount').value);
-      const type = document.getElementById('txType').value;
-      const category = document.getElementById('txCategory').value;
-      const desc = document.getElementById('txDesc').value;
-      if (amount <= 0) return;
-
-      const tx = {
-        id: Date.now(),
-        date: new Date().toLocaleDateString('fr-TN'),
-        amount, type, category, desc, mode: currentMode
-      };
-      transactions.unshift(tx);
-      localStorage.setItem('ds_transactions', JSON.stringify(transactions));
-      e.target.reset();
-      renderApp();
+    function closeAlert() {
+      document.getElementById('alertBox').classList.add('hidden');
     }
 
-    function renderApp() {
-      const filtered = transactions.filter(t => t.mode === currentMode);
-      let income = 0, expense = 0, unpaid = 0;
-      const tbody = document.getElementById('txTableBody');
-      tbody.innerHTML = '';
-
-      filtered.forEach(t => {
-        if (t.type === 'income') income += t.amount;
-        if (t.type === 'expense') expense += t.amount;
-        if (t.type === 'unpaid') unpaid += t.amount;
-
-        const tr = document.createElement('tr');
-        tr.className = 'hover:bg-slate-800/50';
-        tr.innerHTML = `
-          <td class="p-3 text-slate-400">${t.date}</td>
-          <td class="p-3 font-semibold text-white">${t.category} <span class="text-slate-500 font-normal">(${t.desc || '-'})</span></td>
-          <td class="p-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${t.type === 'income' ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : t.type === 'expense' ? 'bg-red-950 text-red-400 border border-red-800' : 'bg-amber-950 text-amber-400 border border-amber-800'}">${t.type === 'income' ? 'مدخول' : t.type === 'expense' ? 'مصروف' : 'غير مدفوع'}</span></td>
-          <td class="p-3 font-mono font-bold ${t.type === 'income' ? 'text-emerald-400' : 'text-red-400'}">${t.amount.toFixed(3)} TND</td>
-        `;
-        tbody.appendChild(tr);
-      });
-
-      document.getElementById('totalIncome').innerText = `${income.toFixed(3)} TND`;
-      document.getElementById('totalExpenses').innerText = `${expense.toFixed(3)} TND`;
-      document.getElementById('currentBalance').innerText = `${(income - expense).toFixed(3)} TND`;
-      document.getElementById('unpaidAmount').innerText = `${unpaid.toFixed(3)} TND`;
-    }
-
-    function logout() {
-      document.getElementById('appContainer').classList.add('hidden');
-      document.getElementById('loginScreen').classList.remove('hidden');
+    function navigate(page) {
+      alert("أنت الآن في قسم: " + page);
     }
   </script>
 </body>
