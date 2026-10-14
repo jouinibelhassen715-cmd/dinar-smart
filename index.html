@@ -2,15 +2,14 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#082C60">
-<title>Dinar Smart — إدارة مالية ذكية</title>
+<title>Dinar Smart</title>
 <style>
 :root{
-  --navy:#082C60;--blue:#1677C8;--sky:#EAF4FF;--bg:#F3F6FB;
-  --ink:#17263C;--muted:#707D8D;--green:#09845A;--red:#C43B50;
-  --amber:#9B6100;--line:#E1E8F0;--white:#fff;
-  --shadow:0 10px 28px rgba(8,44,96,.09);
+  --navy:#082C60;--blue:#1677C8;--sky:#DDF2FF;--bg:#EAF7FF;
+  --ink:#17263C;--muted:#6C7B8D;--green:#09845A;--red:#C43B50;
+  --line:#D8E8F3;--white:#fff;--shadow:0 10px 28px #082c6017;
   font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif
 }
 *{box-sizing:border-box}
@@ -18,38 +17,37 @@ body{margin:0;background:var(--bg);color:var(--ink)}
 button,input,select{font:inherit}
 button{cursor:pointer}
 [hidden]{display:none!important}
-.top{background:var(--navy);color:#fff;padding:18px 5vw 76px;border-radius:0 0 30px 30px}
+.top{background:var(--navy);color:white;padding:18px 5vw 75px;border-radius:0 0 28px 28px}
 .topbar,.brand,.actions,.between{display:flex;align-items:center}
 .topbar,.between{justify-content:space-between;gap:12px}
 .brand{gap:11px;font-size:1.35rem;font-weight:800}
-.brand b{color:#55B7FF}
-.brand-mark{width:45px;height:45px;border:2px solid #A9D7FF;border-radius:50%;display:grid;place-items:center;font-size:1.3rem}
-.top-title{margin:30px 0 14px;font-size:clamp(1.3rem,4vw,2rem)}
-.shell{width:min(1160px,94vw);margin:-48px auto 45px}
-.panel,.card{background:var(--white);border:1px solid var(--line);border-radius:19px;box-shadow:var(--shadow)}
+.brand b{color:#58B9FF}
+.brand-mark{width:44px;height:44px;border:2px solid #B8DFFF;border-radius:50%;display:grid;place-items:center;font-size:1.25rem}
+.top-title{margin:27px 0 14px;font-size:clamp(1.35rem,4vw,2rem)}
+.shell{width:min(1160px,94vw);margin:-46px auto 40px}
+.panel,.card{background:#fff;border:1px solid var(--line);border-radius:19px;box-shadow:var(--shadow)}
 .panel{padding:20px;margin-bottom:18px}
 .grid{display:grid;gap:15px}
 .stats{grid-template-columns:repeat(3,1fr);margin:18px 0}
-.stat{padding:20px;min-height:126px}
-.stat h3{color:var(--muted);font-size:.94rem;font-weight:600;margin:0 0 13px}
-.amount{font-size:clamp(1.25rem,3.8vw,1.9rem);font-weight:800;direction:ltr;text-align:start}
+.stat{padding:20px;min-height:125px}
+.stat h3{color:var(--muted);font-size:.94rem;font-weight:600;margin:0 0 12px}
+.amount{font-size:clamp(1.2rem,3.7vw,1.9rem);font-weight:800;direction:ltr;text-align:start}
 .income{color:var(--green)}.expense{color:var(--red)}.balance{color:var(--navy)}
-.two-col{grid-template-columns:1.1fr .9fr}
-h2{font-size:1.2rem;margin:0 0 15px}
-h3{margin-top:0}
+.two-col{grid-template-columns:1fr 1fr}
+h2{font-size:1.2rem;margin:0 0 14px}h3{margin-top:0}
 .muted{color:var(--muted)}
 .nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:17px}
 .nav-btn,.lang-btn,.mode-btn{border:0;border-radius:11px;padding:10px 14px}
-.nav-btn{color:var(--muted);background:#fff;border:1px solid var(--line)}
+.nav-btn{background:#fff;color:var(--muted);border:1px solid var(--line)}
 .nav-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
 .lang-switch{display:flex;gap:5px}
-.lang-btn{border:1px solid #ffffff55;background:transparent;color:#fff}
+.lang-btn{border:1px solid #ffffff66;background:transparent;color:#fff}
 .lang-btn.active{background:#fff;color:var(--navy)}
 .mode-switch{display:flex;gap:4px;background:#E8EEF7;padding:4px;border-radius:13px;max-width:360px}
-.mode-btn{flex:1;color:var(--muted);background:transparent}
-.mode-btn.active{background:var(--navy);color:#fff}
-.btn{border:0;border-radius:11px;padding:11px 15px;background:var(--blue);color:#fff;font-weight:700}
-.btn.primary{background:var(--navy)}.btn.light{background:var(--sky);color:var(--navy)}
+.mode-btn{flex:1;background:transparent;color:var(--muted)}
+.mode-btn.active{background:var(--navy);color:white}
+.btn{border:0;border-radius:11px;padding:11px 15px;background:var(--blue);color:white;font-weight:700}
+.btn.primary{background:var(--navy)}.btn.light{background:#EAF4FF;color:var(--navy)}
 .btn.danger{background:var(--red)}.btn.small{padding:7px 10px;font-size:.86rem}
 button:hover{filter:brightness(.96)}
 button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #1677C855;outline-offset:2px}
@@ -65,58 +63,53 @@ button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid 
 label{display:block;font-size:.9rem;font-weight:650;margin-bottom:6px}
 input,select{width:100%;min-height:45px;padding:10px 12px;border:1px solid #CCD5E1;border-radius:11px;background:#fff;color:var(--ink)}
 .table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;min-width:620px}
+table{width:100%;border-collapse:collapse;min-width:610px}
 th,td{padding:11px 9px;border-bottom:1px solid var(--line);text-align:start}
 th{font-size:.85rem;color:var(--muted)}
 .tag{display:inline-block;background:#EEF3FA;border-radius:99px;padding:4px 9px;font-size:.82rem}
 .goal{border:1px solid var(--line);border-radius:14px;padding:14px;margin:12px 0}
-.goal h3{margin:0;font-size:1rem}
-.goal-meta{color:var(--muted);font-size:.9rem;margin:8px 0}
+.goal h3{margin:0;font-size:1rem}.goal-meta{color:var(--muted);font-size:.9rem;margin:8px 0}
 .empty{text-align:center;padding:22px;color:var(--muted)}
-.auth-wrap{min-height:100vh;display:grid;place-items:center;padding:18px;background:radial-gradient(ellipse at top right,#1677C81C,transparent 38%),var(--bg)}
-.auth-card{width:min(440px,100%);padding:28px;border-radius:22px;box-shadow:0 18px 50px #082C601F}
+.auth-wrap{min-height:100vh;display:grid;place-items:center;padding:18px;background:linear-gradient(145deg,#D9F1FF,#EFF9FF 55%,#D6EEFF)}
+.auth-card{width:min(440px,100%);padding:27px;border-radius:22px;box-shadow:0 18px 50px #082c601f}
 .auth-brand{justify-content:center;color:var(--navy);margin-bottom:20px}
 .auth-card input{min-height:48px;background:#FBFDFF}
 .auth-card .btn{min-height:48px}
 .password-wrap{position:relative}
 .password-wrap input{padding-inline-end:52px}
 .password-eye{position:absolute;inset-inline-end:6px;top:50%;transform:translateY(-50%);width:40px;height:40px;border:0;border-radius:9px;background:transparent;color:#53657B;display:grid;place-items:center}
-.password-eye:hover{background:var(--sky);color:var(--blue)}
+.password-eye:hover{background:#EAF4FF;color:var(--blue)}
 .password-eye svg{width:22px;height:22px}
 .login-language{display:flex;justify-content:center;gap:4px;width:max-content;margin:16px auto 0;padding:4px;border-radius:13px;background:#EDF2F8}
 .login-language .lang-btn{min-width:110px;color:var(--navy);border:0}
-.login-language .lang-btn.active{color:#fff;background:var(--navy)}
+.login-language .lang-btn.active{color:white;background:var(--navy)}
 .link-btn{border:0;background:transparent;color:var(--blue);text-decoration:underline;padding:8px 0}
 .footer-note{font-size:.82rem;line-height:1.6;color:var(--muted);margin-top:14px}
 .overlay{position:fixed;inset:0;z-index:5;background:#061A35AA;display:grid;place-items:center;padding:16px}
-.dialog{width:min(500px,100%);max-height:90vh;overflow:auto;background:#fff;border-radius:18px;padding:21px}
+.dialog{width:min(500px,100%);max-height:90vh;overflow:auto;background:white;border-radius:18px;padding:21px}
 .recovery-key{direction:ltr;text-align:center;word-break:break-all;background:#EEF4FB;padding:14px;border-radius:11px;font:700 1.15rem monospace}
-.donut-layout{display:flex;align-items:center;gap:25px;flex-wrap:wrap}
-.donut{width:220px;height:220px;border-radius:50%;position:relative;flex:0 0 220px}
+.donut-layout{display:flex;align-items:center;justify-content:center;gap:24px;flex-wrap:wrap}
+.donut{width:210px;height:210px;flex:0 0 210px;border-radius:50%;position:relative}
 .donut-hole{position:absolute;inset:24%;border-radius:50%;background:#fff;display:grid;place-content:center;text-align:center;padding:8px}
-.donut-hole strong{font-size:1.18rem;direction:ltr}
+.donut-hole strong{font-size:1.08rem;direction:ltr}
 .donut-hole small{color:var(--muted)}
 .legend{flex:1;min-width:190px}
-.legend-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px solid var(--line);font-size:.92rem}
+.legend-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px solid var(--line);font-size:.9rem}
 .legend-name{display:flex;align-items:center;gap:8px}
 .legend-dot{width:11px;height:11px;border-radius:50%;flex:0 0 auto}
-@media(max-width:760px){.stats,.two-col{grid-template-columns:1fr}.stat{min-height:auto}.top{padding:15px 4vw 70px}.panel{padding:16px}}
-@media(max-width:480px){.form-grid{grid-template-columns:1fr}.brand{font-size:1.12rem}.brand-mark{width:40px;height:40px}.nav{display:grid;grid-template-columns:repeat(2,1fr)}.nav-btn{text-align:center}.auth-card{padding:23px 18px}.login-language{width:100%}.login-language .lang-btn{flex:1}.donut{width:190px;height:190px;flex-basis:190px}.donut-layout{justify-content:center}}
+@media(max-width:760px){.stats,.two-col{grid-template-columns:1fr}.stat{min-height:auto}.top{padding:15px 4vw 68px}.panel{padding:16px}}
+@media(max-width:480px){.form-grid{grid-template-columns:1fr}.brand{font-size:1.12rem}.brand-mark{width:40px;height:40px}.nav{display:grid;grid-template-columns:repeat(2,1fr)}.nav-btn{text-align:center}.auth-card{padding:22px 18px}.login-language{width:100%}.login-language .lang-btn{flex:1}.donut{width:185px;height:185px;flex-basis:185px}}
 </style>
 </head>
 <body>
 
-<!-- تسجيل الدخول -->
 <section id="loginScreen" class="auth-wrap">
   <div class="panel auth-card">
     <div class="brand auth-brand"><span class="brand-mark">↗</span><span>Dinar <b>Smart</b></span></div>
     <h2 data-i="loginTitle"></h2>
     <p class="muted" data-i="loginSubtitle"></p>
     <form id="loginForm">
-      <div class="field">
-        <label for="loginEmail" data-i="email"></label>
-        <input id="loginEmail" type="email" autocomplete="username" required>
-      </div>
+      <div class="field"><label for="loginEmail" data-i="email"></label><input id="loginEmail" type="email" autocomplete="username" required></div>
       <div class="field">
         <label for="loginPassword" data-i="password"></label>
         <div class="password-wrap">
@@ -136,7 +129,6 @@ th{font-size:.85rem;color:var(--muted)}
   </div>
 </section>
 
-<!-- تغيير كلمة المرور -->
 <section id="changeScreen" class="auth-wrap" hidden>
   <div class="panel auth-card">
     <div class="brand auth-brand"><span class="brand-mark">↗</span><span>Dinar <b>Smart</b></span></div>
@@ -145,37 +137,24 @@ th{font-size:.85rem;color:var(--muted)}
     <form id="changeForm">
       <div class="field">
         <label for="newPassword" data-i="newPassword"></label>
-        <div class="password-wrap">
-          <input id="newPassword" type="password" minlength="8" autocomplete="new-password" required>
-          <button class="password-eye" type="button" data-eye="newPassword"></button>
-        </div>
+        <div class="password-wrap"><input id="newPassword" type="password" minlength="8" autocomplete="new-password" required><button class="password-eye" type="button" data-eye="newPassword"></button></div>
       </div>
       <div class="field">
         <label for="confirmPassword" data-i="confirmPassword"></label>
-        <div class="password-wrap">
-          <input id="confirmPassword" type="password" minlength="8" autocomplete="new-password" required>
-          <button class="password-eye" type="button" data-eye="confirmPassword"></button>
-        </div>
+        <div class="password-wrap"><input id="confirmPassword" type="password" minlength="8" autocomplete="new-password" required><button class="password-eye" type="button" data-eye="confirmPassword"></button></div>
       </div>
       <button class="btn primary" type="submit" style="width:100%" data-i="savePassword"></button>
-      <div class="login-language">
-        <button class="lang-btn" type="button" data-lang="fr">Français</button>
-        <button class="lang-btn" type="button" data-lang="ar">عربي</button>
-      </div>
+      <div class="login-language"><button class="lang-btn" type="button" data-lang="fr">Français</button><button class="lang-btn" type="button" data-lang="ar">عربي</button></div>
     </form>
   </div>
 </section>
 
-<!-- التطبيق -->
 <div id="appScreen" hidden>
   <header class="top">
     <div class="topbar">
       <div class="brand"><span class="brand-mark">↗</span><span>Dinar <b>Smart</b></span></div>
       <div class="actions">
-        <div class="lang-switch">
-          <button class="lang-btn" type="button" data-lang="fr">Français</button>
-          <button class="lang-btn" type="button" data-lang="ar">عربي</button>
-        </div>
+        <div class="lang-switch"><button class="lang-btn" type="button" data-lang="fr">Français</button><button class="lang-btn" type="button" data-lang="ar">عربي</button></div>
         <button id="logout" class="lang-btn" type="button" data-i="logout"></button>
       </div>
     </div>
@@ -219,10 +198,7 @@ th{font-size:.85rem;color:var(--muted)}
           <p id="budgetNumbers" class="muted"></p>
           <button class="btn light" data-go="budget" data-i="manageBudget"></button>
         </section>
-        <section class="panel">
-          <h2 data-i="expenseByCategory"></h2>
-          <div id="donutChart"></div>
-        </section>
+        <section class="panel"><h2 data-i="expenseByCategory"></h2><div id="donutChart"></div></section>
       </div>
 
       <section class="panel">
@@ -233,13 +209,7 @@ th{font-size:.85rem;color:var(--muted)}
 
     <section id="page-transactions" hidden>
       <section class="panel">
-        <div class="between">
-          <h2 data-i="transactionsTitle"></h2>
-          <div class="actions">
-            <button id="exportCsv" class="btn light" data-i="exportCsv"></button>
-            <button id="addTransaction" class="btn" data-i="addTransaction"></button>
-          </div>
-        </div>
+        <div class="between"><h2 data-i="transactionsTitle"></h2><div class="actions"><button id="exportCsv" class="btn light" data-i="exportCsv"></button><button id="addTransaction" class="btn" data-i="addTransaction"></button></div></div>
         <div class="form-grid">
           <div class="field"><label for="filterMonth" data-i="filterMonth"></label><input id="filterMonth" type="month"></div>
           <div class="field"><label for="filterCategory" data-i="category"></label><select id="filterCategory"></select></div>
@@ -279,7 +249,6 @@ th{font-size:.85rem;color:var(--muted)}
   </main>
 </div>
 
-<!-- نافذة إضافة أو تعديل معاملة -->
 <div id="transactionDialog" class="overlay" hidden>
   <div class="dialog">
     <div class="between"><h2 id="transactionDialogTitle" data-i="addTransaction"></h2><button class="btn light small" data-close="transactionDialog" data-i="close"></button></div>
@@ -297,22 +266,24 @@ th{font-size:.85rem;color:var(--muted)}
   </div>
 </div>
 
-<!-- استعادة كلمة المرور -->
+<!-- حقول الاستعادة فارغة كل مرة، وفيها عين لخانتي كلمة المرور والتأكيد -->
 <div id="recoveryDialog" class="overlay" hidden>
   <div class="dialog">
     <div class="between"><h2 data-i="forgot"></h2><button class="btn light small" data-close="recoveryDialog" data-i="close"></button></div>
     <p class="muted" data-i="recoveryHint"></p>
-    <form id="recoveryForm">
-      <div class="field"><label for="recoveryEmail" data-i="email"></label><input id="recoveryEmail" type="email" required></div>
-      <div class="field"><label for="recoveryKey" data-i="recoveryKey"></label><input id="recoveryKey" required autocomplete="off"></div>
+    <form id="recoveryForm" autocomplete="off">
+      <div class="field"><label for="recoveryEmail" data-i="email"></label><input id="recoveryEmail" type="email" autocomplete="off" required></div>
+      <div class="field"><label for="recoveryKey" data-i="recoveryKey"></label><input id="recoveryKey" autocomplete="off" required></div>
       <div class="field">
         <label for="recoveryNewPassword" data-i="newPassword"></label>
-        <div class="password-wrap">
-          <input id="recoveryNewPassword" type="password" minlength="8" required autocomplete="new-password">
-          <button class="password-eye" type="button" data-eye="recoveryNewPassword"></button>
-        </div>
+        <div class="password-wrap"><input id="recoveryNewPassword" type="password" minlength="8" autocomplete="new-password" required><button class="password-eye" type="button" data-eye="recoveryNewPassword"></button></div>
+      </div>
+      <div class="field">
+        <label for="recoveryConfirmPassword" data-i="confirmPassword"></label>
+        <div class="password-wrap"><input id="recoveryConfirmPassword" type="password" minlength="8" autocomplete="new-password" required><button class="password-eye" type="button" data-eye="recoveryConfirmPassword"></button></div>
       </div>
       <button class="btn primary" type="submit" data-i="resetPassword"></button>
+      <div class="login-language"><button class="lang-btn" type="button" data-lang="fr">Français</button><button class="lang-btn" type="button" data-lang="ar">عربي</button></div>
     </form>
   </div>
 </div>
@@ -329,10 +300,7 @@ th{font-size:.85rem;color:var(--muted)}
 <script>
 "use strict";
 
-/*
-  الحساب والمعاملات محفوظة محليًا في المتصفح فقط.
-  هذا النموذج لا يرسل بريد استعادة ولا يوفّر مصادقة خادمية متعددة المستخدمين.
-*/
+/* نموذج ملف واحد: التخزين محلي وليس بديلًا عن خادم آمن. */
 const ADMIN_EMAIL="jouinibelhassen715@gmail.com";
 const ACCOUNT_KEY="dinar-smart-account-v1";
 const DATA_PREFIX="dinar-smart-data-v1:";
@@ -343,7 +311,7 @@ const words={
 ar:{
  loginTitle:"تسجيل الدخول",loginSubtitle:"إدارة مالية ذكية وواضحة.",email:"البريد الإلكتروني",password:"كلمة المرور",login:"دخول",
  forgot:"نسيت كلمة المرور؟",initialHint:"الدخول الأول: jouinibelhassen715@gmail.com — كلمة المرور: 2026. سيُطلب منك تغييرها.",
- localNotice:"البيانات محفوظة في هذا المتصفح فقط. هذا الملف لا يرسل بريد استعادة ولا يوفر حماية خادمية.",
+ localNotice:"البيانات محفوظة في هذا المتصفح فقط؛ لا توجد مصادقة خادمية أو استعادة عبر البريد.",
  changeTitle:"غيّر كلمة المرور",changeHint:"اختر كلمة مرور جديدة لا تقل عن 8 أحرف.",newPassword:"كلمة المرور الجديدة",
  confirmPassword:"تأكيد كلمة المرور",savePassword:"حفظ كلمة المرور",show:"إظهار كلمة المرور",hide:"إخفاء كلمة المرور",
  dashboardTitle:"ملخصك المالي",employee:"موظف",artisan:"حرفي",logout:"خروج",navDashboard:"الرئيسية",
@@ -364,22 +332,20 @@ ar:{
  budgetExceeded:"تجاوزت الميزانية الشهرية.",noBudget:"لم تُحدّد ميزانية لهذا الشهر.",noTransactions:"لا توجد معاملات بعد.",
  noGoals:"لم تضف أهداف توفير بعد.",delete:"حذف",edit:"تعديل",addSaving:"إضافة توفير",saved:"المدخر",
  target:"الهدف",goalProgress:"التقدم",allCategories:"كل الفئات",invalidLogin:"البريد أو كلمة المرور غير صحيحين.",
- emailMismatch:"هذا الإصدار مهيأ للبريد الإداري المحدد فقط.",minPassword:"كلمة المرور يجب أن تكون 8 أحرف على الأقل.",
+ emailMismatch:"هذا النموذج مهيأ للبريد الإداري المحدد فقط.",minPassword:"كلمة المرور يجب أن تكون 8 أحرف على الأقل.",
  passwordsMismatch:"كلمتا المرور غير متطابقتين.",resetFailed:"تعذرت الاستعادة. تحقق من البريد ورمز الاستعادة.",
  recoverySaved:"تم تغيير كلمة المرور. احفظ رمز الاستعادة الجديد.",confirmDelete:"هل تريد حذف هذه المعاملة؟",
  confirmGoalDelete:"هل تريد حذف هذا الهدف؟",invalidAmount:"أدخل مبلغًا صحيحًا أكبر من صفر.",
  noBudgetYet:"أدخل ميزانية الشهر لعرض الاستهلاك.",recoveryKeyCopied:"تم نسخ الرمز.",
  cryptoError:"التشفير غير متاح في هذا المتصفح. جرّب متصفحًا حديثًا.",
- sample:"مثال",sampleSalary:"راتب شهري (مثال)",sampleServices:"خدمات إضافية (مثال)",
- sampleHousing:"سكن وفواتير (مثال)",sampleFood:"مصاريف الطعام (مثال)",
- sampleTransport:"مصاريف التنقل (مثال)",sampleOther:"مصاريف أخرى (مثال)",
- chartTotal:"المجموع",chartNoData:"أضف مصروفًا لعرض الرسم.",chartMonth:"مصروفات الشهر",
- confirmSample:"حذف بيانات المثال والبدء من جديد؟"
+ sampleSalary:"راتب شهري (مثال)",sampleServices:"خدمات إضافية (مثال)",sampleHousing:"سكن وفواتير (مثال)",
+ sampleFood:"مصاريف الطعام (مثال)",sampleTransport:"مصاريف التنقل (مثال)",sampleOther:"مصاريف أخرى (مثال)",
+ chartTotal:"المجموع",chartNoData:"أضف مصروفًا لعرض الرسم.",chartMonth:"مصروفات الشهر"
 },
 fr:{
  loginTitle:"Connexion",loginSubtitle:"Une gestion financière intelligente et claire.",email:"Adresse e-mail",
  password:"Mot de passe",login:"Se connecter",forgot:"Mot de passe oublié ?",initialHint:"Première connexion : jouinibelhassen715@gmail.com — mot de passe : 2026. Vous devrez le changer.",
- localNotice:"Les données sont enregistrées dans ce navigateur. Ce fichier n’envoie pas d’e-mail et ne fournit pas d’authentification serveur.",
+ localNotice:"Les données restent dans ce navigateur ; il n’y a ni authentification serveur ni récupération par e-mail.",
  changeTitle:"Changez votre mot de passe",changeHint:"Choisissez un mot de passe d’au moins 8 caractères.",
  newPassword:"Nouveau mot de passe",confirmPassword:"Confirmer le mot de passe",savePassword:"Enregistrer",
  show:"Afficher le mot de passe",hide:"Masquer le mot de passe",dashboardTitle:"Résumé financier",
@@ -395,7 +361,7 @@ fr:{
  goalsTitle:"Objectifs d’épargne",goalName:"Nom de l’objectif",goalTarget:"Montant cible (TND)",
  goalSaved:"Montant déjà épargné (TND)",addGoal:"Ajouter un objectif",type:"Type",income:"Revenu",
  expense:"Dépense",amount:"Montant (TND)",date:"Date",description:"Description",save:"Enregistrer",close:"Fermer",
- recoveryHint:"Saisissez l’e-mail et le code de récupération affiché lors du changement de mot de passe.",
+ recoveryHint:"Saisissez l’e-mail et le code de récupération affiché lors du changement du mot de passe.",
  recoveryKey:"Code de récupération",resetPassword:"Réinitialiser le mot de passe",
  saveRecoveryKey:"Conservez le code de récupération",keyOneTime:"Conservez ce code hors de ce navigateur. Il ne s’affichera qu’une fois.",
  copyKey:"Copier le code",understood:"J’ai conservé le code",used:"Dépensé",ofBudget:"du budget",
@@ -403,24 +369,23 @@ fr:{
  noBudget:"Aucun budget défini pour ce mois.",noTransactions:"Aucune transaction pour le moment.",
  noGoals:"Aucun objectif d’épargne ajouté.",delete:"Supprimer",edit:"Modifier",addSaving:"Ajouter une épargne",
  saved:"Épargné",target:"Cible",goalProgress:"Progression",allCategories:"Toutes les catégories",
- invalidLogin:"E-mail ou mot de passe incorrect.",emailMismatch:"Cette version est configurée pour l’adresse administrateur indiquée.",
+ invalidLogin:"E-mail ou mot de passe incorrect.",emailMismatch:"Ce modèle est configuré pour l’adresse administrateur indiquée.",
  minPassword:"Le mot de passe doit contenir au moins 8 caractères.",passwordsMismatch:"Les mots de passe ne correspondent pas.",
  resetFailed:"Récupération impossible. Vérifiez l’adresse et le code.",recoverySaved:"Mot de passe modifié. Conservez le nouveau code.",
  confirmDelete:"Supprimer cette transaction ?",confirmGoalDelete:"Supprimer cet objectif ?",
  invalidAmount:"Saisissez un montant valide supérieur à zéro.",noBudgetYet:"Définissez le budget mensuel pour suivre son utilisation.",
  recoveryKeyCopied:"Code copié.",cryptoError:"Le chiffrement requis n’est pas disponible dans ce navigateur.",
- sample:"exemple",sampleSalary:"Salaire mensuel (exemple)",sampleServices:"Services supplémentaires (exemple)",
+ sampleSalary:"Salaire mensuel (exemple)",sampleServices:"Services supplémentaires (exemple)",
  sampleHousing:"Logement et factures (exemple)",sampleFood:"Dépenses alimentaires (exemple)",
  sampleTransport:"Frais de transport (exemple)",sampleOther:"Autres dépenses (exemple)",
- chartTotal:"Total",chartNoData:"Ajoutez une dépense pour afficher le graphique.",chartMonth:"Dépenses du mois",
- confirmSample:"Supprimer les exemples et repartir de zéro ?"
+ chartTotal:"Total",chartNoData:"Ajoutez une dépense pour afficher le graphique.",chartMonth:"Dépenses du mois"
 }};
 
 const categoryNames={
 ar:{Salary:"راتب",Services:"خدمات",OtherIncome:"مداخيل أخرى",Food:"طعام",Housing:"سكن وفواتير",Transport:"تنقل",Health:"صحة",Shopping:"تسوق",Education:"تعليم",Leisure:"ترفيه",Materials:"مواد أولية",Tools:"معدات وأدوات",BusinessTransport:"تنقل مهني",Fees:"رسوم مهنية",OtherExpense:"مصروف آخر"},
 fr:{Salary:"Salaire",Services:"Services",OtherIncome:"Autres revenus",Food:"Alimentation",Housing:"Logement et factures",Transport:"Transport",Health:"Santé",Shopping:"Achats",Education:"Éducation",Leisure:"Loisirs",Materials:"Matières premières",Tools:"Outils et équipement",BusinessTransport:"Transport professionnel",Fees:"Frais professionnels",OtherExpense:"Autre dépense"}
 };
-const chartColors=["#082C60","#1677C8","#08A269","#F28C00","#9066C4","#D6455D","#18A8A8","#708090","#E5B800","#6C7AE0"];
+const colors=["#082C60","#1677C8","#08A269","#F28C00","#9066C4","#D6455D","#18A8A8","#708090","#E5B800","#6C7AE0"];
 
 let lang=localStorage.getItem("dinar-smart-lang")||"ar";
 let account=null,data={transactions:[],goals:[],budgets:{}},mode="employee";
@@ -430,18 +395,19 @@ const thisMonth=()=>today().slice(0,7);
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const money=n=>new Intl.NumberFormat(lang==="ar"?"ar-TN":"fr-TN",{minimumFractionDigits:2,maximumFractionDigits:2}).format(Number(n)||0)+" TND";
 const dataKey=email=>DATA_PREFIX+encodeURIComponent(email.toLowerCase());
+const newId=()=>crypto.randomUUID?crypto.randomUUID():`${Date.now()}-${Math.random()}`;
 
-function eyeSvg(open){
+function eyeIcon(open){
   return open
-  ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/><path d="M9.9 5.2A10.7 10.7 0 0 1 12 5c5 0 8.3 4.2 9 7a10.8 10.8 0 0 1-2.1 3.8"/><path d="M6.2 6.2C4.5 7.3 3.4 9 3 12c.7 2.8 4 7 9 7 1.2 0 2.3-.2 3.3-.7"/></svg>`
-  : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12s3.3-7 9.5-7 9.5 7 9.5 7-3.3 7-9.5 7-9.5-7-9.5-7z"/><circle cx="12" cy="12" r="3"/></svg>`;
+  ?`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/><path d="M9.9 5.2A10 10 0 0 1 12 5c5 0 8.3 4.2 9 7a10 10 0 0 1-2.1 3.8"/><path d="M6.2 6.2C4.5 7.3 3.4 9 3 12c.7 2.8 4 7 9 7 1.2 0 2.3-.2 3.3-.7"/></svg>`
+  :`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12s3.3-7 9.5-7 9.5 7 9.5 7-3.3 7-9.5 7-9.5-7-9.5-7z"/><circle cx="12" cy="12" r="3"/></svg>`;
 }
 function syncEyes(){
   document.querySelectorAll("[data-eye]").forEach(btn=>{
-    const input=$(btn.dataset.eye),open=input.type==="text";
-    btn.innerHTML=eyeSvg(open);
-    btn.setAttribute("aria-label",t(open?"hide":"show"));
-    btn.title=t(open?"hide":"show");
+    const input=$(btn.dataset.eye),visible=input.type==="text";
+    btn.innerHTML=eyeIcon(visible);
+    btn.setAttribute("aria-label",t(visible?"hide":"show"));
+    btn.title=t(visible?"hide":"show");
   });
 }
 function translate(){
@@ -452,16 +418,8 @@ function translate(){
   syncEyes();
   if(!$("#appScreen").hidden)render();
 }
-function setLanguage(next){
-  lang=next;localStorage.setItem("dinar-smart-lang",lang);translate();
-}
-function randomHex(bytes=16){
-  const a=new Uint8Array(bytes);crypto.getRandomValues(a);
-  return [...a].map(v=>v.toString(16).padStart(2,"0")).join("");
-}
-function randomId(){
-  return crypto.randomUUID?crypto.randomUUID():`${Date.now()}-${Math.random().toString(16).slice(2)}`;
-}
+function setLanguage(next){lang=next;localStorage.setItem("dinar-smart-lang",lang);translate()}
+function randomHex(bytes=16){const a=new Uint8Array(bytes);crypto.getRandomValues(a);return [...a].map(v=>v.toString(16).padStart(2,"0")).join("")}
 async function hashPassword(password,saltHex){
   if(!crypto?.subtle)throw new Error("CRYPTO");
   const salt=Uint8Array.from(saltHex.match(/.{1,2}/g).map(x=>parseInt(x,16)));
@@ -469,7 +427,7 @@ async function hashPassword(password,saltHex){
   const bits=await crypto.subtle.deriveBits({name:"PBKDF2",salt,iterations:150000,hash:"SHA-256"},key,256);
   return [...new Uint8Array(bits)].map(x=>x.toString(16).padStart(2,"0")).join("");
 }
-async function makeAccount(){
+async function initAccount(){
   account=JSON.parse(localStorage.getItem(ACCOUNT_KEY)||"null");
   if(!account){
     const salt=randomHex();
@@ -483,19 +441,16 @@ function saveData(){localStorage.setItem(dataKey(account.email),JSON.stringify(d
 function sampleTransactions(){
   const date=today();
   return [
-    {id:randomId(),type:"income",amount:2500,category:"Salary",date,description:"sampleSalary",mode:"employee",sample:true},
-    {id:randomId(),type:"income",amount:350,category:"Services",date,description:"sampleServices",mode:"artisan",sample:true},
-    {id:randomId(),type:"expense",amount:700,category:"Housing",date,description:"sampleHousing",mode:"employee",sample:true},
-    {id:randomId(),type:"expense",amount:380,category:"Food",date,description:"sampleFood",mode:"employee",sample:true},
-    {id:randomId(),type:"expense",amount:300,category:"Transport",date,description:"sampleTransport",mode:"employee",sample:true},
-    {id:randomId(),type:"expense",amount:240,category:"OtherExpense",date,description:"sampleOther",mode:"employee",sample:true}
+    {id:newId(),type:"income",amount:2500,category:"Salary",date,description:"sampleSalary",mode:"employee",sample:true},
+    {id:newId(),type:"income",amount:350,category:"Services",date,description:"sampleServices",mode:"artisan",sample:true},
+    {id:newId(),type:"expense",amount:700,category:"Housing",date,description:"sampleHousing",mode:"employee",sample:true},
+    {id:newId(),type:"expense",amount:380,category:"Food",date,description:"sampleFood",mode:"employee",sample:true},
+    {id:newId(),type:"expense",amount:300,category:"Transport",date,description:"sampleTransport",mode:"employee",sample:true},
+    {id:newId(),type:"expense",amount:240,category:"OtherExpense",date,description:"sampleOther",mode:"employee",sample:true}
   ];
 }
 function loadData(){
-  try{
-    const saved=localStorage.getItem(dataKey(account.email));
-    data=saved?JSON.parse(saved):null;
-  }catch{data=null}
+  try{data=JSON.parse(localStorage.getItem(dataKey(account.email))||"null")}catch{data=null}
   if(!data||typeof data!=="object"){
     data={transactions:sampleTransactions(),goals:[],budgets:{[thisMonth()]:1900}};
     saveData();
@@ -504,150 +459,97 @@ function loadData(){
   if(!Array.isArray(data.goals))data.goals=[];
   if(!data.budgets||typeof data.budgets!=="object")data.budgets={};
 }
-function showScreen(id){
-  ["loginScreen","changeScreen","appScreen"].forEach(x=>$(x).hidden=x!==id);
+function saveNewPassword(password){
+  return (async()=>{
+    const salt=randomHex(),recovery=randomHex(12).toUpperCase().match(/.{1,4}/g).join("-"),recoverySalt=randomHex();
+    account.salt=salt;account.hash=await hashPassword(password,salt);account.mustChange=false;
+    account.recoverySalt=recoverySalt;account.recoveryHash=await hashPassword(recovery,recoverySalt);
+    saveAccount();return recovery;
+  })();
 }
+function showScreen(id){["loginScreen","changeScreen","appScreen"].forEach(x=>$(x).hidden=x!==id)}
 function openDialog(id){$(id).hidden=false}
-function closeDialog(id){$(id).hidden=true}
-function newRecoveryKey(){return randomHex(12).toUpperCase().match(/.{1,4}/g).join("-")}
-async function setPassword(password){
-  const salt=randomHex(),recovery=newRecoveryKey(),recoverySalt=randomHex();
-  account.salt=salt;account.hash=await hashPassword(password,salt);account.mustChange=false;
-  account.recoverySalt=recoverySalt;account.recoveryHash=await hashPassword(recovery,recoverySalt);
-  saveAccount();return recovery;
-}
-function showKey(key){$("#shownKey").textContent=key;openDialog("keyDialog")}
-function beginApp(){
-  loadData();
-  $("#filterMonth").value=thisMonth();
-  $("#budgetMonth").value=thisMonth();
-  showScreen("appScreen");
-  render();
-}
-function categoryLabel(code){return categoryNames[lang][code]||code||"—"}
-function displayDescription(tx){return tx.sample?t(tx.description):tx.description||"—"}
-function categoryList(type,selectedMode=mode){
+function clearRecoveryForm(){ $("#recoveryForm").reset();$("#recoveryNewPassword").type="password";$("#recoveryConfirmPassword").type="password";syncEyes() }
+function closeDialog(id){$(id).hidden=true;if(id==="recoveryDialog")clearRecoveryForm()}
+function showRecoveryKey(key){$("#shownKey").textContent=key;openDialog("keyDialog")}
+function categoryName(key){return categoryNames[lang][key]||key||"—"}
+function categoryList(type,chosenMode=mode){
   if(type==="income")return ["Salary","Services","OtherIncome"];
-  return selectedMode==="artisan"
-    ?["Materials","Tools","BusinessTransport","Fees","OtherExpense"]
-    :["Food","Housing","Transport","Health","Shopping","Education","Leisure","OtherExpense"];
+  return chosenMode==="artisan"?["Materials","Tools","BusinessTransport","Fees","OtherExpense"]:["Food","Housing","Transport","Health","Shopping","Education","Leisure","OtherExpense"];
 }
-function fillCategories(select,all=false){
-  const prior=select.value;
+function fillCategorySelect(select,all=false){
+  const prev=select.value;
   const list=[...new Set([...categoryList("income","employee"),...categoryList("expense","employee"),...categoryList("expense","artisan")])];
-  select.innerHTML=(all?`<option value="">${esc(t("allCategories"))}</option>`:"")+list.map(c=>`<option value="${esc(c)}">${esc(categoryLabel(c))}</option>`).join("");
-  if([...select.options].some(o=>o.value===prior))select.value=prior;
+  select.innerHTML=(all?`<option value="">${esc(t("allCategories"))}</option>`:"")+list.map(c=>`<option value="${esc(c)}">${esc(categoryName(c))}</option>`).join("");
+  if([...select.options].some(o=>o.value===prev))select.value=prev;
 }
 function updateTxCategories(){
-  const prior=$("#txCategory").value;
+  const previous=$("#txCategory").value;
   const list=categoryList($("#txType").value,$("#transactionMode").value||mode);
-  $("#txCategory").innerHTML=list.map(c=>`<option value="${esc(c)}">${esc(categoryLabel(c))}</option>`).join("");
-  if([...$("#txCategory").options].some(o=>o.value===prior))$("#txCategory").value=prior;
+  $("#txCategory").innerHTML=list.map(c=>`<option value="${esc(c)}">${esc(categoryName(c))}</option>`).join("");
+  if([...$("#txCategory").options].some(o=>o.value===previous))$("#txCategory").value=previous;
 }
 function monthTransactions(month){return data.transactions.filter(x=>(x.date||"").slice(0,7)===month)}
-function sum(list,type){return list.filter(x=>x.type===type).reduce((a,x)=>a+Number(x.amount||0),0)}
+function total(list,type){return list.filter(x=>x.type===type).reduce((s,x)=>s+Number(x.amount||0),0)}
+function displayDescription(tx){return tx.sample?t(tx.description):tx.description||"—"}
+
 function render(){
-  fillCategories($("#filterCategory"),true);
-  const incomes=sum(data.transactions,"income"),expenses=sum(data.transactions,"expense"),balance=incomes-expenses,month=thisMonth();
-  $("#totalIncome").textContent=money(incomes);
-  $("#totalExpense").textContent=money(expenses);
-  $("#balance").textContent=money(balance);
-  $("#balancePercent").textContent=incomes?`${Math.max(0,Math.round(balance/incomes*100))}% ${t("remaining")}`:"";
+  fillCategorySelect($("#filterCategory"),true);
+  const incomes=total(data.transactions,"income"),expenses=total(data.transactions,"expense"),month=thisMonth();
+  $("#totalIncome").textContent=money(incomes);$("#totalExpense").textContent=money(expenses);
+  $("#balance").textContent=money(incomes-expenses);
+  $("#balancePercent").textContent=incomes?`${Math.max(0,Math.round((incomes-expenses)/incomes*100))}% ${t("remaining")}`:"";
   $("#monthLabel").textContent=new Intl.DateTimeFormat(lang==="ar"?"ar-TN":"fr-TN",{month:"long",year:"numeric"}).format(new Date(month+"-01T12:00:00"));
 
-  const budget=Number(data.budgets[month]||0),spent=sum(monthTransactions(month),"expense"),ratio=budget?spent/budget*100:0;
-  $("#budgetBar").style.width=Math.min(100,ratio)+"%";
-  $("#budgetBar").classList.toggle("over",spent>budget);
-  $("#budgetNumbers").textContent=budget?`${t("used")}: ${money(spent)} / ${money(budget)} (${Math.round(ratio)}%)`:t("noBudgetYet");
+  const budget=Number(data.budgets[month]||0),spent=total(monthTransactions(month),"expense"),pct=budget?spent/budget*100:0;
+  $("#budgetBar").style.width=Math.min(100,pct)+"%";$("#budgetBar").classList.toggle("over",spent>budget);
+  $("#budgetNumbers").textContent=budget?`${t("used")}: ${money(spent)} / ${money(budget)} (${Math.round(pct)}%)`:t("noBudgetYet");
   $("#budgetSummary").innerHTML=budget?`<p>${esc(t("used"))}: <b>${esc(money(spent))}</b> ${esc(t("ofBudget"))} ${esc(money(budget))}</p>`:`<p class="muted">${esc(t("noBudget"))}</p>`;
-  $("#alerts").innerHTML=budget&&spent>budget?`<div class="alert danger">${esc(t("budgetExceeded"))}</div>`:budget&&ratio>=80?`<div class="alert warn">${esc(t("spent80"))}</div>`:"";
+  $("#alerts").innerHTML=budget&&spent>budget?`<div class="alert danger">${esc(t("budgetExceeded"))}</div>`:budget&&pct>=80?`<div class="alert warn">${esc(t("spent80"))}</div>`:"";
 
   $("#artisanSummary").hidden=mode!=="artisan";
   if(mode==="artisan"){
     const business=data.transactions.filter(x=>x.mode==="artisan");
-    const si=sum(business,"income"),pe=sum(business,"expense");
-    $("#serviceIncome").textContent=money(si);
-    $("#professionalExpense").textContent=money(pe);
-    $("#profit").textContent=money(si-pe);
+    const i=total(business,"income"),e=total(business,"expense");
+    $("#serviceIncome").textContent=money(i);$("#professionalExpense").textContent=money(e);$("#profit").textContent=money(i-e);
   }
-  renderDonut(month);
-  renderTransactions();
-  renderBudget();
-  renderGoals();
-  translateStaticOnly();
+  renderDonut(month);renderTransactions();renderBudget();renderGoals();
+  translateLabelsOnly();
 }
 function renderDonut(month){
   const expenses=monthTransactions(month).filter(x=>x.type==="expense");
-  const groups={};
-  expenses.forEach(x=>groups[x.category]=(groups[x.category]||0)+Number(x.amount||0));
-  const entries=Object.entries(groups).sort((a,b)=>b[1]-a[1]);
-  const total=entries.reduce((s,x)=>s+x[1],0);
-  if(!total){
-    $("#donutChart").innerHTML=`<div class="empty">${esc(t("chartNoData"))}</div>`;
-    return;
-  }
+  const grouped={};
+  expenses.forEach(x=>grouped[x.category]=(grouped[x.category]||0)+Number(x.amount||0));
+  const entries=Object.entries(grouped).sort((a,b)=>b[1]-a[1]);
+  const totalExpense=entries.reduce((s,x)=>s+x[1],0);
+  if(!totalExpense){$("#donutChart").innerHTML=`<div class="empty">${esc(t("chartNoData"))}</div>`;return}
   let angle=0;
-  const slices=entries.map(([cat,value],i)=>{
-    const start=angle;angle+=value/total*360;
-    return `${chartColors[i%chartColors.length]} ${start}deg ${angle}deg`;
-  });
-  const gradient=`conic-gradient(${slices.join(",")})`;
-  const legend=entries.map(([cat,value],i)=>`
-    <div class="legend-row">
-      <span class="legend-name"><i class="legend-dot" style="background:${chartColors[i%chartColors.length]}"></i>${esc(categoryLabel(cat))}</span>
-      <span>${esc(money(value))} · ${Math.round(value/total*100)}%</span>
-    </div>`).join("");
-  $("#donutChart").innerHTML=`
-    <p class="muted">${esc(t("chartMonth"))}: ${esc($("#monthLabel").textContent)}</p>
-    <div class="donut-layout">
-      <div class="donut" role="img" aria-label="${esc(t("expenseByCategory"))}" style="background:${gradient}">
-        <div class="donut-hole"><small>${esc(t("chartTotal"))}</small><strong>${esc(money(total))}</strong></div>
-      </div>
-      <div class="legend">${legend}</div>
-    </div>`;
+  const segments=entries.map(([cat,value],i)=>{const start=angle;angle+=value/totalExpense*360;return `${colors[i%colors.length]} ${start}deg ${angle}deg`});
+  const legend=entries.map(([cat,value],i)=>`<div class="legend-row"><span class="legend-name"><i class="legend-dot" style="background:${colors[i%colors.length]}"></i>${esc(categoryName(cat))}</span><span>${esc(money(value))} · ${Math.round(value/totalExpense*100)}%</span></div>`).join("");
+  $("#donutChart").innerHTML=`<p class="muted">${esc(t("chartMonth"))}: ${esc($("#monthLabel").textContent)}</p><div class="donut-layout"><div class="donut" role="img" aria-label="${esc(t("expenseByCategory"))}" style="background:conic-gradient(${segments.join(",")})"><div class="donut-hole"><small>${esc(t("chartTotal"))}</small><strong>${esc(money(totalExpense))}</strong></div></div><div class="legend">${legend}</div></div>`;
 }
-function txRow(x,actions=true){
-  const label=x.type==="income"?t("income"):t("expense");
-  return `<tr>
-    <td>${esc(x.date)}</td><td>${esc(displayDescription(x))}</td>
-    <td><span class="tag">${esc(categoryLabel(x.category))}</span></td>
-    <td class="${x.type==="income"?"income":"expense"}">${esc(label)}</td>
-    <td>${esc(money(x.amount))}</td>
-    ${actions?`<td><div class="actions"><button class="btn light small" data-edit="${esc(x.id)}">${esc(t("edit"))}</button><button class="btn danger small" data-delete-tx="${esc(x.id)}">${esc(t("delete"))}</button></div></td>`:""}
-  </tr>`;
+function transactionRow(x,buttons=true){
+  const typeLabel=x.type==="income"?t("income"):t("expense");
+  return `<tr><td>${esc(x.date)}</td><td>${esc(displayDescription(x))}</td><td><span class="tag">${esc(categoryName(x.category))}</span></td><td class="${x.type==="income"?"income":"expense"}">${esc(typeLabel)}</td><td>${esc(money(x.amount))}</td>${buttons?`<td><div class="actions"><button class="btn light small" data-edit="${esc(x.id)}">${esc(t("edit"))}</button><button class="btn danger small" data-delete-tx="${esc(x.id)}">${esc(t("delete"))}</button></div></td>`:""}</tr>`;
 }
 function renderTransactions(){
   const recent=[...data.transactions].sort((a,b)=>(b.date||"").localeCompare(a.date||"")).slice(0,5);
-  $("#recentList").innerHTML=recent.length
-    ?`<div class="table-wrap"><table><thead><tr><th>${t("date")}</th><th>${t("description")}</th><th>${t("category")}</th><th>${t("type")}</th><th>${t("amount")}</th></tr></thead><tbody>${recent.map(x=>txRow(x,false)).join("")}</tbody></table></div>`
-    :`<div class="empty">${t("noTransactions")}</div>`;
+  $("#recentList").innerHTML=recent.length?`<div class="table-wrap"><table><thead><tr><th>${t("date")}</th><th>${t("description")}</th><th>${t("category")}</th><th>${t("type")}</th><th>${t("amount")}</th></tr></thead><tbody>${recent.map(x=>transactionRow(x,false)).join("")}</tbody></table></div>`:`<div class="empty">${t("noTransactions")}</div>`;
   const month=$("#filterMonth").value,cat=$("#filterCategory").value;
-  const list=[...data.transactions]
-    .filter(x=>(!month||(x.date||"").slice(0,7)===month)&&(!cat||x.category===cat))
-    .sort((a,b)=>(b.date||"").localeCompare(a.date||""));
-  $("#transactionList").innerHTML=list.length
-    ?`<div class="table-wrap"><table><thead><tr><th>${t("date")}</th><th>${t("description")}</th><th>${t("category")}</th><th>${t("type")}</th><th>${t("amount")}</th><th></th></tr></thead><tbody>${list.map(x=>txRow(x,true)).join("")}</tbody></table></div>`
-    :`<div class="empty">${t("noTransactions")}</div>`;
+  const list=[...data.transactions].filter(x=>(!month||(x.date||"").slice(0,7)===month)&&(!cat||x.category===cat)).sort((a,b)=>(b.date||"").localeCompare(a.date||""));
+  $("#transactionList").innerHTML=list.length?`<div class="table-wrap"><table><thead><tr><th>${t("date")}</th><th>${t("description")}</th><th>${t("category")}</th><th>${t("type")}</th><th>${t("amount")}</th><th></th></tr></thead><tbody>${list.map(x=>transactionRow(x,true)).join("")}</tbody></table></div>`:`<div class="empty">${t("noTransactions")}</div>`;
 }
 function renderBudget(){
-  const month=$("#budgetMonth").value||thisMonth(),budget=Number(data.budgets[month]||0);
-  const spent=sum(monthTransactions(month),"expense"),pct=budget?Math.round(spent/budget*100):0;
-  $("#budgetDetail").innerHTML=budget
-    ?`<h3>${esc(month)} — ${esc(money(budget))}</h3><p>${esc(t("used"))}: ${esc(money(spent))} (${pct}%)</p><div class="bar-bg"><div class="bar ${spent>budget?"over":""}" style="width:${Math.min(100,pct)}%"></div></div>`
-    :`<div class="empty">${esc(t("noBudget"))}</div>`;
+  const month=$("#budgetMonth").value||thisMonth(),budget=Number(data.budgets[month]||0),spent=total(monthTransactions(month),"expense"),pct=budget?Math.round(spent/budget*100):0;
+  $("#budgetDetail").innerHTML=budget?`<h3>${esc(month)} — ${esc(money(budget))}</h3><p>${esc(t("used"))}: ${esc(money(spent))} (${pct}%)</p><div class="bar-bg"><div class="bar ${spent>budget?"over":""}" style="width:${Math.min(100,pct)}%"></div></div>`:`<div class="empty">${esc(t("noBudget"))}</div>`;
 }
 function renderGoals(){
   $("#goalList").innerHTML=data.goals.length?data.goals.map(g=>{
     const target=Number(g.target)||0,saved=Number(g.saved)||0,pct=target?Math.min(100,Math.round(saved/target*100)):0;
-    return `<article class="goal">
-      <div class="between"><h3>${esc(g.name)}</h3><button class="btn danger small" data-delete-goal="${esc(g.id)}">${esc(t("delete"))}</button></div>
-      <div class="goal-meta">${esc(t("saved"))}: ${esc(money(saved))} · ${esc(t("target"))}: ${esc(money(target))} · ${esc(t("goalProgress"))}: ${pct}%</div>
-      <div class="bar-bg"><div class="bar" style="width:${pct}%"></div></div>
-      <div class="actions" style="margin-top:10px"><input id="add-${esc(g.id)}" type="number" min=".01" step=".01" placeholder="${esc(t("amount"))}" style="max-width:180px"><button class="btn light small" data-contribute="${esc(g.id)}">${esc(t("addSaving"))}</button></div>
-    </article>`;
+    return `<article class="goal"><div class="between"><h3>${esc(g.name)}</h3><button class="btn danger small" data-delete-goal="${esc(g.id)}">${esc(t("delete"))}</button></div><div class="goal-meta">${esc(t("saved"))}: ${esc(money(saved))} · ${esc(t("target"))}: ${esc(money(target))} · ${esc(t("goalProgress"))}: ${pct}%</div><div class="bar-bg"><div class="bar" style="width:${pct}%"></div></div><div class="actions" style="margin-top:10px"><input id="add-${esc(g.id)}" type="number" min=".01" step=".01" placeholder="${esc(t("amount"))}" style="max-width:180px"><button class="btn light small" data-contribute="${esc(g.id)}">${esc(t("addSaving"))}</button></div></article>`;
   }).join(""):`<div class="empty">${esc(t("noGoals"))}</div>`;
 }
-function translateStaticOnly(){
+function translateLabelsOnly(){
   document.querySelectorAll("[data-i]").forEach(el=>el.textContent=t(el.dataset.i));
   document.querySelectorAll("[data-lang]").forEach(b=>b.classList.toggle("active",b.dataset.lang===lang));
   syncEyes();
@@ -655,68 +557,37 @@ function translateStaticOnly(){
 function setPage(page){
   document.querySelectorAll("[id^=page-]").forEach(el=>el.hidden=el.id!=="page-"+page);
   document.querySelectorAll("[data-page]").forEach(b=>b.classList.toggle("active",b.dataset.page===page));
-  if(page==="transactions")renderTransactions();
-  if(page==="budget")renderBudget();
+  if(page==="transactions")renderTransactions();if(page==="budget")renderBudget();
 }
 function openTransaction(tx){
-  $("#transactionForm").reset();
-  $("#transactionId").value=tx?.id||"";
-  $("#transactionMode").value=tx?.mode||mode;
-  $("#txType").value=tx?.type||"expense";
-  $("#txAmount").value=tx?.amount||"";
-  $("#txDate").value=tx?.date||today();
+  $("#transactionForm").reset();$("#transactionId").value=tx?.id||"";
+  $("#transactionMode").value=tx?.mode||mode;$("#txType").value=tx?.type||"expense";
+  $("#txAmount").value=tx?.amount||"";$("#txDate").value=tx?.date||today();
   $("#txNote").value=tx&&!tx.sample?tx.description||"":"";
   $("#transactionDialogTitle").textContent=tx?t("edit"):t("addTransaction");
-  updateTxCategories();
-  if(tx)$("#txCategory").value=tx.category;
-  openDialog("transactionDialog");
+  updateTxCategories();if(tx)$("#txCategory").value=tx.category;openDialog("transactionDialog");
 }
-function downloadCsv(){
+function exportCsv(){
   const rows=[[t("date"),t("type"),t("category"),t("description"),t("amount"),"TND"]];
-  [...data.transactions].sort((a,b)=>(a.date||"").localeCompare(b.date||"")).forEach(x=>{
-    rows.push([x.date,x.type==="income"?t("income"):t("expense"),categoryLabel(x.category),displayDescription(x),Number(x.amount).toFixed(2),"TND"]);
-  });
+  [...data.transactions].sort((a,b)=>(a.date||"").localeCompare(b.date||"")).forEach(x=>rows.push([x.date,x.type==="income"?t("income"):t("expense"),categoryName(x.category),displayDescription(x),Number(x.amount).toFixed(2),"TND"]));
   const csv="\uFEFF"+rows.map(r=>r.map(v=>`"${String(v??"").replace(/"/g,'""')}"`).join(";")).join("\r\n");
-  const a=document.createElement("a");
-  a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));
-  a.download=`dinar-smart-${today()}.csv`;a.click();URL.revokeObjectURL(a.href);
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));a.download=`dinar-smart-${today()}.csv`;a.click();URL.revokeObjectURL(a.href);
 }
 
 document.addEventListener("click",e=>{
-  const langButton=e.target.closest("[data-lang]");
-  if(langButton)setLanguage(langButton.dataset.lang);
-
-  const eye=e.target.closest("[data-eye]");
-  if(eye){const input=$(eye.dataset.eye);input.type=input.type==="password"?"text":"password";syncEyes()}
-
-  const modeButton=e.target.closest("[data-mode]");
-  if(modeButton){mode=modeButton.dataset.mode;document.querySelectorAll("[data-mode]").forEach(b=>b.classList.toggle("active",b===modeButton));render()}
-
+  const langBtn=e.target.closest("[data-lang]");if(langBtn)setLanguage(langBtn.dataset.lang);
+  const eye=e.target.closest("[data-eye]");if(eye){const input=$(eye.dataset.eye);input.type=input.type==="password"?"text":"password";syncEyes()}
+  const modeBtn=e.target.closest("[data-mode]");if(modeBtn){mode=modeBtn.dataset.mode;document.querySelectorAll("[data-mode]").forEach(b=>b.classList.toggle("active",b===modeBtn));render()}
   const page=e.target.closest("[data-page]");if(page)setPage(page.dataset.page);
   const go=e.target.closest("[data-go]");if(go)setPage(go.dataset.go);
   const close=e.target.closest("[data-close]");if(close)closeDialog(close.dataset.close);
-
-  const edit=e.target.closest("[data-edit]");
-  if(edit)openTransaction(data.transactions.find(x=>x.id===edit.dataset.edit));
-
+  const edit=e.target.closest("[data-edit]");if(edit)openTransaction(data.transactions.find(x=>x.id===edit.dataset.edit));
   const del=e.target.closest("[data-delete-tx]");
-  if(del&&confirm(t("confirmDelete"))){
-    data.transactions=data.transactions.filter(x=>x.id!==del.dataset.deleteTx);
-    saveData();render();
-  }
-
+  if(del&&confirm(t("confirmDelete"))){data.transactions=data.transactions.filter(x=>x.id!==del.dataset.deleteTx);saveData();render()}
   const delGoal=e.target.closest("[data-delete-goal]");
-  if(delGoal&&confirm(t("confirmGoalDelete"))){
-    data.goals=data.goals.filter(x=>x.id!==delGoal.dataset.deleteGoal);
-    saveData();render();
-  }
-
-  const add=e.target.closest("[data-contribute]");
-  if(add){
-    const goal=data.goals.find(x=>x.id===add.dataset.contribute);
-    const input=$("add-"+add.dataset.contribute),amount=Number(input.value);
-    if(goal&&amount>0){goal.saved=Number(goal.saved||0)+amount;saveData();render()}
-  }
+  if(delGoal&&confirm(t("confirmGoalDelete"))){data.goals=data.goals.filter(x=>x.id!==delGoal.dataset.deleteGoal);saveData();render()}
+  const contribute=e.target.closest("[data-contribute]");
+  if(contribute){const goal=data.goals.find(x=>x.id===contribute.dataset.contribute),input=$("add-"+contribute.dataset.contribute),amount=Number(input.value);if(goal&&amount>0){goal.saved=Number(goal.saved||0)+amount;saveData();render()}}
 });
 
 $("#loginForm").addEventListener("submit",async e=>{
@@ -727,87 +598,70 @@ $("#loginForm").addEventListener("submit",async e=>{
     if(account.mustChange)showScreen("changeScreen");else beginApp();
   }catch{alert(t("cryptoError"))}
 });
-
 $("#changeForm").addEventListener("submit",async e=>{
-  e.preventDefault();
-  const p=$("#newPassword").value;
+  e.preventDefault();const p=$("#newPassword").value;
   if(p.length<8)return alert(t("minPassword"));
   if(p!==$("#confirmPassword").value)return alert(t("passwordsMismatch"));
-  try{
-    const key=await setPassword(p);
-    $("#changeForm").reset();showKey(key);
-  }catch{alert(t("cryptoError"))}
+  try{const key=await saveNewPassword(p);$("#changeForm").reset();$("#newPassword").type="password";$("#confirmPassword").type="password";syncEyes();showRecoveryKey(key)}
+  catch{alert(t("cryptoError"))}
 });
 
-$("#openRecovery").addEventListener("click",()=>openDialog("recoveryDialog"));
+$("#openRecovery").addEventListener("click",()=>{clearRecoveryForm();openDialog("recoveryDialog")});
 $("#recoveryForm").addEventListener("submit",async e=>{
   e.preventDefault();
   const email=$("#recoveryEmail").value.trim().toLowerCase();
   const key=$("#recoveryKey").value.trim().toUpperCase();
-  const p=$("#recoveryNewPassword").value;
-  if(p.length<8)return alert(t("minPassword"));
+  const password=$("#recoveryNewPassword").value;
+  const confirmPassword=$("#recoveryConfirmPassword").value;
+  if(password.length<8)return alert(t("minPassword"));
+  if(password!==confirmPassword)return alert(t("passwordsMismatch"));
   if(email!==account.email.toLowerCase())return alert(t("resetFailed"));
   try{
     let valid=false;
     if(account.recoveryHash&&account.recoverySalt)valid=await hashPassword(key,account.recoverySalt)===account.recoveryHash;
     else if(account.mustChange)valid=await hashPassword(key,account.salt)===account.hash;
     if(!valid)return alert(t("resetFailed"));
-    const newKey=await setPassword(p);
-    $("#recoveryForm").reset();closeDialog("recoveryDialog");showKey(newKey);
+    const newKey=await saveNewPassword(password);
+    clearRecoveryForm();closeDialog("recoveryDialog");showRecoveryKey(newKey);
   }catch{alert(t("cryptoError"))}
 });
 
-$("#closeKeyDialog").addEventListener("click",()=>{
-  closeDialog("keyDialog");beginApp();
-});
+$("#closeKeyDialog").addEventListener("click",()=>{closeDialog("keyDialog");beginApp()});
 $("#copyKey").addEventListener("click",async()=>{
   try{await navigator.clipboard.writeText($("#shownKey").textContent);alert(t("recoveryKeyCopied"))}
   catch{prompt(t("copyKey"),$("#shownKey").textContent)}
 });
-$("#logout").addEventListener("click",()=>{
-  $("#loginPassword").value="";showScreen("loginScreen");
-});
+$("#logout").addEventListener("click",()=>{$("#loginPassword").value="";showScreen("loginScreen")});
 $("#addTransaction").addEventListener("click",()=>openTransaction(null));
 $("#txType").addEventListener("change",updateTxCategories);
 $("#filterMonth").addEventListener("change",renderTransactions);
 $("#filterCategory").addEventListener("change",renderTransactions);
-$("#exportCsv").addEventListener("click",downloadCsv);
+$("#exportCsv").addEventListener("click",exportCsv);
 
 $("#transactionForm").addEventListener("submit",e=>{
-  e.preventDefault();
-  const amount=Number($("#txAmount").value);
+  e.preventDefault();const amount=Number($("#txAmount").value);
   if(!(amount>0))return alert(t("invalidAmount"));
-  const id=$("#transactionId").value||randomId();
-  const tx={
-    id,type:$("#txType").value,amount,category:$("#txCategory").value,
-    date:$("#txDate").value,description:$("#txNote").value.trim(),
-    mode:$("#transactionMode").value||mode
-  };
-  const index=data.transactions.findIndex(x=>x.id===id);
-  if(index<0)data.transactions.push(tx);else data.transactions[index]=tx;
+  const id=$("#transactionId").value||newId();
+  const tx={id,type:$("#txType").value,amount,category:$("#txCategory").value,date:$("#txDate").value,description:$("#txNote").value.trim(),mode:$("#transactionMode").value||mode};
+  const i=data.transactions.findIndex(x=>x.id===id);if(i<0)data.transactions.push(tx);else data.transactions[i]=tx;
   saveData();closeDialog("transactionDialog");render();
 });
-
 $("#budgetForm").addEventListener("submit",e=>{
-  e.preventDefault();
-  const month=$("#budgetMonth").value,amount=Number($("#budgetAmount").value);
+  e.preventDefault();const month=$("#budgetMonth").value,amount=Number($("#budgetAmount").value);
   if(month&&amount>=0){data.budgets[month]=amount;saveData();render()}
 });
 $("#budgetMonth").addEventListener("change",renderBudget);
-
 $("#goalForm").addEventListener("submit",e=>{
-  e.preventDefault();
-  const target=Number($("#goalTarget").value),saved=Number($("#goalSaved").value||0);
+  e.preventDefault();const target=Number($("#goalTarget").value),saved=Number($("#goalSaved").value||0);
   if(!(target>0)||saved<0)return alert(t("invalidAmount"));
-  data.goals.push({id:randomId(),name:$("#goalName").value.trim(),target,saved});
+  data.goals.push({id:newId(),name:$("#goalName").value.trim(),target,saved});
   saveData();$("#goalForm").reset();$("#goalSaved").value="0";render();
 });
 
-fillCategories($("#filterCategory"),true);
-$("#filterMonth").value=thisMonth();
-$("#budgetMonth").value=thisMonth();
+fillCategorySelect($("#filterCategory"),true);
+$("#filterMonth").value=thisMonth();$("#budgetMonth").value=thisMonth();
 translate();
-makeAccount().catch(()=>alert(t("cryptoError")));
+initAccount().catch(()=>alert(t("cryptoError")));
 </script>
 </body>
 </html>
