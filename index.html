@@ -35,10 +35,36 @@
     </div>
     <form onsubmit="doLogin(event)" class="space-y-3">
       <input id="email" type="email" value="jouinibelhassen715@gmail.com" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500">
-      <input id="pass" type="password" placeholder="كلمة المرور" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500">
+      <div class="relative">
+        <input id="pass" type="password" placeholder="كلمة المرور" required class="w-full p-3 pl-11 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500">
+        <button type="button" class="eye absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" data-t="pass" onclick="eye(this)"></button>
+      </div>
       <p id="err" class="hidden text-xs text-red-500 bg-red-50 p-2 rounded-xl text-center font-bold">البريد أو كلمة المرور غير صحيحة</p>
-      <button class="w-full navy text-white font-bold py-3 rounded-xl text-sm shadow-lg">تسجيل الدخول</button>
+      <button class="w-full navy text-white font-bold py-3 rounded-xl text-sm shadow-lg">تسجيل الدخول (Se connecter)</button>
     </form>
+    <div class="text-center">
+      <button type="button" onclick="openPw(false)" class="text-xs font-bold text-blue-600 hover:underline">Mot de passe oublié ? / نسيت كلمة المرور</button>
+    </div>
+  </div>
+</div>
+
+<!-- PASSWORD MODAL -->
+<div id="pwModal" class="hidden fixed inset-0 bg-black/70 z-[60] flex items-center justify-center p-4">
+  <div class="bg-white rounded-3xl p-6 w-full max-w-xs space-y-3">
+    <h3 id="pwTitle" class="text-center font-black text-[#0b2a63]">تغيير كلمة المرور</h3>
+    <div id="emailWrap"><input id="pwEmail" type="email" value="jouinibelhassen715@gmail.com" class="w-full p-3 bg-slate-100 rounded-xl text-xs font-bold outline-none"></div>
+    <div id="oldWrap" class="hidden relative">
+      <input id="pwOld" type="password" placeholder="كلمة المرور الحالية" class="w-full p-3 pl-11 bg-slate-100 rounded-xl text-xs font-bold outline-none">
+      <button type="button" class="eye absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" data-t="pwOld" onclick="eye(this)"></button>
+    </div>
+    <div class="relative">
+      <input id="pwNew" type="password" placeholder="كلمة المرور الجديدة" class="w-full p-3 pl-11 bg-slate-100 rounded-xl text-xs font-bold outline-none">
+      <button type="button" class="eye absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" data-t="pwNew" onclick="eye(this)"></button>
+    </div>
+    <div class="flex gap-2 pt-1">
+      <button onclick="savePw()" class="w-1/2 navy text-white text-sm font-bold py-2.5 rounded-xl">حفظ</button>
+      <button onclick="closePw()" class="w-1/2 bg-slate-200 text-sm font-bold py-2.5 rounded-xl">إلغاء</button>
+    </div>
   </div>
 </div>
 
@@ -46,9 +72,12 @@
 <div id="app" class="hidden w-full max-w-md mx-auto pb-24">
   <header class="navy text-white px-5 pt-6 pb-24 space-y-4">
     <div class="flex items-center justify-between">
-      <div class="bg-white/10 p-1 rounded-full flex text-xs font-bold">
-        <button id="lAr" onclick="setLang('ar')" class="px-4 py-1.5 rounded-full bg-white text-[#0b2a63] font-extrabold">عربي</button>
-        <button id="lFr" onclick="setLang('fr')" class="px-3 py-1.5 rounded-full text-slate-200">Français</button>
+      <div class="flex items-center gap-2">
+        <div class="bg-white/10 p-1 rounded-full flex text-xs font-bold">
+          <button id="lAr" onclick="setLang('ar')" class="px-4 py-1.5 rounded-full bg-white text-[#0b2a63] font-extrabold">عربي</button>
+          <button id="lFr" onclick="setLang('fr')" class="px-3 py-1.5 rounded-full text-slate-200">Français</button>
+        </div>
+        <button onclick="openPw(true)" class="w-9 h-9 rounded-full bg-white/10 text-base" title="كلمة المرور">🔒</button>
       </div>
       <div class="flex items-center gap-3">
         <div class="text-right">
@@ -61,13 +90,17 @@
       </div>
     </div>
     <div class="flex items-center justify-between gap-3">
-      <div class="bg-white p-1 rounded-full flex flex-1 max-w-[220px] text-sm font-bold">
+      <div class="bg-white p-1 rounded-full flex flex-1 max-w-[200px] text-sm font-bold">
         <button id="mEmp" onclick="setMode('employee')" class="flex-1 py-2 rounded-full">👨‍💼 <span data-i="emp">موظف</span></button>
         <button id="mArt" onclick="setMode('artisan')" class="flex-1 py-2 rounded-full">🛠️ <span data-i="art">حرفي</span></button>
       </div>
       <div class="text-right">
         <p class="text-xs text-slate-300" data-i="summary">ملخص الشهر</p>
-        <h2 class="text-2xl font-black" id="monthLabel">أكتوبر 2026</h2>
+        <div dir="ltr" class="flex items-center gap-2 justify-end">
+          <button onclick="shiftMonth(-1)" class="w-7 h-7 rounded-full bg-white/10 font-black">‹</button>
+          <h2 class="text-xl font-black" id="monthLabel"></h2>
+          <button onclick="shiftMonth(1)" id="nextM" class="w-7 h-7 rounded-full bg-white/10 font-black">›</button>
+        </div>
       </div>
     </div>
   </header>
@@ -102,6 +135,15 @@
         </div>
       </div>
 
+      <div class="bg-white p-4 rounded-3xl shadow border border-slate-100 flex items-center justify-between">
+        <button onclick="editFixed()" class="navy text-white text-xs font-bold px-4 py-2 rounded-full" data-i="edit">تعديل</button>
+        <div class="text-right">
+          <p class="text-xs font-semibold text-slate-500" data-i="fixed">الدخل الشهري الثابت</p>
+          <p class="num text-lg font-black text-[#0b2a63]"><span id="fixAmt">0.00</span> <span class="text-xs">TND</span></p>
+          <p class="text-[11px] text-slate-400" data-i="fixedNote">يُضاف تلقائياً كل شهر</p>
+        </div>
+      </div>
+
       <div id="alertBox" class="hidden bg-amber-50 border border-amber-200 rounded-3xl p-4 flex items-center gap-3">
         <div class="w-10 h-10 rounded-full bg-amber-500 text-white flex items-center justify-center font-black shrink-0">!</div>
         <p class="flex-1 text-sm text-amber-900 font-semibold" id="alertText"></p>
@@ -125,7 +167,10 @@
     <!-- TRANSACTIONS -->
     <section id="v-tx" class="view space-y-3">
       <div class="flex items-center justify-between bg-white rounded-3xl p-4 shadow">
-        <button onclick="openTx('income')" class="navy text-white text-xs font-bold px-4 py-2 rounded-full" data-i="add">+ إضافة معاملة</button>
+        <div class="flex gap-2">
+          <button onclick="openTx('income')" class="navy text-white text-xs font-bold px-3 py-2 rounded-full" data-i="add">+ إضافة</button>
+          <button onclick="openTx('expense',true)" class="bg-blue-100 text-[#0b2a63] text-xs font-bold px-3 py-2 rounded-full">📷 Scan</button>
+        </div>
         <h3 class="font-black text-[#0b2a63]" data-i="txs">المعاملات</h3>
       </div>
       <div id="txList" class="space-y-2"></div>
@@ -133,7 +178,10 @@
 
     <!-- BUDGET -->
     <section id="v-budget" class="view space-y-3">
-      <div class="bg-white rounded-3xl p-4 shadow"><h3 class="font-black text-[#0b2a63]" data-i="bud">الميزانية</h3><p class="text-xs text-slate-400">اضغط على المبلغ لتعديل الحد الشهري</p></div>
+      <div class="flex items-center justify-between bg-white rounded-3xl p-4 shadow">
+        <button onclick="addBudget()" class="navy text-white text-xs font-bold px-4 py-2 rounded-full" data-i="addBud">+ فئة</button>
+        <div class="text-right"><h3 class="font-black text-[#0b2a63]" data-i="bud">الميزانية</h3><p class="text-[11px] text-slate-400">اضغط على المبلغ لتعديل الحد</p></div>
+      </div>
       <div id="budList" class="space-y-3"></div>
     </section>
 
@@ -160,8 +208,17 @@
 <div id="txModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
   <div class="bg-white rounded-3xl p-6 w-full max-w-xs space-y-3">
     <h3 class="text-center font-black text-[#0b2a63]" data-i="newTx">إضافة معاملة جديدة</h3>
+    <div class="grid grid-cols-2 gap-2">
+      <label class="text-center bg-blue-50 text-[#0b2a63] text-xs font-bold py-2.5 rounded-xl cursor-pointer">
+        <input type="file" accept="image/*" capture="environment" class="hidden" id="scanCam" onchange="scanFile(this)">📷 <span data-i="cam">كاميرا</span>
+      </label>
+      <label class="text-center bg-blue-50 text-[#0b2a63] text-xs font-bold py-2.5 rounded-xl cursor-pointer">
+        <input type="file" accept="image/*" class="hidden" id="scanGal" onchange="scanFile(this)">🖼️ <span data-i="gal">معرض الصور</span>
+      </label>
+    </div>
+    <p id="scanStatus" class="text-[11px] font-bold text-slate-500 text-center min-h-[1rem]"></p>
     <select id="txType" onchange="fillCats()" class="w-full p-3 bg-slate-100 rounded-xl text-sm font-bold">
-      <option value="income">مدخول</option><option value="expense">مصروف</option>
+      <option value="income">مدخول (Entrée)</option><option value="expense">مصروف (Dépense)</option>
     </select>
     <select id="txCat" onchange="customToggle()" class="w-full p-3 bg-slate-100 rounded-xl text-sm font-bold"></select>
     <input id="txCustom" placeholder="الفئة المخصصة" class="hidden w-full p-3 bg-slate-100 rounded-xl text-sm font-bold">
@@ -175,111 +232,259 @@
 
 <script>
 const ADMIN='jouinibelhassen715@gmail.com', PASS='2026';
-const COLORS=['#0b2a63','#1e9e57','#f5821f','#9b7fd1','#0ea5e9','#e11d48'];
+const COLORS=['#0b2a63','#1e9e57','#f5821f','#9b7fd1','#0ea5e9','#e11d48','#14b8a6','#a16207'];
+const EYE_OPEN='<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+const EYE_CLOSED='<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg>';
+const MN={
+ ar:['جانفي','فيفري','مارس','أفريل','ماي','جوان','جويلية','أوت','سبتمبر','أكتوبر','نوفمبر','ديسمبر'],
+ fr:['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre']
+};
 const T={
- ar:{tag:'إدارة مالية ذكية',emp:'موظف',art:'حرفي',summary:'ملخص الشهر',exp:'المصاريف الإجمالية',inc:'الدخل الإجمالي',bal:'الرصيد المتبقي',dist:'🥧 توزيع المصاريف',total:'المجموع',add:'+ إضافة معاملة',txs:'المعاملات',bud:'الميزانية',goals:'الأهداف',addGoal:'+ هدف جديد',home:'الرئيسية',newTx:'إضافة معاملة جديدة',save:'حفظ',cancel:'إلغاء',month:'أكتوبر 2026',pct:'% من الدخل',alert:(p,c)=>`<b>تنبيه:</b> استهلكت ${p}% من ميزانية ${c}. حافظ على توازن مصاريفك.`,other:'نوع آخر'},
- fr:{tag:'Gestion financière intelligente',emp:'Employé',art:'Artisan',summary:'Résumé du mois',exp:'Dépenses totales',inc:'Revenu total',bal:'Solde restant',dist:'🥧 Répartition des dépenses',total:'Total',add:'+ Ajouter',txs:'Transactions',bud:'Budget',goals:'Objectifs',addGoal:'+ Nouvel objectif',home:'Accueil',newTx:'Nouvelle transaction',save:'Enregistrer',cancel:'Annuler',month:'Octobre 2026',pct:'% du revenu',alert:(p,c)=>`<b>Attention :</b> vous avez utilisé ${p}% du budget « ${c} ».`,other:'Autre'}
+ ar:{tag:'إدارة مالية ذكية',emp:'موظف',art:'حرفي',summary:'ملخص الشهر',exp:'المصاريف الإجمالية',inc:'الدخل الإجمالي',bal:'الرصيد المتبقي',dist:'🥧 توزيع المصاريف',total:'المجموع',add:'+ إضافة',txs:'المعاملات',bud:'الميزانية',goals:'الأهداف',addGoal:'+ هدف جديد',addBud:'+ فئة',home:'الرئيسية',newTx:'إضافة معاملة جديدة',save:'حفظ',cancel:'إلغاء',cam:'كاميرا',gal:'معرض الصور',fixed:'الدخل الشهري الثابت',fixedNote:'يُضاف تلقائياً كل شهر',edit:'تعديل',pct:'% من الدخل',alert:(p,c)=>`<b>تنبيه:</b> استهلكت ${p}% من ميزانية ${c}. حافظ على توازن مصاريفك.`,other:'نوع آخر'},
+ fr:{tag:'Gestion financière intelligente',emp:'Employé',art:'Artisan',summary:'Résumé du mois',exp:'Dépenses totales',inc:'Revenu total',bal:'Solde restant',dist:'🥧 Répartition des dépenses',total:'Total',add:'+ Ajouter',txs:'Transactions',bud:'Budget',goals:'Objectifs',addGoal:'+ Nouvel objectif',addBud:'+ Catégorie',home:'Accueil',newTx:'Nouvelle transaction',save:'Enregistrer',cancel:'Annuler',cam:'Caméra',gal:'Galerie',fixed:'Revenu mensuel fixe',fixedNote:'Ajouté automatiquement chaque mois',edit:'Modifier',pct:'% du revenu',alert:(p,c)=>`<b>Attention :</b> vous avez utilisé ${p}% du budget « ${c} ».`,other:'Autre'}
 };
 const CATS={
  employee:{income:['أجر شهري','دخل إضافي'],expense:['نقل','مطعم','لباس','تسوق']},
  artisan:{income:['دخل ورشة','خدمات خارجية'],expense:['مواد أولية','معدات','إيجار ورشة','نقل بضائع']}
 };
-const DEFAULT={
- employee:{tx:[{id:1,type:'income',cat:'أجر شهري',amt:2850},{id:2,type:'expense',cat:'نقل',amt:400},{id:3,type:'expense',cat:'مطعم',amt:500},{id:4,type:'expense',cat:'لباس',amt:350},{id:5,type:'expense',cat:'تسوق',amt:370}],budgets:{'نقل':500,'مطعم':600,'لباس':400,'تسوق':500},goals:[{name:'صندوق الطوارئ',target:3000,saved:900}]},
- artisan:{tx:[{id:1,type:'income',cat:'دخل ورشة',amt:4200},{id:2,type:'expense',cat:'مواد أولية',amt:1000},{id:3,type:'expense',cat:'معدات',amt:500},{id:4,type:'expense',cat:'إيجار ورشة',amt:400},{id:5,type:'expense',cat:'نقل بضائع',amt:200}],budgets:{'مواد أولية':1200,'معدات':600,'إيجار ورشة':400,'نقل بضائع':250},goals:[{name:'شراء آلة جديدة',target:5000,saved:1200}]}
-};
-let S, mode='employee', lang='ar', view='home';
-try{S=JSON.parse(localStorage.getItem('ds_data'))}catch(e){}
-if(!S||!S.employee)S=JSON.parse(JSON.stringify(DEFAULT));
-const save=()=>{try{localStorage.setItem('ds_data',JSON.stringify(S))}catch(e){}};
+
+// ---------- التاريخ والبيانات ----------
+const monthKey=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+const CUR=monthKey(new Date());
+const nextOf=m=>{let[y,mo]=m.split('-').map(Number);mo++;if(mo>12){mo=1;y++}return y+'-'+String(mo).padStart(2,'0')};
+const prevOf=m=>{let[y,mo]=m.split('-').map(Number);mo--;if(mo<1){mo=12;y--}return y+'-'+String(mo).padStart(2,'0')};
+
+function seed(){
+ return{
+  employee:{fixed:{amt:2850,label:'أجر شهري'},last:CUR,
+   tx:[{id:1,type:'income',cat:'أجر شهري',amt:2850,m:CUR,fixed:true},{id:2,type:'expense',cat:'نقل',amt:400,m:CUR},{id:3,type:'expense',cat:'مطعم',amt:500,m:CUR},{id:4,type:'expense',cat:'لباس',amt:350,m:CUR},{id:5,type:'expense',cat:'تسوق',amt:370,m:CUR}],
+   budgets:{'نقل':500,'مطعم':600,'لباس':400,'تسوق':500},goals:[{name:'صندوق الطوارئ',target:3000,saved:900}]},
+  artisan:{fixed:{amt:0,label:'دخل ثابت'},last:CUR,
+   tx:[{id:1,type:'income',cat:'دخل ورشة',amt:4200,m:CUR},{id:2,type:'expense',cat:'مواد أولية',amt:1000,m:CUR},{id:3,type:'expense',cat:'معدات',amt:500,m:CUR},{id:4,type:'expense',cat:'إيجار ورشة',amt:400,m:CUR},{id:5,type:'expense',cat:'نقل بضائع',amt:200,m:CUR}],
+   budgets:{'مواد أولية':1200,'معدات':600,'إيجار ورشة':400,'نقل بضائع':250},goals:[{name:'شراء آلة جديدة',target:5000,saved:1200}]}
+ };
+}
+let S=null;
+try{S=JSON.parse(localStorage.getItem('ds_data2'))}catch(e){}
+if(!S||!S.employee||!S.artisan)S=seed();
+const save=()=>{try{localStorage.setItem('ds_data2',JSON.stringify(S))}catch(e){}};
+
+// الدخل الثابت: يُضاف تلقائياً لكل شهر جديد (لكل وضع على حدة)
+function applyFixed(){
+ ['employee','artisan'].forEach(k=>{
+  const d=S[k];let m=d.last||CUR;
+  while(m<CUR){
+   m=nextOf(m);
+   if(d.fixed.amt>0)d.tx.push({id:Date.now()+Math.random(),type:'income',cat:d.fixed.label,amt:d.fixed.amt,m,fixed:true});
+  }
+  d.last=CUR;
+ });
+ save();
+}
+applyFixed();
+
+let mode='employee', lang='ar', view='home', vm=CUR, loggedIn=false, pwInApp=false;
 const $=id=>document.getElementById(id);
 const f=n=>Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 const D=()=>S[mode];
+const monthTx=()=>D().tx.filter(x=>x.m===vm);
 
-function doLogin(e){
-  e.preventDefault();
-  const p=localStorage.getItem('ds_pass')||PASS;
-  if($('email').value.toLowerCase()===ADMIN&&$('pass').value===p){
-    $('login').classList.add('hidden');$('app').classList.remove('hidden');render();
-  }else $('err').classList.remove('hidden');
+// ---------- الدخول وكلمة المرور ----------
+document.querySelectorAll('.eye').forEach(b=>b.innerHTML=EYE_CLOSED);
+function eye(btn){
+ const i=$(btn.dataset.t),show=i.type==='password';
+ i.type=show?'text':'password';
+ btn.innerHTML=show?EYE_OPEN:EYE_CLOSED;
 }
+const curPass=()=>localStorage.getItem('ds_pass')||PASS;
+function doLogin(e){
+ e.preventDefault();
+ if($('email').value.trim().toLowerCase()===ADMIN&&$('pass').value===curPass()){
+  loggedIn=true;$('login').classList.add('hidden');$('app').classList.remove('hidden');setLang(lang);
+ }else $('err').classList.remove('hidden');
+}
+function openPw(inApp){
+ pwInApp=inApp;
+ $('pwTitle').textContent=inApp?'تغيير كلمة المرور':'Mot de passe oublié / نسيت كلمة المرور';
+ $('emailWrap').classList.toggle('hidden',inApp);
+ $('oldWrap').classList.toggle('hidden',!inApp);
+ $('pwOld').value='';$('pwNew').value='';
+ $('pwModal').classList.remove('hidden');
+}
+function closePw(){$('pwModal').classList.add('hidden')}
+function savePw(){
+ const n=$('pwNew').value.trim();
+ if(pwInApp){
+  if($('pwOld').value!==curPass()){alert('كلمة المرور الحالية غير صحيحة');return}
+ }else if($('pwEmail').value.trim().toLowerCase()!==ADMIN){
+  alert('فقط بريد الأدمين مسموح له بتعيين كلمة المرور');return;
+ }
+ if(n.length<4){alert('كلمة المرور قصيرة (4 أحرف على الأقل)');return}
+ try{localStorage.setItem('ds_pass',n)}catch(e){}
+ alert('تم تغيير كلمة المرور بنجاح ✅');closePw();
+}
+
+// ---------- اللغة والتنقل ----------
 function setLang(l){
-  lang=l;document.documentElement.dir=l==='ar'?'rtl':'ltr';
-  $('lAr').className='px-4 py-1.5 rounded-full '+(l==='ar'?'bg-white text-[#0b2a63] font-extrabold':'text-slate-200');
-  $('lFr').className='px-3 py-1.5 rounded-full '+(l==='fr'?'bg-white text-[#0b2a63] font-extrabold':'text-slate-200');
-  document.querySelectorAll('[data-i]').forEach(el=>{const v=T[l][el.dataset.i];if(typeof v==='string')el.textContent=v});
-  $('monthLabel').textContent=T[l].month;render();
+ lang=l;document.documentElement.dir=l==='ar'?'rtl':'ltr';
+ $('lAr').className='px-4 py-1.5 rounded-full '+(l==='ar'?'bg-white text-[#0b2a63] font-extrabold':'text-slate-200');
+ $('lFr').className='px-3 py-1.5 rounded-full '+(l==='fr'?'bg-white text-[#0b2a63] font-extrabold':'text-slate-200');
+ document.querySelectorAll('[data-i]').forEach(el=>{const v=T[l][el.dataset.i];if(typeof v==='string')el.textContent=v});
+ render();
 }
 function setMode(m){mode=m;render()}
-function nav(v){
-  view=v;
-  document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
-  $('v-'+v).classList.add('active');render();
+function shiftMonth(d){
+ if(d<0)vm=prevOf(vm);else if(vm<CUR)vm=nextOf(vm);
+ render();
 }
+function nav(v){
+ view=v;
+ document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
+ $('v-'+v).classList.add('active');render();
+}
+
+// ---------- الحسابات والعرض ----------
 function totals(){
-  const t=D().tx;
-  const inc=t.filter(x=>x.type==='income').reduce((a,b)=>a+b.amt,0);
-  const exp=t.filter(x=>x.type==='expense').reduce((a,b)=>a+b.amt,0);
-  return{inc,exp,bal:inc-exp};
+ const t=monthTx();
+ const inc=t.filter(x=>x.type==='income').reduce((a,b)=>a+b.amt,0);
+ const exp=t.filter(x=>x.type==='expense').reduce((a,b)=>a+b.amt,0);
+ return{inc,exp,bal:inc-exp};
 }
 function byCat(){
-  const m={};D().tx.filter(x=>x.type==='expense').forEach(x=>m[x.cat]=(m[x.cat]||0)+x.amt);return m;
+ const m={};monthTx().filter(x=>x.type==='expense').forEach(x=>m[x.cat]=(m[x.cat]||0)+x.amt);return m;
 }
 function render(){
-  $('mEmp').className='flex-1 py-2 rounded-full '+(mode==='employee'?'navy text-white font-extrabold':'text-slate-500');
-  $('mArt').className='flex-1 py-2 rounded-full '+(mode==='artisan'?'navy text-white font-extrabold':'text-slate-500');
-  ['home','tx','budget','goals'].forEach(v=>$('n-'+v).className='flex flex-col items-center w-1/4 text-xs font-bold '+(v===view?'text-blue-600':'text-slate-400'));
-  const{inc,exp,bal}=totals();
-  $('tInc').textContent=f(inc);$('tExp').textContent=f(exp);$('tBal').textContent=f(bal);
-  $('ratio').textContent=(inc>0?Math.round(bal/inc*100):0)+T[lang].pct;
-  $('dTotal').textContent=f(exp);
-  // donut + legend
-  const cats=byCat(),keys=Object.keys(cats);
-  let off=0,svg='<circle cx="18" cy="18" r="15.9155" fill="none" stroke="#f1f5f9" stroke-width="5"/>',lg='';
-  keys.forEach((k,i)=>{
-    const p=exp?cats[k]/exp*100:0,c=COLORS[i%COLORS.length];
-    svg+=`<circle cx="18" cy="18" r="15.9155" fill="none" stroke="${c}" stroke-width="5" stroke-dasharray="${Math.max(p-0.8,0)} ${100-Math.max(p-0.8,0)}" stroke-dashoffset="${-off}"/>`;
-    off+=p;
-    lg+=`<div class="flex items-center justify-between text-sm"><span class="num font-bold text-slate-500">${f(cats[k])} TND · ${Math.round(p)}%</span><span class="font-bold flex items-center gap-2">${k}<i class="w-3 h-3 rounded-full inline-block" style="background:${c}"></i></span></div>`;
-  });
-  $('donut').innerHTML=svg;$('legend').innerHTML=lg;
-  // alert: highest budget usage >= 80%
-  let top=null;
-  Object.entries(D().budgets).forEach(([c,b])=>{const p=Math.round((cats[c]||0)/b*100);if(p>=80&&(!top||p>top.p))top={c,p}});
-  if(top){$('alertText').innerHTML=T[lang].alert(top.p,top.c);$('alertBox').classList.remove('hidden')}else $('alertBox').classList.add('hidden');
-  // tx list
-  $('txList').innerHTML=D().tx.slice().reverse().map(x=>`<div class="bg-white rounded-2xl p-3 shadow flex items-center justify-between">
-    <button onclick="delTx(${x.id})" class="text-red-400 text-lg px-2">🗑</button>
-    <span class="num font-black ${x.type==='income'?'text-emerald-600':'text-red-500'}">${x.type==='income'?'+':'-'}${f(x.amt)} TND</span>
-    <span class="font-bold text-sm">${x.cat}</span></div>`).join('')||'<p class="text-center text-slate-400 text-sm py-6">لا توجد معاملات بعد</p>';
-  // budget
-  $('budList').innerHTML=Object.entries(D().budgets).map(([c,b])=>{
-    const s=cats[c]||0,p=Math.min(100,Math.round(s/b*100)),col=p>=80?'#ef4444':p>=60?'#f5821f':'#1e9e57';
-    return`<div class="bg-white rounded-2xl p-4 shadow"><div class="flex justify-between text-sm font-bold mb-2"><button onclick="editBudget('${c}')" class="num text-slate-500">${f(s)} / ${f(b)} TND</button><span>${c}</span></div>
-    <div class="h-2.5 bg-slate-100 rounded-full overflow-hidden"><div class="h-full rounded-full" style="width:${p}%;background:${col}"></div></div><p class="text-[11px] text-slate-400 mt-1">${p}%</p></div>`}).join('');
-  // goals
-  $('goalList').innerHTML=D().goals.map((g,i)=>{const p=Math.min(100,Math.round(g.saved/g.target*100));
-    return`<div class="bg-white rounded-2xl p-4 shadow"><div class="flex justify-between text-sm font-bold mb-2"><button onclick="fundGoal(${i})" class="num text-slate-500">${f(g.saved)} / ${f(g.target)} TND</button><span>🎯 ${g.name}</span></div>
-    <div class="h-2.5 bg-slate-100 rounded-full overflow-hidden"><div class="h-full rounded-full bg-blue-600" style="width:${p}%"></div></div><p class="text-[11px] text-slate-400 mt-1">${p}% · اضغط المبلغ لإضافة مدخرات</p></div>`}).join('')||'<p class="text-center text-slate-400 text-sm py-6">أضف هدفك الأول</p>';
+ if(!loggedIn)return;
+ const[y,mo]=vm.split('-').map(Number);
+ $('monthLabel').textContent=MN[lang][mo-1]+' '+y;
+ $('nextM').style.opacity=vm<CUR?1:.3;
+ $('mEmp').className='flex-1 py-2 rounded-full '+(mode==='employee'?'navy text-white font-extrabold':'text-slate-500');
+ $('mArt').className='flex-1 py-2 rounded-full '+(mode==='artisan'?'navy text-white font-extrabold':'text-slate-500');
+ ['home','tx','budget','goals'].forEach(v=>$('n-'+v).className='flex flex-col items-center w-1/4 text-xs font-bold '+(v===view?'text-blue-600':'text-slate-400'));
+ const{inc,exp,bal}=totals();
+ $('tInc').textContent=f(inc);$('tExp').textContent=f(exp);$('tBal').textContent=f(bal);
+ $('ratio').textContent=(inc>0?Math.round(bal/inc*100):0)+T[lang].pct;
+ $('fixAmt').textContent=f(D().fixed.amt);
+ $('dTotal').textContent=f(exp);
+
+ // الدائرة الكاملة بدون فراغات
+ const cats=byCat(),keys=Object.keys(cats);
+ let off=0,svg='<circle cx="18" cy="18" r="15.9155" fill="none" stroke="#e2e8f0" stroke-width="5"/>',lg='';
+ keys.forEach((k,i)=>{
+  const p=exp?cats[k]/exp*100:0,c=COLORS[i%COLORS.length];
+  svg+=`<circle cx="18" cy="18" r="15.9155" fill="none" stroke="${c}" stroke-width="5" stroke-dasharray="${p} ${100-p}" stroke-dashoffset="${-off}"/>`;
+  off+=p;
+  lg+=`<div class="flex items-center justify-between text-sm"><span class="num font-bold text-slate-500">${f(cats[k])} TND · ${Math.round(p)}%</span><span class="font-bold flex items-center gap-2">${k}<i class="w-3 h-3 rounded-full inline-block" style="background:${c}"></i></span></div>`;
+ });
+ $('donut').innerHTML=svg;$('legend').innerHTML=lg;
+
+ // تنبيه الميزانية (80%+)
+ let top=null;
+ Object.entries(D().budgets).forEach(([c,b])=>{const p=Math.round((cats[c]||0)/b*100);if(p>=80&&(!top||p>top.p))top={c,p}});
+ if(top){$('alertText').innerHTML=T[lang].alert(top.p,top.c);$('alertBox').classList.remove('hidden')}else $('alertBox').classList.add('hidden');
+
+ // المعاملات
+ $('txList').innerHTML=monthTx().slice().reverse().map(x=>`<div class="bg-white rounded-2xl p-3 shadow flex items-center justify-between">
+  <button onclick="delTx('${x.id}')" class="text-red-400 text-lg px-2">🗑</button>
+  <span class="num font-black ${x.type==='income'?'text-emerald-600':'text-red-500'}">${x.type==='income'?'+':'-'}${f(x.amt)} TND</span>
+  <span class="font-bold text-sm">${x.fixed?'📌 ':''}${x.cat}</span></div>`).join('')||'<p class="text-center text-slate-400 text-sm py-6">لا توجد معاملات في هذا الشهر</p>';
+
+ // الميزانية
+ $('budList').innerHTML=Object.entries(D().budgets).map(([c,b],i)=>{
+  const s=cats[c]||0,p=Math.min(100,Math.round(s/b*100)),col=p>=80?'#ef4444':p>=60?'#f5821f':'#1e9e57';
+  return`<div class="bg-white rounded-2xl p-4 shadow"><div class="flex justify-between text-sm font-bold mb-2"><button onclick="editBudget(${i})" class="num text-slate-500">${f(s)} / ${f(b)} TND</button><span>${c}</span></div>
+  <div class="h-2.5 bg-slate-100 rounded-full overflow-hidden"><div class="h-full rounded-full" style="width:${p}%;background:${col}"></div></div><p class="text-[11px] text-slate-400 mt-1">${p}%</p></div>`}).join('');
+
+ // الأهداف
+ $('goalList').innerHTML=D().goals.map((g,i)=>{const p=Math.min(100,Math.round(g.saved/g.target*100));
+  return`<div class="bg-white rounded-2xl p-4 shadow"><div class="flex justify-between text-sm font-bold mb-2"><button onclick="fundGoal(${i})" class="num text-slate-500">${f(g.saved)} / ${f(g.target)} TND</button><span>🎯 ${g.name}</span></div>
+  <div class="h-2.5 bg-slate-100 rounded-full overflow-hidden"><div class="h-full rounded-full bg-blue-600" style="width:${p}%"></div></div><p class="text-[11px] text-slate-400 mt-1">${p}% · اضغط المبلغ لإضافة مدخرات</p></div>`}).join('')||'<p class="text-center text-slate-400 text-sm py-6">أضف هدفك الأول</p>';
 }
-function openTx(t){$('txType').value=t||'income';fillCats();$('txAmt').value='';$('txModal').classList.remove('hidden')}
+
+// ---------- المعاملات ----------
+function openTx(t,scan){
+ $('txType').value=t||'income';fillCats();$('txAmt').value='';$('scanStatus').textContent='';
+ $('txModal').classList.remove('hidden');
+ if(scan)$('scanCam').click();
+}
 function closeTx(){$('txModal').classList.add('hidden')}
 function fillCats(){
-  const l=CATS[mode][$('txType').value];
-  $('txCat').innerHTML=l.map(c=>`<option>${c}</option>`).join('')+`<option value="__o">${T[lang].other}</option>`;customToggle();
+ const l=CATS[mode][$('txType').value];
+ const extra=[...new Set(D().tx.filter(x=>x.type===$('txType').value).map(x=>x.cat))].filter(c=>!l.includes(c));
+ $('txCat').innerHTML=[...l,...extra].map(c=>`<option>${c}</option>`).join('')+`<option value="__o">${T[lang].other}</option>`;customToggle();
 }
 function customToggle(){$('txCustom').classList.toggle('hidden',$('txCat').value!=='__o')}
 function saveTx(){
-  const amt=parseFloat($('txAmt').value);
-  if(isNaN(amt)||amt<=0){alert('يرجى إدخال مبلغ صحيح');return}
-  let cat=$('txCat').value;if(cat==='__o')cat=$('txCustom').value.trim()||'أخرى';
-  D().tx.push({id:Date.now(),type:$('txType').value,cat,amt});
-  save();closeTx();render();
+ const amt=parseFloat($('txAmt').value);
+ if(isNaN(amt)||amt<=0){alert('يرجى إدخال مبلغ صحيح');return}
+ let cat=$('txCat').value;if(cat==='__o')cat=$('txCustom').value.trim()||'أخرى';
+ D().tx.push({id:Date.now(),type:$('txType').value,cat,amt,m:vm});
+ save();closeTx();render();
 }
-function delTx(id){if(confirm('حذف المعاملة؟')){D().tx=D().tx.filter(x=>x.id!==id);save();render()}}
-function editBudget(c){const v=parseFloat(prompt('الحد الشهري لـ '+c,D().budgets[c]));if(v>0){D().budgets[c]=v;save();render()}}
-function addGoal(){const n=prompt('اسم الهدف');if(!n)return;const t=parseFloat(prompt('المبلغ المطلوب (TND)'));if(t>0){D().goals.push({name:n,target:t,saved:0});save();render()}}
-function fundGoal(i){const v=parseFloat(prompt('أضف مبلغ إلى المدخرات (TND)'));if(v>0){D().goals[i].saved+=v;save();render()}}
+function delTx(id){if(confirm('حذف المعاملة؟')){D().tx=D().tx.filter(x=>String(x.id)!==String(id));save();render()}}
+
+// ---------- الدخل الثابت ----------
+function editFixed(){
+ const v=parseFloat(prompt('الدخل الشهري الثابت (TND) — يُطبَّق على هذا الشهر والأشهر القادمة',D().fixed.amt));
+ if(isNaN(v)||v<0)return;
+ D().fixed.amt=v;
+ const ex=D().tx.find(x=>x.fixed&&x.m===CUR);
+ if(ex){if(v>0)ex.amt=v;else D().tx=D().tx.filter(x=>x!==ex)}
+ else if(v>0)D().tx.push({id:Date.now(),type:'income',cat:D().fixed.label,amt:v,m:CUR,fixed:true});
+ save();render();
+}
+
+// ---------- الميزانية والأهداف ----------
+function editBudget(i){
+ const c=Object.keys(D().budgets)[i];
+ const v=parseFloat(prompt('الحد الشهري لـ '+c,D().budgets[c]));
+ if(v>0){D().budgets[c]=v;save();render()}
+}
+function addBudget(){
+ const n=(prompt('اسم الفئة')||'').trim();if(!n)return;
+ const v=parseFloat(prompt('الحد الشهري (TND)'));
+ if(v>0){D().budgets[n]=v;save();render()}
+}
+function addGoal(){
+ const n=prompt('اسم الهدف');if(!n)return;
+ const t=parseFloat(prompt('المبلغ المطلوب (TND)'));
+ if(t>0){D().goals.push({name:n,target:t,saved:0});save();render()}
+}
+function fundGoal(i){
+ const v=parseFloat(prompt('أضف مبلغ إلى المدخرات (TND)'));
+ if(v>0){D().goals[i].saved+=v;save();render()}
+}
+
+// ---------- Scan (قراءة المبلغ من صورة) ----------
+let tessP;
+function loadTess(){
+ return tessP||(tessP=new Promise((res,rej)=>{
+  const s=document.createElement('script');
+  s.src='https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';
+  s.onload=res;s.onerror=()=>{tessP=null;rej()};document.head.appendChild(s);
+ }));
+}
+function pickAmount(text){
+ text=text.replace(/[٠-٩]/g,d=>'٠١٢٣٤٥٦٧٨٩'.indexOf(d)).replace(/[٫٬]/g,'.');
+ const re=/(\d{1,3}(?:[ ,]\d{3})*|\d+)[.,](\d{2,3})(?!\d)/g;
+ const vals=s=>[...s.matchAll(re)].map(x=>parseFloat(x[1].replace(/[ ,]/g,'')+'.'+x[2]));
+ const key=/total|net|montant|ttc|المجموع|مجموع|الجملة|المبلغ/i;
+ const keyed=[];text.split('\n').forEach(l=>{if(key.test(l))keyed.push(...vals(l))});
+ const pool=keyed.length?keyed:vals(text);
+ return pool.length?Math.max(...pool):null;
+}
+async function scanFile(inp){
+ const file=inp.files[0];if(!file)return;
+ const st=$('scanStatus');st.textContent='⏳ جاري قراءة الصورة...';
+ try{
+  await loadTess();
+  const{data}=await Tesseract.recognize(file,'eng+fra+ara');
+  const amt=pickAmount(data.text);
+  if(amt){$('txAmt').value=amt.toFixed(3);st.textContent='✅ تم: '+amt.toFixed(3)+' TND — راجع المبلغ قبل الحفظ'}
+  else st.textContent='⚠️ ما لقيناش مبلغ، دخّلو يدوياً';
+ }catch(e){st.textContent='⚠️ فشل المسح (تأكد من الإنترنت) — دخّل المبلغ يدوياً'}
+ inp.value='';
+}
 </script>
 </body>
 </html>
