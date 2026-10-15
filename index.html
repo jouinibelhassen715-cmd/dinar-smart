@@ -1,482 +1,285 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dinar Smart - إدارة مالية ذكية</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <style>
-    body { font-family: 'Cairo', sans-serif; background-color: #f0f6ff; }
-    .bg-custom-navy { background-color: #082c60; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dinar Smart - إدارة مالية ذكية</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  body{font-family:'Cairo',sans-serif;background:#f0f6ff}
+  .navy{background:#0b2a63}
+  .num{direction:ltr;unicode-bidi:embed}
+  .view{display:none}.view.active{display:block}
+</style>
 </head>
-<body class="min-h-screen text-slate-800 flex flex-col font-sans pb-24 select-none">
+<body class="min-h-screen text-slate-800 select-none">
 
-  <!-- 1. شاشة تسجيل الدخول والحماية -->
-  <div id="loginScreen" class="fixed inset-0 z-50 bg-[#082c60] flex items-center justify-center p-4">
-    <div class="w-full max-w-sm bg-white rounded-3xl p-6 shadow-2xl space-y-4 border border-slate-100">
-      
-      <!-- الشعار الرسمي -->
-      <div class="text-center space-y-2">
-        <div class="w-24 h-24 mx-auto flex items-center justify-center">
-          <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow-md">
-            <defs>
-              <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#003b8e" />
-                <stop offset="60%" stop-color="#0077ff" />
-                <stop offset="100%" stop-color="#00aaff" />
-              </linearGradient>
-            </defs>
-            <path d="M 100 20 A 80 80 0 1 1 30 100" fill="none" stroke="url(#blueGrad)" stroke-width="16" stroke-linecap="round"/>
-            <rect x="74" y="100" width="14" height="40" fill="#0077ff" rx="3"/>
-            <rect x="96" y="80" width="14" height="60" fill="#0055d4" rx="3"/>
-            <rect x="118" y="60" width="14" height="80" fill="#0033aa" rx="3"/>
-            <path d="M 40 140 Q 95 125 145 65" fill="none" stroke="#0088ff" stroke-width="12" stroke-linecap="round"/>
-            <polygon points="155,50 135,60 145,80" fill="#0088ff"/>
-            <circle cx="145" cy="45" r="20" fill="#002b66" stroke="#00aaff" stroke-width="3"/>
-            <text x="145" y="52" font-size="18" fill="#ffffff" font-weight="900" text-anchor="middle">Đ</text>
-          </svg>
-        </div>
-        <div>
-          <h1 class="text-2xl font-black text-[#082c60]">Dinar <span class="text-blue-500">Smart</span></h1>
-          <p class="text-xs font-bold text-slate-400">إدارة مالية ذكية لحياة أفضل</p>
-        </div>
-      </div>
-
-      <!-- اختيار اللغة ونوع المحفظة في واجهة الدخول -->
-      <div class="space-y-3 pt-1">
-        <div>
-          <label class="block text-[11px] font-bold text-slate-500 mb-1">اللغة (Langue)</label>
-          <div class="grid grid-cols-2 gap-2">
-            <button type="button" onclick="setLoginLang('ar')" id="loginLangAr" class="py-2 rounded-xl text-xs font-bold bg-[#082c60] text-white shadow">عربي</button>
-            <button type="button" onclick="setLoginLang('fr')" id="loginLangFr" class="py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600">Français</button>
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-[11px] font-bold text-slate-500 mb-1">نوع المحفظة الأولي</label>
-          <div class="grid grid-cols-2 gap-2">
-            <button type="button" onclick="setLoginMode('employee')" id="loginModeEmp" class="py-2 rounded-xl text-xs font-bold bg-[#082c60] text-white shadow">👨‍💼 موظف</button>
-            <button type="button" onclick="setLoginMode('artisan')" id="loginModeArt" class="py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600">🛠️ حرفي</button>
-          </div>
-        </div>
-      </div>
-
-      <form onsubmit="handleLogin(event)" class="space-y-3">
-        <div>
-          <label class="block text-xs font-bold text-slate-600 mb-1">البريد الإلكتروني للأدمين</label>
-          <input type="email" id="loginEmail" value="jouinibelhassen715@gmail.com" required class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 outline-none focus:border-blue-500">
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold text-slate-600 mb-1">كلمة المرور</label>
-          <div class="relative">
-            <input type="password" id="loginPassword" placeholder="أدخل كلمة المرور" required class="w-full p-2.5 pl-10 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 outline-none focus:border-blue-500">
-            <button type="button" onclick="togglePassword('loginPassword', 'eyeIcon1')" class="absolute left-3 top-2.5 text-slate-400 hover:text-slate-700 text-sm">
-              <span id="eyeIcon1">👁️</span>
-            </button>
-          </div>
-        </div>
-
-        <div id="loginError" class="text-xs text-red-500 bg-red-50 p-2 rounded-xl hidden text-center border border-red-200 font-bold"></div>
-
-        <button type="submit" class="w-full bg-[#082c60] hover:bg-blue-900 text-white font-bold py-2.5 rounded-xl transition shadow-lg text-xs">
-          تسجيل الدخول (Se connecter)
-        </button>
-      </form>
-
-      <div class="text-center pt-1">
-        <button onclick="togglePasswordResetModal()" class="text-xs font-bold text-blue-600 hover:underline">Mot de passe oublié / تعيين كلمة المرور</button>
-      </div>
+<!-- LOGIN -->
+<div id="login" class="fixed inset-0 z-50 navy flex items-center justify-center p-4">
+  <div class="w-full max-w-sm bg-white rounded-3xl p-6 shadow-2xl space-y-4">
+    <div class="text-center space-y-1">
+      <svg viewBox="0 0 200 200" class="w-24 h-24 mx-auto">
+        <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#003b8e"/><stop offset=".6" stop-color="#0077ff"/><stop offset="1" stop-color="#00aaff"/></linearGradient></defs>
+        <path d="M 100 20 A 80 80 0 1 1 30 100" fill="none" stroke="url(#g)" stroke-width="16" stroke-linecap="round"/>
+        <rect x="74" y="100" width="14" height="40" fill="#0a8dff" rx="3"/>
+        <rect x="96" y="80" width="14" height="60" fill="#0055d4" rx="3"/>
+        <rect x="118" y="60" width="14" height="80" fill="#0033aa" rx="3"/>
+        <path d="M 40 140 Q 95 125 145 65" fill="none" stroke="#0088ff" stroke-width="12" stroke-linecap="round"/>
+        <polygon points="155,50 135,60 145,80" fill="#0088ff"/>
+        <circle cx="145" cy="45" r="20" fill="#002b66" stroke="#00aaff" stroke-width="3"/>
+        <text x="145" y="52" font-size="18" fill="#fff" font-weight="900" text-anchor="middle">Đ</text>
+      </svg>
+      <h1 class="text-3xl font-black text-[#0b2a63]" dir="ltr">Dinar <span class="text-blue-500">Smart</span></h1>
+      <p class="text-xs font-bold text-slate-400">إدارة مالية ذكية لحياة أفضل</p>
     </div>
+    <form onsubmit="doLogin(event)" class="space-y-3">
+      <input id="email" type="email" value="jouinibelhassen715@gmail.com" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500">
+      <input id="pass" type="password" placeholder="كلمة المرور" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500">
+      <p id="err" class="hidden text-xs text-red-500 bg-red-50 p-2 rounded-xl text-center font-bold">البريد أو كلمة المرور غير صحيحة</p>
+      <button class="w-full navy text-white font-bold py-3 rounded-xl text-sm shadow-lg">تسجيل الدخول</button>
+    </form>
   </div>
+</div>
 
-  <!-- Modal تغيير كلمة المرور للأدمين -->
-  <div id="resetModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-3xl p-6 w-full max-w-xs space-y-4 text-slate-800 shadow-2xl">
-      <h3 class="text-sm font-black text-center text-[#082c60]">تغيير كلمة المرور للأدمين</h3>
-      <div>
-        <label class="block text-xs font-bold text-slate-500 mb-1">تأكيد بريد الأدمين</label>
-        <input type="email" id="resetAdminEmail" value="jouinibelhassen715@gmail.com" class="w-full p-2.5 bg-slate-100 border border-slate-200 rounded-xl text-xs font-bold text-slate-800">
+<!-- APP -->
+<div id="app" class="hidden w-full max-w-md mx-auto pb-24">
+  <header class="navy text-white px-5 pt-6 pb-24 space-y-4">
+    <div class="flex items-center justify-between">
+      <div class="bg-white/10 p-1 rounded-full flex text-xs font-bold">
+        <button id="lAr" onclick="setLang('ar')" class="px-4 py-1.5 rounded-full bg-white text-[#0b2a63] font-extrabold">عربي</button>
+        <button id="lFr" onclick="setLang('fr')" class="px-3 py-1.5 rounded-full text-slate-200">Français</button>
       </div>
-      <div>
-        <label class="block text-xs font-bold text-slate-500 mb-1">كلمة المرور الجديدة</label>
-        <div class="relative">
-          <input type="password" id="newPassInput" placeholder="كلمة المرور الجديدة" class="w-full p-2.5 pl-10 bg-slate-100 border border-slate-200 rounded-xl text-xs font-bold text-slate-800">
-          <button type="button" onclick="togglePassword('newPassInput', 'eyeIcon2')" class="absolute left-3 top-2.5 text-slate-400 hover:text-slate-700 text-sm">
-            <span id="eyeIcon2">👁️</span>
-          </button>
-        </div>
-      </div>
-      <div class="flex space-x-2 space-x-reverse pt-2">
-        <button onclick="saveNewPassword()" class="w-1/2 bg-[#082c60] text-white text-xs font-bold py-2 rounded-xl shadow-md">حفظ</button>
-        <button onclick="togglePasswordResetModal()" class="w-1/2 bg-slate-200 text-slate-700 text-xs font-bold py-2 rounded-xl">إلغاء</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal إضافة معاملة أو تعديل -->
-  <div id="transactionModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-3xl p-6 w-full max-w-xs space-y-4 text-slate-800 shadow-2xl">
-      <h3 class="text-sm font-black text-center text-[#082c60]" id="txModalTitle">إضافة معاملة جديدة</h3>
-      
-      <div>
-        <label class="block text-xs font-bold text-slate-500 mb-1">النوع</label>
-        <select id="txType" onchange="updateCategoryOptions()" class="w-full p-2.5 bg-slate-100 rounded-xl text-xs font-bold outline-none border border-slate-200">
-          <option value="income">مدخول (Entrée)</option>
-          <option value="expense">مصروف (Dépense)</option>
-        </select>
-      </div>
-
-      <div>
-        <label class="block text-xs font-bold text-slate-500 mb-1">الفئة / التصنيف</label>
-        <select id="txCategory" onchange="checkCustomCategory()" class="w-full p-2.5 bg-slate-100 rounded-xl text-xs font-bold outline-none border border-slate-200">
-          <!-- تُعبأ تلقائياً حسب وضع الموظف أو الحرفي -->
-        </select>
-      </div>
-
-      <div id="customCatDiv" class="hidden">
-        <label class="block text-xs font-bold text-slate-500 mb-1">اكتب الفئة المخصصة</label>
-        <input type="text" id="txCustomCategory" placeholder="مثال: تصليح، ضريبة..." class="w-full p-2.5 bg-slate-100 rounded-xl text-xs font-bold outline-none border border-slate-200">
-      </div>
-
-      <div>
-        <label class="block text-xs font-bold text-slate-500 mb-1">المبلغ (TND)</label>
-        <input type="number" step="0.001" min="0" id="txAmount" placeholder="0.000" class="w-full p-2.5 bg-slate-100 rounded-xl text-xs font-bold outline-none border border-slate-200">
-      </div>
-
-      <div class="flex space-x-2 space-x-reverse pt-2">
-        <button onclick="saveTransaction()" class="w-1/2 bg-[#082c60] text-white text-xs font-bold py-2.5 rounded-xl shadow-md">حفظ المعاملة</button>
-        <button onclick="closeTransactionModal()" class="w-1/2 bg-slate-200 text-slate-700 text-xs font-bold py-2.5 rounded-xl">إلغاء</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- 2. الواجهة الرئيسية Dinar Smart -->
-  <div id="appContainer" class="w-full max-w-md mx-auto flex-1 flex flex-col hidden">
-    
-    <!-- الهيدر الأصلي -->
-    <header class="bg-custom-navy text-white px-5 pt-6 pb-8 rounded-b-[35px] shadow-lg space-y-5">
-      
-      <div class="flex items-center justify-between">
-        <div class="bg-slate-800/80 p-1 rounded-full flex items-center text-xs font-bold border border-slate-700/60">
-          <button onclick="setLanguage('ar')" id="langArBtn" class="px-3.5 py-1 rounded-full bg-white text-slate-900 font-extrabold shadow-sm">عربي</button>
-          <button onclick="setLanguage('fr')" id="langFrBtn" class="px-3 py-1 rounded-full text-slate-300">Français</button>
-        </div>
-
-        <div class="flex items-center space-x-3 space-x-reverse">
-          <div class="text-right">
-            <h1 class="text-xl font-black tracking-tight leading-none">Dinar <span class="text-blue-400">Smart</span></h1>
-            <p class="text-[10px] text-slate-300 font-semibold mt-0.5" id="headerModeLabel">وضع الموظف</p>
-          </div>
-          <div class="w-10 h-10 rounded-full border-2 border-blue-400 flex items-center justify-center bg-blue-900/50 shadow-inner">
-            <svg class="w-5 h-5 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
-            </svg>
-          </div>
-        </div>
-      </div>
-
-      <!-- تبديل الوضع حتى بعد الدخول -->
-      <div class="bg-slate-900/70 p-1 rounded-full flex items-center text-xs font-bold border border-slate-700/50">
-        <button onclick="switchMode('employee')" id="modeEmployeeBtn" class="w-1/2 py-2.5 rounded-full flex items-center justify-center space-x-1.5 space-x-reverse bg-white text-slate-900 shadow-md font-extrabold">
-          <span>👨‍💼</span>
-          <span>موظف</span>
-        </button>
-        <button onclick="switchMode('artisan')" id="modeArtisanBtn" class="w-1/2 py-2.5 rounded-full flex items-center justify-center space-x-1.5 space-x-reverse text-slate-300 font-bold">
-          <span>🛠️</span>
-          <span>حرفي</span>
-        </button>
-      </div>
-
-      <!-- ملخص الشهر -->
-      <div class="text-center pt-1">
-        <p class="text-xs text-slate-300 font-bold">ملخص الشهر</p>
-        <h2 class="text-2xl font-black text-white tracking-wide mt-0.5">أكتوبر 2026</h2>
-      </div>
-
-    </header>
-
-    <!-- المحتوى الرئيسي -->
-    <main class="p-4 space-y-4 flex-1">
-      
-      <div class="grid grid-cols-2 gap-3.5">
-        <!-- كارت الدخل -->
-        <div onclick="openTransactionModal('income')" class="bg-white p-4 rounded-[28px] shadow-sm border border-slate-100 flex flex-col justify-between cursor-pointer active:scale-95 transition">
-          <div class="flex items-center justify-between mb-3">
-            <div class="w-7 h-7 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center font-black text-xs">↗</div>
-            <span class="text-[11px] font-extrabold text-emerald-600">الدخل الإجمالي</span>
-          </div>
-          <p class="text-lg font-black text-slate-900 text-left dir-ltr"><span class="text-xs text-slate-400 font-bold mr-1">TND</span><span id="totalIncome">0.000</span></p>
-        </div>
-
-        <!-- كارت المصاريف -->
-        <div onclick="openTransactionModal('expense')" class="bg-white p-4 rounded-[28px] shadow-sm border border-slate-100 flex flex-col justify-between cursor-pointer active:scale-95 transition">
-          <div class="flex items-center justify-between mb-3">
-            <div class="w-7 h-7 bg-red-100 text-red-500 rounded-full flex items-center justify-center font-black text-xs">↘</div>
-            <span class="text-[11px] font-extrabold text-red-500">المصاريف الإجمالية</span>
-          </div>
-          <p class="text-lg font-black text-slate-900 text-left dir-ltr"><span class="text-xs text-slate-400 font-bold mr-1">TND</span><span id="totalExpenses">0.000</span></p>
-        </div>
-      </div>
-
-      <!-- كارت الرصيد والمحفظة الدقيقة -->
-      <div class="bg-white p-4 rounded-[28px] shadow-sm border border-slate-100 flex items-center justify-between">
-        <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-2xl shadow-inner border border-blue-100">
-          👛
-        </div>
+      <div class="flex items-center gap-3">
         <div class="text-right">
-          <p class="text-[11px] font-bold text-slate-400">الرصيد المتبقي</p>
-          <p class="text-2xl font-black text-slate-900 mt-0.5 dir-ltr"><span id="currentBalance">0.000</span> <span class="text-xs text-slate-400 font-bold">TND</span></p>
-          <p class="text-[10px] text-slate-400 font-bold mt-0.5" id="balanceRatio">0% من الدخل</p>
+          <h1 class="text-xl font-black leading-none" dir="ltr">Dinar <span class="text-blue-400">Smart</span></h1>
+          <p class="text-[11px] text-slate-300 mt-1" data-i="tag">إدارة مالية ذكية</p>
+        </div>
+        <div class="w-11 h-11 rounded-full border-2 border-white/80 flex items-center justify-center">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><path d="M8 18V10M12 18V6M16 18v-6"/></svg>
+        </div>
+      </div>
+    </div>
+    <div class="flex items-center justify-between gap-3">
+      <div class="bg-white p-1 rounded-full flex flex-1 max-w-[220px] text-sm font-bold">
+        <button id="mEmp" onclick="setMode('employee')" class="flex-1 py-2 rounded-full">👨‍💼 <span data-i="emp">موظف</span></button>
+        <button id="mArt" onclick="setMode('artisan')" class="flex-1 py-2 rounded-full">🛠️ <span data-i="art">حرفي</span></button>
+      </div>
+      <div class="text-right">
+        <p class="text-xs text-slate-300" data-i="summary">ملخص الشهر</p>
+        <h2 class="text-2xl font-black" id="monthLabel">أكتوبر 2026</h2>
+      </div>
+    </div>
+  </header>
+
+  <main class="px-4 -mt-16 space-y-4">
+
+    <!-- HOME -->
+    <section id="v-home" class="view active space-y-4">
+      <div class="grid grid-cols-2 gap-3">
+        <div onclick="openTx('expense')" class="bg-white p-4 rounded-3xl shadow border border-red-100 cursor-pointer active:scale-95 transition">
+          <div class="flex items-center justify-between mb-3">
+            <div class="w-8 h-8 bg-red-100 text-red-500 rounded-full flex items-center justify-center font-black">↘</div>
+            <span class="text-xs font-extrabold text-red-600 leading-tight text-right" data-i="exp">المصاريف الإجمالية</span>
+          </div>
+          <p class="num text-xl font-black text-[#0b2a63]"><span id="tExp">0.00</span> <span class="text-xs text-slate-500">TND</span></p>
+        </div>
+        <div onclick="openTx('income')" class="bg-white p-4 rounded-3xl shadow border border-slate-100 cursor-pointer active:scale-95 transition">
+          <div class="flex items-center justify-between mb-3">
+            <div class="w-8 h-8 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center font-black">↗</div>
+            <span class="text-xs font-extrabold text-emerald-700" data-i="inc">الدخل الإجمالي</span>
+          </div>
+          <p class="num text-xl font-black text-[#0b2a63]"><span id="tInc">0.00</span> <span class="text-xs text-slate-500">TND</span></p>
         </div>
       </div>
 
-      <!-- الرسم البياني وتوزيع المصاريف المطابق تماماً للصورة -->
-      <div class="bg-white p-5 rounded-[28px] shadow-sm border border-slate-100 space-y-3">
-        <div class="flex items-center justify-end space-x-1.5 space-x-reverse text-slate-700">
-          <h3 class="text-xs font-extrabold">توزيع المصاريف</h3>
-          <span class="text-sm">🕒</span>
+      <div class="bg-white p-5 rounded-3xl shadow border border-slate-100 flex items-center justify-between">
+        <div class="w-16 h-16 bg-blue-100 text-[#0b2a63] rounded-full flex items-center justify-center text-3xl">👛</div>
+        <div class="text-right">
+          <p class="text-sm font-semibold text-slate-500" data-i="bal">الرصيد المتبقي</p>
+          <p class="num text-3xl font-black text-[#0b2a63]"><span id="tBal">0.00</span> <span class="text-base">TND</span></p>
+          <p class="text-xs text-slate-400 font-semibold" id="ratio"></p>
         </div>
+      </div>
 
-        <div class="relative w-36 h-36 mx-auto flex items-center justify-center pt-1">
-          <svg class="w-full h-full transform -rotate-90" viewBox="0 0 36 36">
-            <path class="text-slate-100" stroke-width="4" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-            <path class="text-blue-900" stroke-dasharray="50, 100" stroke-width="4.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-            <path class="text-emerald-500" stroke-dasharray="25, 100" stroke-dashoffset="-50" stroke-width="4.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-            <path class="text-orange-500" stroke-dasharray="15, 100" stroke-dashoffset="-75" stroke-width="4.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-          </svg>
-          <div class="absolute text-center">
-            <p class="text-[9px] text-slate-400 font-bold">المجموع</p>
-            <p class="text-sm font-black text-slate-900" id="chartTotal">0.00</p>
-            <p class="text-[8px] text-slate-400 font-bold">TND</p>
+      <div id="alertBox" class="hidden bg-amber-50 border border-amber-200 rounded-3xl p-4 flex items-center gap-3">
+        <div class="w-10 h-10 rounded-full bg-amber-500 text-white flex items-center justify-center font-black shrink-0">!</div>
+        <p class="flex-1 text-sm text-amber-900 font-semibold" id="alertText"></p>
+        <button onclick="document.getElementById('alertBox').classList.add('hidden')" class="text-amber-800 text-lg">✕</button>
+      </div>
+
+      <div class="bg-white p-5 rounded-3xl shadow border border-slate-100">
+        <h3 class="text-base font-black text-[#0b2a63] mb-3" data-i="dist">🥧 توزيع المصاريف</h3>
+        <div class="relative w-52 h-52 mx-auto">
+          <svg viewBox="0 0 36 36" class="w-full h-full -rotate-90" id="donut"></svg>
+          <div class="absolute inset-0 flex flex-col items-center justify-center">
+            <p class="text-xs text-slate-400 font-bold" data-i="total">المجموع</p>
+            <p class="num text-xl font-black text-[#0b2a63]" id="dTotal">0.00</p>
+            <p class="text-[10px] text-slate-400 font-bold">TND</p>
           </div>
         </div>
+        <div id="legend" class="mt-4 space-y-2"></div>
       </div>
+    </section>
 
-    </main>
+    <!-- TRANSACTIONS -->
+    <section id="v-tx" class="view space-y-3">
+      <div class="flex items-center justify-between bg-white rounded-3xl p-4 shadow">
+        <button onclick="openTx('income')" class="navy text-white text-xs font-bold px-4 py-2 rounded-full" data-i="add">+ إضافة معاملة</button>
+        <h3 class="font-black text-[#0b2a63]" data-i="txs">المعاملات</h3>
+      </div>
+      <div id="txList" class="space-y-2"></div>
+    </section>
 
-    <!-- شريط التنقل السفلي المطابق للصورة -->
-    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 py-2.5 px-6 flex items-center justify-between z-40 max-w-md mx-auto">
-      <button onclick="navigate('home')" class="flex flex-col items-center text-blue-600 font-black space-y-0.5">
-        <span class="text-xl">🏠</span>
-        <span class="text-[10px]">الرئيسية</span>
-      </button>
-      <button onclick="openTransactionModal('income')" class="flex flex-col items-center text-slate-400 hover:text-slate-700 font-bold space-y-0.5">
-        <span class="text-xl">⇆</span>
-        <span class="text-[10px]">المعاملات</span>
-      </button>
-      <button onclick="navigate('budget')" class="flex flex-col items-center text-slate-400 hover:text-slate-700 font-bold space-y-0.5">
-        <span class="text-xl">📋</span>
-        <span class="text-[10px]">الميزانية</span>
-      </button>
-      <button onclick="navigate('goals')" class="flex flex-col items-center text-slate-400 hover:text-slate-700 font-bold space-y-0.5">
-        <span class="text-xl">🎯</span>
-        <span class="text-[10px]">الأهداف</span>
-      </button>
-    </nav>
+    <!-- BUDGET -->
+    <section id="v-budget" class="view space-y-3">
+      <div class="bg-white rounded-3xl p-4 shadow"><h3 class="font-black text-[#0b2a63]" data-i="bud">الميزانية</h3><p class="text-xs text-slate-400">اضغط على المبلغ لتعديل الحد الشهري</p></div>
+      <div id="budList" class="space-y-3"></div>
+    </section>
+
+    <!-- GOALS -->
+    <section id="v-goals" class="view space-y-3">
+      <div class="flex items-center justify-between bg-white rounded-3xl p-4 shadow">
+        <button onclick="addGoal()" class="navy text-white text-xs font-bold px-4 py-2 rounded-full" data-i="addGoal">+ هدف جديد</button>
+        <h3 class="font-black text-[#0b2a63]" data-i="goals">الأهداف</h3>
+      </div>
+      <div id="goalList" class="space-y-3"></div>
+    </section>
+  </main>
+
+  <!-- NAV -->
+  <nav class="fixed bottom-0 inset-x-0 max-w-md mx-auto bg-white border-t border-slate-200 py-2 px-4 flex justify-between z-40">
+    <button onclick="nav('home')" id="n-home" class="flex flex-col items-center w-1/4 text-xs font-bold"><span class="text-xl">🏠</span><span data-i="home">الرئيسية</span></button>
+    <button onclick="nav('tx')" id="n-tx" class="flex flex-col items-center w-1/4 text-xs font-bold"><span class="text-xl">⇄</span><span data-i="txs">المعاملات</span></button>
+    <button onclick="nav('budget')" id="n-budget" class="flex flex-col items-center w-1/4 text-xs font-bold"><span class="text-xl">📋</span><span data-i="bud">الميزانية</span></button>
+    <button onclick="nav('goals')" id="n-goals" class="flex flex-col items-center w-1/4 text-xs font-bold"><span class="text-xl">🎯</span><span data-i="goals">الأهداف</span></button>
+  </nav>
+</div>
+
+<!-- TX MODAL -->
+<div id="txModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+  <div class="bg-white rounded-3xl p-6 w-full max-w-xs space-y-3">
+    <h3 class="text-center font-black text-[#0b2a63]" data-i="newTx">إضافة معاملة جديدة</h3>
+    <select id="txType" onchange="fillCats()" class="w-full p-3 bg-slate-100 rounded-xl text-sm font-bold">
+      <option value="income">مدخول</option><option value="expense">مصروف</option>
+    </select>
+    <select id="txCat" onchange="customToggle()" class="w-full p-3 bg-slate-100 rounded-xl text-sm font-bold"></select>
+    <input id="txCustom" placeholder="الفئة المخصصة" class="hidden w-full p-3 bg-slate-100 rounded-xl text-sm font-bold">
+    <input id="txAmt" type="number" step="0.001" min="0" placeholder="0.000 TND" class="w-full p-3 bg-slate-100 rounded-xl text-sm font-bold">
+    <div class="flex gap-2 pt-1">
+      <button onclick="saveTx()" class="w-1/2 navy text-white text-sm font-bold py-2.5 rounded-xl" data-i="save">حفظ</button>
+      <button onclick="closeTx()" class="w-1/2 bg-slate-200 text-sm font-bold py-2.5 rounded-xl" data-i="cancel">إلغاء</button>
+    </div>
   </div>
+</div>
 
-  <script>
-    let loginMode = 'employee';
-    let loginLang = 'ar';
-    let currentMode = 'employee';
-    let currentLang = 'ar';
-    let defaultPass = '2026';
-    let adminEmail = 'jouinibelhassen715@gmail.com';
+<script>
+const ADMIN='jouinibelhassen715@gmail.com', PASS='2026';
+const COLORS=['#0b2a63','#1e9e57','#f5821f','#9b7fd1','#0ea5e9','#e11d48'];
+const T={
+ ar:{tag:'إدارة مالية ذكية',emp:'موظف',art:'حرفي',summary:'ملخص الشهر',exp:'المصاريف الإجمالية',inc:'الدخل الإجمالي',bal:'الرصيد المتبقي',dist:'🥧 توزيع المصاريف',total:'المجموع',add:'+ إضافة معاملة',txs:'المعاملات',bud:'الميزانية',goals:'الأهداف',addGoal:'+ هدف جديد',home:'الرئيسية',newTx:'إضافة معاملة جديدة',save:'حفظ',cancel:'إلغاء',month:'أكتوبر 2026',pct:'% من الدخل',alert:(p,c)=>`<b>تنبيه:</b> استهلكت ${p}% من ميزانية ${c}. حافظ على توازن مصاريفك.`,other:'نوع آخر'},
+ fr:{tag:'Gestion financière intelligente',emp:'Employé',art:'Artisan',summary:'Résumé du mois',exp:'Dépenses totales',inc:'Revenu total',bal:'Solde restant',dist:'🥧 Répartition des dépenses',total:'Total',add:'+ Ajouter',txs:'Transactions',bud:'Budget',goals:'Objectifs',addGoal:'+ Nouvel objectif',home:'Accueil',newTx:'Nouvelle transaction',save:'Enregistrer',cancel:'Annuler',month:'Octobre 2026',pct:'% du revenu',alert:(p,c)=>`<b>Attention :</b> vous avez utilisé ${p}% du budget « ${c} ».`,other:'Autre'}
+};
+const CATS={
+ employee:{income:['أجر شهري','دخل إضافي'],expense:['نقل','مطعم','لباس','تسوق']},
+ artisan:{income:['دخل ورشة','خدمات خارجية'],expense:['مواد أولية','معدات','إيجار ورشة','نقل بضائع']}
+};
+const DEFAULT={
+ employee:{tx:[{id:1,type:'income',cat:'أجر شهري',amt:2850},{id:2,type:'expense',cat:'نقل',amt:400},{id:3,type:'expense',cat:'مطعم',amt:500},{id:4,type:'expense',cat:'لباس',amt:350},{id:5,type:'expense',cat:'تسوق',amt:370}],budgets:{'نقل':500,'مطعم':600,'لباس':400,'تسوق':500},goals:[{name:'صندوق الطوارئ',target:3000,saved:900}]},
+ artisan:{tx:[{id:1,type:'income',cat:'دخل ورشة',amt:4200},{id:2,type:'expense',cat:'مواد أولية',amt:1000},{id:3,type:'expense',cat:'معدات',amt:500},{id:4,type:'expense',cat:'إيجار ورشة',amt:400},{id:5,type:'expense',cat:'نقل بضائع',amt:200}],budgets:{'مواد أولية':1200,'معدات':600,'إيجار ورشة':400,'نقل بضائع':250},goals:[{name:'شراء آلة جديدة',target:5000,saved:1200}]}
+};
+let S, mode='employee', lang='ar', view='home';
+try{S=JSON.parse(localStorage.getItem('ds_data'))}catch(e){}
+if(!S||!S.employee)S=JSON.parse(JSON.stringify(DEFAULT));
+const save=()=>{try{localStorage.setItem('ds_data',JSON.stringify(S))}catch(e){}};
+const $=id=>document.getElementById(id);
+const f=n=>Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const D=()=>S[mode];
 
-    // قواعد البيانات المنفصلة للموظف والحرفي
-    let employeeData = JSON.parse(localStorage.getItem('ds_emp_data') || JSON.stringify({
-      income: 2850.000,
-      expense: 1620.000,
-      incomesList: [{cat: 'أجر شهري', amount: 2850}],
-      expensesList: [{cat: 'نقل', amount: 400}, {cat: 'مطعم', amount: 500}, {cat: 'لباس', amount: 350}, {cat: 'تسوق', amount: 370}]
-    }));
-
-    let artisanData = JSON.parse(localStorage.getItem('ds_art_data') || JSON.stringify({
-      income: 4200.000,
-      expense: 2100.000,
-      incomesList: [{cat: 'دخل ورشة', amount: 4200}],
-      expensesList: [{cat: 'مواد أولية', amount: 1000}, {cat: 'معدات', amount: 500}, {cat: 'إيجار ورشة', amount: 400}, {cat: 'نقل بضائع', amount: 200}]
-    }));
-
-    function setLoginLang(lang) {
-      loginLang = lang;
-      document.getElementById('loginLangAr').className = lang === 'ar' ? "py-2 rounded-xl text-xs font-bold bg-[#082c60] text-white shadow" : "py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600";
-      document.getElementById('loginLangFr').className = lang === 'fr' ? "py-2 rounded-xl text-xs font-bold bg-[#082c60] text-white shadow" : "py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600";
-    }
-
-    function setLoginMode(mode) {
-      loginMode = mode;
-      document.getElementById('loginModeEmp').className = mode === 'employee' ? "py-2 rounded-xl text-xs font-bold bg-[#082c60] text-white shadow" : "py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600";
-      document.getElementById('loginModeArt').className = mode === 'artisan' ? "py-2 rounded-xl text-xs font-bold bg-[#082c60] text-white shadow" : "py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600";
-    }
-
-    function togglePassword(inputId, iconId) {
-      const input = document.getElementById(inputId);
-      const icon = document.getElementById(iconId);
-      if (input.type === 'password') {
-        input.type = 'text';
-        icon.innerText = '🙈';
-      } else {
-        input.type = 'password';
-        icon.innerText = '👁️';
-      }
-    }
-
-    function handleLogin(e) {
-      e.preventDefault();
-      const email = document.getElementById('loginEmail').value;
-      const pass = document.getElementById('loginPassword').value;
-      const err = document.getElementById('loginError');
-      const activePass = localStorage.getItem('ds_pass') || defaultPass;
-
-      if (email.toLowerCase() === adminEmail && pass === activePass) {
-        currentMode = loginMode;
-        currentLang = loginLang;
-        document.getElementById('loginScreen').classList.add('hidden');
-        document.getElementById('appContainer').classList.remove('hidden');
-        applyModeAndLangUI();
-        updateUI();
-      } else {
-        err.innerText = "البريد الإلكتروني أو كلمة المرور غير صحيحة!";
-        err.classList.remove('hidden');
-      }
-    }
-
-    function switchMode(mode) {
-      currentMode = mode;
-      applyModeAndLangUI();
-      updateUI();
-    }
-
-    function applyModeAndLangUI() {
-      const empBtn = document.getElementById('modeEmployeeBtn');
-      const artBtn = document.getElementById('modeArtisanBtn');
-      const modeLabel = document.getElementById('headerModeLabel');
-
-      if (currentMode === 'employee') {
-        empBtn.className = "w-1/2 py-2.5 rounded-full flex items-center justify-center space-x-1.5 space-x-reverse bg-white text-slate-900 shadow-md font-extrabold";
-        artBtn.className = "w-1/2 py-2.5 rounded-full flex items-center justify-center space-x-1.5 space-x-reverse text-slate-300 font-bold";
-        modeLabel.innerText = "وضع الموظف";
-      } else {
-        artBtn.className = "w-1/2 py-2.5 rounded-full flex items-center justify-center space-x-1.5 space-x-reverse bg-white text-slate-900 shadow-md font-extrabold";
-        empBtn.className = "w-1/2 py-2.5 rounded-full flex items-center justify-center space-x-1.5 space-x-reverse text-slate-300 font-bold";
-        modeLabel.innerText = "وضع الحرفي";
-      }
-    }
-
-    function updateUI() {
-      let data = currentMode === 'employee' ? employeeData : artisanData;
-      document.getElementById('totalIncome').innerText = data.income.toFixed(3);
-      document.getElementById('totalExpenses').innerText = data.expense.toFixed(3);
-      document.getElementById('chartTotal').innerText = data.expense.toFixed(2);
-
-      let balance = data.income - data.expense;
-      document.getElementById('currentBalance').innerText = balance.toFixed(3);
-      let ratio = data.income > 0 ? Math.round((balance / data.income) * 100) : 0;
-      document.getElementById('balanceRatio').innerText = ratio + "% من الدخل";
-    }
-
-    function openTransactionModal(defaultType) {
-      document.getElementById('txType').value = defaultType || 'income';
-      updateCategoryOptions();
-      document.getElementById('txAmount').value = '';
-      document.getElementById('transactionModal').classList.remove('hidden');
-    }
-
-    function closeTransactionModal() {
-      document.getElementById('transactionModal').classList.add('hidden');
-    }
-
-    function updateCategoryOptions() {
-      let type = document.getElementById('txType').value;
-      let select = document.getElementById('txCategory');
-      select.innerHTML = '';
-
-      if (type === 'income') {
-        let opts = currentMode === 'employee' ? ['أجر شهري', 'دخل إضافي', 'نوع آخر'] : ['دخل ورشة', 'خدمات خارجية', 'نوع آخر'];
-        opts.forEach(o => select.innerHTML += `<option value="${o}">${o}</option>`);
-      } else {
-        let opts = currentMode === 'employee' ? ['نقل', 'مطعم', 'لباس', 'تسوق', 'نوع آخر'] : ['مواد أولية', 'معدات', 'إيجار ورشة', 'نقل بضائع', 'نوع آخر'];
-        opts.forEach(o => select.innerHTML += `<option value="${o}">${o}</option>`);
-      }
-      checkCustomCategory();
-    }
-
-    function checkCustomCategory() {
-      let cat = document.getElementById('txCategory').value;
-      let customDiv = document.getElementById('customCatDiv');
-      if (cat === 'نوع آخر') {
-        customDiv.classList.remove('hidden');
-      } else {
-        customDiv.classList.add('hidden');
-      }
-    }
-
-    function saveTransaction() {
-      let type = document.getElementById('txType').value;
-      let cat = document.getElementById('txCategory').value;
-      if (cat === 'نوع آخر') {
-        cat = document.getElementById('txCustomCategory').value.trim() || 'أخرى';
-      }
-      let amt = parseFloat(document.getElementById('txAmount').value);
-
-      if (isNaN(amt) || amt < 0) {
-        alert('يرجى إدخال مبلغ صحيح');
-        return;
-      }
-
-      let data = currentMode === 'employee' ? employeeData : artisanData;
-
-      if (type === 'income') {
-        data.income += amt;
-        data.incomesList.push({cat, amount: amt});
-        localStorage.setItem('ds_emp_data', JSON.stringify(employeeData));
-        localStorage.setItem('ds_art_data', JSON.stringify(artisanData));
-      } else {
-        data.expense += amt;
-        data.expensesList.push({cat, amount: amt});
-        localStorage.setItem('ds_emp_data', JSON.stringify(employeeData));
-        localStorage.setItem('ds_art_data', JSON.stringify(artisanData));
-      }
-
-      updateUI();
-      closeTransactionModal();
-    }
-
-    function togglePasswordResetModal() {
-      document.getElementById('resetModal').classList.toggle('hidden');
-    }
-
-    function saveNewPassword() {
-      const confirmEmail = document.getElementById('resetAdminEmail').value;
-      const newPass = document.getElementById('newPassInput').value;
-      if (confirmEmail.toLowerCase() !== adminEmail) {
-        alert('فقط بريد الأدمين ' + adminEmail + ' مسموح له بتغيير كلمة المرور!');
-        return;
-      }
-      if (newPass.trim().length > 0) {
-        localStorage.setItem('ds_pass', newPass.trim());
-        alert('تم تغيير كلمة المرور بنجاح!');
-        togglePasswordResetModal();
-      } else {
-        alert('يرجى إدخال كلمة مرور صالحة.');
-      }
-    }
-
-    function setLanguage(lang) {
-      currentLang = lang;
-      document.getElementById('langArBtn').className = lang === 'ar' ? "px-3.5 py-1 rounded-full bg-white text-slate-900 font-extrabold shadow-sm" : "px-3 py-1 rounded-full text-slate-300";
-      document.getElementById('langFrBtn').className = lang === 'fr' ? "px-3.5 py-1 rounded-full bg-white text-slate-900 font-extrabold shadow-sm" : "px-3 py-1 rounded-full text-slate-300";
-      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
-    }
-
-    function navigate(page) {
-      if(page === 'home') return;
-      alert("القسم " + page + " متاح وجاهز للاستخدام!");
-    }
-  </script>
+function doLogin(e){
+  e.preventDefault();
+  const p=localStorage.getItem('ds_pass')||PASS;
+  if($('email').value.toLowerCase()===ADMIN&&$('pass').value===p){
+    $('login').classList.add('hidden');$('app').classList.remove('hidden');render();
+  }else $('err').classList.remove('hidden');
+}
+function setLang(l){
+  lang=l;document.documentElement.dir=l==='ar'?'rtl':'ltr';
+  $('lAr').className='px-4 py-1.5 rounded-full '+(l==='ar'?'bg-white text-[#0b2a63] font-extrabold':'text-slate-200');
+  $('lFr').className='px-3 py-1.5 rounded-full '+(l==='fr'?'bg-white text-[#0b2a63] font-extrabold':'text-slate-200');
+  document.querySelectorAll('[data-i]').forEach(el=>{const v=T[l][el.dataset.i];if(typeof v==='string')el.textContent=v});
+  $('monthLabel').textContent=T[l].month;render();
+}
+function setMode(m){mode=m;render()}
+function nav(v){
+  view=v;
+  document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));
+  $('v-'+v).classList.add('active');render();
+}
+function totals(){
+  const t=D().tx;
+  const inc=t.filter(x=>x.type==='income').reduce((a,b)=>a+b.amt,0);
+  const exp=t.filter(x=>x.type==='expense').reduce((a,b)=>a+b.amt,0);
+  return{inc,exp,bal:inc-exp};
+}
+function byCat(){
+  const m={};D().tx.filter(x=>x.type==='expense').forEach(x=>m[x.cat]=(m[x.cat]||0)+x.amt);return m;
+}
+function render(){
+  $('mEmp').className='flex-1 py-2 rounded-full '+(mode==='employee'?'navy text-white font-extrabold':'text-slate-500');
+  $('mArt').className='flex-1 py-2 rounded-full '+(mode==='artisan'?'navy text-white font-extrabold':'text-slate-500');
+  ['home','tx','budget','goals'].forEach(v=>$('n-'+v).className='flex flex-col items-center w-1/4 text-xs font-bold '+(v===view?'text-blue-600':'text-slate-400'));
+  const{inc,exp,bal}=totals();
+  $('tInc').textContent=f(inc);$('tExp').textContent=f(exp);$('tBal').textContent=f(bal);
+  $('ratio').textContent=(inc>0?Math.round(bal/inc*100):0)+T[lang].pct;
+  $('dTotal').textContent=f(exp);
+  // donut + legend
+  const cats=byCat(),keys=Object.keys(cats);
+  let off=0,svg='<circle cx="18" cy="18" r="15.9155" fill="none" stroke="#f1f5f9" stroke-width="5"/>',lg='';
+  keys.forEach((k,i)=>{
+    const p=exp?cats[k]/exp*100:0,c=COLORS[i%COLORS.length];
+    svg+=`<circle cx="18" cy="18" r="15.9155" fill="none" stroke="${c}" stroke-width="5" stroke-dasharray="${Math.max(p-0.8,0)} ${100-Math.max(p-0.8,0)}" stroke-dashoffset="${-off}"/>`;
+    off+=p;
+    lg+=`<div class="flex items-center justify-between text-sm"><span class="num font-bold text-slate-500">${f(cats[k])} TND · ${Math.round(p)}%</span><span class="font-bold flex items-center gap-2">${k}<i class="w-3 h-3 rounded-full inline-block" style="background:${c}"></i></span></div>`;
+  });
+  $('donut').innerHTML=svg;$('legend').innerHTML=lg;
+  // alert: highest budget usage >= 80%
+  let top=null;
+  Object.entries(D().budgets).forEach(([c,b])=>{const p=Math.round((cats[c]||0)/b*100);if(p>=80&&(!top||p>top.p))top={c,p}});
+  if(top){$('alertText').innerHTML=T[lang].alert(top.p,top.c);$('alertBox').classList.remove('hidden')}else $('alertBox').classList.add('hidden');
+  // tx list
+  $('txList').innerHTML=D().tx.slice().reverse().map(x=>`<div class="bg-white rounded-2xl p-3 shadow flex items-center justify-between">
+    <button onclick="delTx(${x.id})" class="text-red-400 text-lg px-2">🗑</button>
+    <span class="num font-black ${x.type==='income'?'text-emerald-600':'text-red-500'}">${x.type==='income'?'+':'-'}${f(x.amt)} TND</span>
+    <span class="font-bold text-sm">${x.cat}</span></div>`).join('')||'<p class="text-center text-slate-400 text-sm py-6">لا توجد معاملات بعد</p>';
+  // budget
+  $('budList').innerHTML=Object.entries(D().budgets).map(([c,b])=>{
+    const s=cats[c]||0,p=Math.min(100,Math.round(s/b*100)),col=p>=80?'#ef4444':p>=60?'#f5821f':'#1e9e57';
+    return`<div class="bg-white rounded-2xl p-4 shadow"><div class="flex justify-between text-sm font-bold mb-2"><button onclick="editBudget('${c}')" class="num text-slate-500">${f(s)} / ${f(b)} TND</button><span>${c}</span></div>
+    <div class="h-2.5 bg-slate-100 rounded-full overflow-hidden"><div class="h-full rounded-full" style="width:${p}%;background:${col}"></div></div><p class="text-[11px] text-slate-400 mt-1">${p}%</p></div>`}).join('');
+  // goals
+  $('goalList').innerHTML=D().goals.map((g,i)=>{const p=Math.min(100,Math.round(g.saved/g.target*100));
+    return`<div class="bg-white rounded-2xl p-4 shadow"><div class="flex justify-between text-sm font-bold mb-2"><button onclick="fundGoal(${i})" class="num text-slate-500">${f(g.saved)} / ${f(g.target)} TND</button><span>🎯 ${g.name}</span></div>
+    <div class="h-2.5 bg-slate-100 rounded-full overflow-hidden"><div class="h-full rounded-full bg-blue-600" style="width:${p}%"></div></div><p class="text-[11px] text-slate-400 mt-1">${p}% · اضغط المبلغ لإضافة مدخرات</p></div>`}).join('')||'<p class="text-center text-slate-400 text-sm py-6">أضف هدفك الأول</p>';
+}
+function openTx(t){$('txType').value=t||'income';fillCats();$('txAmt').value='';$('txModal').classList.remove('hidden')}
+function closeTx(){$('txModal').classList.add('hidden')}
+function fillCats(){
+  const l=CATS[mode][$('txType').value];
+  $('txCat').innerHTML=l.map(c=>`<option>${c}</option>`).join('')+`<option value="__o">${T[lang].other}</option>`;customToggle();
+}
+function customToggle(){$('txCustom').classList.toggle('hidden',$('txCat').value!=='__o')}
+function saveTx(){
+  const amt=parseFloat($('txAmt').value);
+  if(isNaN(amt)||amt<=0){alert('يرجى إدخال مبلغ صحيح');return}
+  let cat=$('txCat').value;if(cat==='__o')cat=$('txCustom').value.trim()||'أخرى';
+  D().tx.push({id:Date.now(),type:$('txType').value,cat,amt});
+  save();closeTx();render();
+}
+function delTx(id){if(confirm('حذف المعاملة؟')){D().tx=D().tx.filter(x=>x.id!==id);save();render()}}
+function editBudget(c){const v=parseFloat(prompt('الحد الشهري لـ '+c,D().budgets[c]));if(v>0){D().budgets[c]=v;save();render()}}
+function addGoal(){const n=prompt('اسم الهدف');if(!n)return;const t=parseFloat(prompt('المبلغ المطلوب (TND)'));if(t>0){D().goals.push({name:n,target:t,saved:0});save();render()}}
+function fundGoal(i){const v=parseFloat(prompt('أضف مبلغ إلى المدخرات (TND)'));if(v>0){D().goals[i].saved+=v;save();render()}}
+</script>
 </body>
 </html>
