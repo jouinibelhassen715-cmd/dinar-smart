@@ -9,6 +9,8 @@
 <style>
   body{font-family:'Cairo',sans-serif;background:#f0f6ff}
   .navy{background:#0b2a63}
+  .hdr{background:linear-gradient(165deg,#0f3478 0%,#0b2a63 55%,#08204d 100%)}
+  .bg-white.shadow{box-shadow:0 8px 24px -10px rgba(11,42,99,.28)}
   .num{direction:ltr;unicode-bidi:embed}
   .view{display:none}.view.active{display:block}
 </style>
@@ -16,7 +18,7 @@
 <body class="min-h-screen text-slate-800 select-none">
 
 <!-- LOGIN -->
-<div id="login" class="fixed inset-0 z-50 navy flex items-center justify-center p-4">
+<div id="login" class="fixed inset-0 z-50 hdr flex items-center justify-center p-4">
   <div class="w-full max-w-sm bg-white rounded-3xl p-6 shadow-2xl space-y-4">
     <div class="text-center space-y-1">
       <svg viewBox="0 0 200 200" class="w-24 h-24 mx-auto">
@@ -70,7 +72,7 @@
 
 <!-- APP -->
 <div id="app" class="hidden w-full max-w-md mx-auto pb-24">
-  <header class="navy text-white px-5 pt-6 pb-24 space-y-4">
+  <header class="hdr text-white px-5 pt-6 pb-24 space-y-4">
     <div class="flex items-center justify-between">
       <div class="flex items-center gap-2">
         <div class="bg-white/10 p-1 rounded-full flex text-xs font-bold">
@@ -127,7 +129,24 @@
       </div>
 
       <div class="bg-white p-5 rounded-3xl shadow border border-slate-100 flex items-center justify-between">
-        <div class="w-16 h-16 bg-blue-100 text-[#0b2a63] rounded-full flex items-center justify-center text-3xl">👛</div>
+        <!-- محفظة رقمية -->
+        <div class="w-[72px] h-[72px] rounded-full flex items-center justify-center" style="background:#dbeafe">
+          <svg viewBox="0 0 64 64" class="w-11 h-11 drop-shadow-sm">
+            <defs>
+              <linearGradient id="pk" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff7aa8"/><stop offset="1" stop-color="#e5336f"/></linearGradient>
+              <linearGradient id="gd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd84d"/><stop offset="1" stop-color="#f5a31a"/></linearGradient>
+              <radialGradient id="gb" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="#fff0a0"/><stop offset=".5" stop-color="#ffcb2e"/><stop offset="1" stop-color="#e8940f"/></radialGradient>
+            </defs>
+            <path d="M15 29C10 37 8 46 12 52c4 5 36 5 40 0 4-6 2-15-3-23z" fill="url(#pk)"/>
+            <ellipse cx="22" cy="42" rx="4" ry="8" fill="#fff" opacity=".2" transform="rotate(12 22 42)"/>
+            <path d="M32 31v10M24.5 31l-2 8M39.5 31l2 8" stroke="#c42060" stroke-width="2" stroke-linecap="round" opacity=".75"/>
+            <rect x="13" y="22" width="38" height="9" rx="4.5" fill="url(#gd)"/>
+            <rect x="16" y="24" width="32" height="2" rx="1" fill="#fff" opacity=".45"/>
+            <circle cx="27" cy="16" r="4.6" fill="url(#gb)"/>
+            <circle cx="36" cy="15" r="4" fill="url(#gb)"/>
+            <path d="M28 20.5c2 1.5 5 1.5 7-.5" stroke="#e8940f" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </svg>
+        </div>
         <div class="text-right">
           <p class="text-sm font-semibold text-slate-500" data-i="bal">الرصيد المتبقي</p>
           <p class="num text-3xl font-black text-[#0b2a63]"><span id="tBal">0.00</span> <span class="text-base">TND</span></p>
@@ -151,8 +170,8 @@
       </div>
 
       <div class="bg-white p-5 rounded-3xl shadow border border-slate-100">
-        <h3 class="text-base font-black text-[#0b2a63] mb-3" data-i="dist">🥧 توزيع المصاريف</h3>
-        <div class="relative w-52 h-52 mx-auto">
+        <h3 class="text-base font-black text-[#0b2a63] mb-4" data-i="dist">🥧 توزيع المصاريف</h3>
+        <div class="relative w-56 h-56 mx-auto">
           <svg viewBox="0 0 36 36" class="w-full h-full -rotate-90" id="donut"></svg>
           <div class="absolute inset-0 flex flex-col items-center justify-center">
             <p class="text-xs text-slate-400 font-bold" data-i="total">المجموع</p>
@@ -160,7 +179,7 @@
             <p class="text-[10px] text-slate-400 font-bold">TND</p>
           </div>
         </div>
-        <div id="legend" class="mt-4 space-y-2"></div>
+        <div id="legend" class="mt-5 space-y-2.5"></div>
       </div>
     </section>
 
@@ -367,14 +386,18 @@ function render(){
  $('fixAmt').textContent=f(D().fixed.amt);
  $('dTotal').textContent=f(exp);
 
- // الدائرة الكاملة بدون فراغات
- const cats=byCat(),keys=Object.keys(cats);
- let off=0,svg='<circle cx="18" cy="18" r="15.9155" fill="none" stroke="#e2e8f0" stroke-width="5"/>',lg='';
- keys.forEach((k,i)=>{
-  const p=exp?cats[k]/exp*100:0,c=COLORS[i%COLORS.length];
-  svg+=`<circle cx="18" cy="18" r="15.9155" fill="none" stroke="${c}" stroke-width="5" stroke-dasharray="${p} ${100-p}" stroke-dashoffset="${-off}"/>`;
+ // الدائرة: كاملة، تبدأ من الأعلى، بفراغ أبيض رفيع بين القطع
+ const cats=byCat();
+ const entries=Object.entries(cats).sort((a,b)=>b[1]-a[1]);
+ const GAP=entries.length>1?1:0;
+ const R=14.2,SW=5.6;
+ let off=0,svg=`<circle cx="18" cy="18" r="${R}" fill="none" stroke="#eef2f7" stroke-width="${SW}"/>`,lg='';
+ entries.forEach(([k,v],i)=>{
+  const p=exp?v/exp*100:0,c=COLORS[i%COLORS.length];
+  const dash=Math.max(p-GAP,0.01);
+  svg+=`<circle cx="18" cy="18" r="${R}" pathLength="100" fill="none" stroke="${c}" stroke-width="${SW}" stroke-dasharray="${dash} ${100-dash}" stroke-dashoffset="${-(off+GAP/2)}"/>`;
   off+=p;
-  lg+=`<div class="flex items-center justify-between text-sm"><span class="num font-bold text-slate-500">${f(cats[k])} TND · ${Math.round(p)}%</span><span class="font-bold flex items-center gap-2">${k}<i class="w-3 h-3 rounded-full inline-block" style="background:${c}"></i></span></div>`;
+  lg+=`<div class="flex items-center justify-between text-sm"><span class="num font-bold text-slate-500">${f(v)} TND · ${Math.round(p)}%</span><span class="font-bold flex items-center gap-2">${k}<i class="w-3 h-3 rounded-full inline-block" style="background:${c}"></i></span></div>`;
  });
  $('donut').innerHTML=svg;$('legend').innerHTML=lg;
 
