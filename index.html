@@ -13,13 +13,13 @@
 </head>
 <body class="min-h-screen text-slate-800 flex flex-col font-sans pb-24 select-none">
 
-  <!-- 1. شاشة الدخول والحماية -->
+  <!-- 1. شاشة تسجيل الدخول والحماية -->
   <div id="loginScreen" class="fixed inset-0 z-50 bg-[#082c60] flex items-center justify-center p-4">
-    <div class="w-full max-w-sm bg-white rounded-3xl p-6 shadow-2xl space-y-5 border border-slate-100">
+    <div class="w-full max-w-sm bg-white rounded-3xl p-6 shadow-2xl space-y-4 border border-slate-100">
       
-      <!-- الشعار الرسمي المطابق للصورة -->
-      <div class="text-center space-y-3">
-        <div class="w-28 h-28 mx-auto flex items-center justify-center">
+      <!-- الشعار الرسمي -->
+      <div class="text-center space-y-2">
+        <div class="w-24 h-24 mx-auto flex items-center justify-center">
           <svg viewBox="0 0 200 200" class="w-full h-full drop-shadow-md">
             <defs>
               <linearGradient id="blueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -44,25 +44,44 @@
         </div>
       </div>
 
-      <form onsubmit="handleLogin(event)" class="space-y-4 pt-2">
+      <!-- اختيار اللغة ونوع المحفظة في واجهة الدخول -->
+      <div class="space-y-3 pt-1">
+        <div>
+          <label class="block text-[11px] font-bold text-slate-500 mb-1">اللغة (Langue)</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" onclick="setLoginLang('ar')" id="loginLangAr" class="py-2 rounded-xl text-xs font-bold bg-[#082c60] text-white shadow">عربي</button>
+            <button type="button" onclick="setLoginLang('fr')" id="loginLangFr" class="py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600">Français</button>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-bold text-slate-500 mb-1">نوع المحفظة الأولي</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button type="button" onclick="setLoginMode('employee')" id="loginModeEmp" class="py-2 rounded-xl text-xs font-bold bg-[#082c60] text-white shadow">👨‍💼 موظف</button>
+            <button type="button" onclick="setLoginMode('artisan')" id="loginModeArt" class="py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600">🛠️ حرفي</button>
+          </div>
+        </div>
+      </div>
+
+      <form onsubmit="handleLogin(event)" class="space-y-3">
         <div>
           <label class="block text-xs font-bold text-slate-600 mb-1">البريد الإلكتروني للأدمين</label>
-          <input type="email" id="loginEmail" value="jouinibelhassen715@gmail.com" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-800 outline-none focus:border-blue-500">
+          <input type="email" id="loginEmail" value="jouinibelhassen715@gmail.com" required class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 outline-none focus:border-blue-500">
         </div>
 
         <div>
           <label class="block text-xs font-bold text-slate-600 mb-1">كلمة المرور</label>
           <div class="relative">
-            <input type="password" id="loginPassword" placeholder="أدخل كلمة المرور" required class="w-full p-3 pl-10 bg-slate-50 border border-slate-200 rounded-xl text-sm font-semibold text-slate-800 outline-none focus:border-blue-500">
-            <button type="button" onclick="togglePassword('loginPassword', 'eyeIcon1')" class="absolute left-3 top-3 text-slate-400 hover:text-slate-700 text-base">
+            <input type="password" id="loginPassword" placeholder="أدخل كلمة المرور" required class="w-full p-2.5 pl-10 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 outline-none focus:border-blue-500">
+            <button type="button" onclick="togglePassword('loginPassword', 'eyeIcon1')" class="absolute left-3 top-2.5 text-slate-400 hover:text-slate-700 text-sm">
               <span id="eyeIcon1">👁️</span>
             </button>
           </div>
         </div>
 
-        <div id="loginError" class="text-xs text-red-500 bg-red-50 p-2.5 rounded-xl hidden text-center border border-red-200 font-bold"></div>
+        <div id="loginError" class="text-xs text-red-500 bg-red-50 p-2 rounded-xl hidden text-center border border-red-200 font-bold"></div>
 
-        <button type="submit" class="w-full bg-[#082c60] hover:bg-blue-900 text-white font-bold py-3 rounded-xl transition shadow-lg text-sm">
+        <button type="submit" class="w-full bg-[#082c60] hover:bg-blue-900 text-white font-bold py-2.5 rounded-xl transition shadow-lg text-xs">
           تسجيل الدخول (Se connecter)
         </button>
       </form>
@@ -73,16 +92,14 @@
     </div>
   </div>
 
-  <!-- Modal تعيين كلمة المرور للأدمين -->
+  <!-- Modal تغيير كلمة المرور للأدمين -->
   <div id="resetModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-3xl p-6 w-full max-w-xs space-y-4 text-slate-800 shadow-2xl">
       <h3 class="text-sm font-black text-center text-[#082c60]">تغيير كلمة المرور للأدمين</h3>
-      
       <div>
         <label class="block text-xs font-bold text-slate-500 mb-1">تأكيد بريد الأدمين</label>
         <input type="email" id="resetAdminEmail" value="jouinibelhassen715@gmail.com" class="w-full p-2.5 bg-slate-100 border border-slate-200 rounded-xl text-xs font-bold text-slate-800">
       </div>
-
       <div>
         <label class="block text-xs font-bold text-slate-500 mb-1">كلمة المرور الجديدة</label>
         <div class="relative">
@@ -92,57 +109,66 @@
           </button>
         </div>
       </div>
-
       <div class="flex space-x-2 space-x-reverse pt-2">
-        <button onclick="saveNewPassword()" class="w-1/2 bg-[#082c60] text-white text-xs font-bold py-2.5 rounded-xl shadow-md">حفظ</button>
-        <button onclick="togglePasswordResetModal()" class="w-1/2 bg-slate-200 text-slate-700 text-xs font-bold py-2.5 rounded-xl">إلغاء</button>
+        <button onclick="saveNewPassword()" class="w-1/2 bg-[#082c60] text-white text-xs font-bold py-2 rounded-xl shadow-md">حفظ</button>
+        <button onclick="togglePasswordResetModal()" class="w-1/2 bg-slate-200 text-slate-700 text-xs font-bold py-2 rounded-xl">إلغاء</button>
       </div>
     </div>
   </div>
 
-  <!-- Modal تعديل المبالغ (الدخل/المصاريف) -->
+  <!-- Modal إضافة معاملة أو تعديل -->
   <div id="transactionModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-white rounded-3xl p-6 w-full max-w-xs space-y-4 text-slate-800 shadow-2xl">
-      <h3 class="text-sm font-black text-center text-[#082c60]" id="txModalTitle">تحديث المبلغ</h3>
+      <h3 class="text-sm font-black text-center text-[#082c60]" id="txModalTitle">إضافة معاملة جديدة</h3>
       
       <div>
-        <label class="block text-xs font-bold text-slate-500 mb-1">نوع البند</label>
-        <select id="txType" class="w-full p-2.5 bg-slate-100 rounded-xl text-xs font-bold outline-none border border-slate-200">
-          <option value="income">الدخل الإجمالي (Entrée)</option>
-          <option value="expense">المصاريف الإجمالية (Dépense)</option>
+        <label class="block text-xs font-bold text-slate-500 mb-1">النوع</label>
+        <select id="txType" onchange="updateCategoryOptions()" class="w-full p-2.5 bg-slate-100 rounded-xl text-xs font-bold outline-none border border-slate-200">
+          <option value="income">مدخول (Entrée)</option>
+          <option value="expense">مصروف (Dépense)</option>
         </select>
       </div>
 
       <div>
-        <label class="block text-xs font-bold text-slate-500 mb-1">المبلغ الجديد (TND)</label>
+        <label class="block text-xs font-bold text-slate-500 mb-1">الفئة / التصنيف</label>
+        <select id="txCategory" onchange="checkCustomCategory()" class="w-full p-2.5 bg-slate-100 rounded-xl text-xs font-bold outline-none border border-slate-200">
+          <!-- تُعبأ تلقائياً حسب وضع الموظف أو الحرفي -->
+        </select>
+      </div>
+
+      <div id="customCatDiv" class="hidden">
+        <label class="block text-xs font-bold text-slate-500 mb-1">اكتب الفئة المخصصة</label>
+        <input type="text" id="txCustomCategory" placeholder="مثال: تصليح، ضريبة..." class="w-full p-2.5 bg-slate-100 rounded-xl text-xs font-bold outline-none border border-slate-200">
+      </div>
+
+      <div>
+        <label class="block text-xs font-bold text-slate-500 mb-1">المبلغ (TND)</label>
         <input type="number" step="0.001" min="0" id="txAmount" placeholder="0.000" class="w-full p-2.5 bg-slate-100 rounded-xl text-xs font-bold outline-none border border-slate-200">
       </div>
 
       <div class="flex space-x-2 space-x-reverse pt-2">
-        <button onclick="saveTransaction()" class="w-1/2 bg-[#082c60] text-white text-xs font-bold py-2.5 rounded-xl shadow-md">تأكيد التعديل</button>
+        <button onclick="saveTransaction()" class="w-1/2 bg-[#082c60] text-white text-xs font-bold py-2.5 rounded-xl shadow-md">حفظ المعاملة</button>
         <button onclick="closeTransactionModal()" class="w-1/2 bg-slate-200 text-slate-700 text-xs font-bold py-2.5 rounded-xl">إلغاء</button>
       </div>
     </div>
   </div>
 
-  <!-- 2. الواجهة الرئيسية Dinar Smart المطابقة للمشهد -->
+  <!-- 2. الواجهة الرئيسية Dinar Smart -->
   <div id="appContainer" class="w-full max-w-md mx-auto flex-1 flex flex-col hidden">
     
-    <!-- الهيدر الكحلي الأصلي -->
+    <!-- الهيدر الأصلي -->
     <header class="bg-custom-navy text-white px-5 pt-6 pb-8 rounded-b-[35px] shadow-lg space-y-5">
       
       <div class="flex items-center justify-between">
-        <!-- زر التبديل بين العربية والفرنسية -->
         <div class="bg-slate-800/80 p-1 rounded-full flex items-center text-xs font-bold border border-slate-700/60">
           <button onclick="setLanguage('ar')" id="langArBtn" class="px-3.5 py-1 rounded-full bg-white text-slate-900 font-extrabold shadow-sm">عربي</button>
           <button onclick="setLanguage('fr')" id="langFrBtn" class="px-3 py-1 rounded-full text-slate-300">Français</button>
         </div>
 
-        <!-- الشعار في جهة اليسار/يمين الهيدر -->
         <div class="flex items-center space-x-3 space-x-reverse">
           <div class="text-right">
             <h1 class="text-xl font-black tracking-tight leading-none">Dinar <span class="text-blue-400">Smart</span></h1>
-            <p class="text-[10px] text-slate-300 font-semibold mt-0.5">إدارة مالية ذكية</p>
+            <p class="text-[10px] text-slate-300 font-semibold mt-0.5" id="headerModeLabel">وضع الموظف</p>
           </div>
           <div class="w-10 h-10 rounded-full border-2 border-blue-400 flex items-center justify-center bg-blue-900/50 shadow-inner">
             <svg class="w-5 h-5 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -152,13 +178,13 @@
         </div>
       </div>
 
-      <!-- اختيار الوضع: موظف / حرفي -->
+      <!-- تبديل الوضع حتى بعد الدخول -->
       <div class="bg-slate-900/70 p-1 rounded-full flex items-center text-xs font-bold border border-slate-700/50">
-        <button onclick="setMode('employee')" id="modeEmployeeBtn" class="w-1/2 py-2.5 rounded-full flex items-center justify-center space-x-1.5 space-x-reverse bg-white text-slate-900 shadow-md font-extrabold">
+        <button onclick="switchMode('employee')" id="modeEmployeeBtn" class="w-1/2 py-2.5 rounded-full flex items-center justify-center space-x-1.5 space-x-reverse bg-white text-slate-900 shadow-md font-extrabold">
           <span>👨‍💼</span>
           <span>موظف</span>
         </button>
-        <button onclick="setMode('artisan')" id="modeArtisanBtn" class="w-1/2 py-2.5 rounded-full flex items-center justify-center space-x-1.5 space-x-reverse text-slate-300 font-bold">
+        <button onclick="switchMode('artisan')" id="modeArtisanBtn" class="w-1/2 py-2.5 rounded-full flex items-center justify-center space-x-1.5 space-x-reverse text-slate-300 font-bold">
           <span>🛠️</span>
           <span>حرفي</span>
         </button>
@@ -167,58 +193,47 @@
       <!-- ملخص الشهر -->
       <div class="text-center pt-1">
         <p class="text-xs text-slate-300 font-bold">ملخص الشهر</p>
-        <h2 class="text-2xl font-black text-white tracking-wide mt-0.5" id="monthLabel">أكتوبر 2026</h2>
+        <h2 class="text-2xl font-black text-white tracking-wide mt-0.5">أكتوبر 2026</h2>
       </div>
 
     </header>
 
-    <!-- محتوى الكروت والرسومات -->
+    <!-- المحتوى الرئيسي -->
     <main class="p-4 space-y-4 flex-1">
       
       <div class="grid grid-cols-2 gap-3.5">
-        
-        <!-- كارت الدخل الإجمالي (قابل للضغط للتعديل) -->
+        <!-- كارت الدخل -->
         <div onclick="openTransactionModal('income')" class="bg-white p-4 rounded-[28px] shadow-sm border border-slate-100 flex flex-col justify-between cursor-pointer active:scale-95 transition">
           <div class="flex items-center justify-between mb-3">
             <div class="w-7 h-7 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center font-black text-xs">↗</div>
             <span class="text-[11px] font-extrabold text-emerald-600">الدخل الإجمالي</span>
           </div>
-          <p class="text-lg font-black text-slate-900 text-left dir-ltr"><span class="text-xs text-slate-400 font-bold mr-1">TND</span><span id="totalIncome">2,850.000</span></p>
+          <p class="text-lg font-black text-slate-900 text-left dir-ltr"><span class="text-xs text-slate-400 font-bold mr-1">TND</span><span id="totalIncome">0.000</span></p>
         </div>
 
-        <!-- كارت المصاريف الإجمالية (قابل للضغط للتعديل) -->
+        <!-- كارت المصاريف -->
         <div onclick="openTransactionModal('expense')" class="bg-white p-4 rounded-[28px] shadow-sm border border-slate-100 flex flex-col justify-between cursor-pointer active:scale-95 transition">
           <div class="flex items-center justify-between mb-3">
             <div class="w-7 h-7 bg-red-100 text-red-500 rounded-full flex items-center justify-center font-black text-xs">↘</div>
             <span class="text-[11px] font-extrabold text-red-500">المصاريف الإجمالية</span>
           </div>
-          <p class="text-lg font-black text-slate-900 text-left dir-ltr"><span class="text-xs text-slate-400 font-bold mr-1">TND</span><span id="totalExpenses">1,620.000</span></p>
+          <p class="text-lg font-black text-slate-900 text-left dir-ltr"><span class="text-xs text-slate-400 font-bold mr-1">TND</span><span id="totalExpenses">0.000</span></p>
         </div>
-
       </div>
 
-      <!-- كارت الرصيد المتبقي -->
+      <!-- كارت الرصيد والمحفظة الدقيقة -->
       <div class="bg-white p-4 rounded-[28px] shadow-sm border border-slate-100 flex items-center justify-between">
-        <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-2xl">
+        <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-2xl shadow-inner border border-blue-100">
           👛
         </div>
         <div class="text-right">
           <p class="text-[11px] font-bold text-slate-400">الرصيد المتبقي</p>
-          <p class="text-2xl font-black text-slate-900 mt-0.5 dir-ltr"><span id="currentBalance">1,230.000</span> <span class="text-xs text-slate-400 font-bold">TND</span></p>
-          <p class="text-[10px] text-slate-400 font-bold mt-0.5" id="balanceRatio">43% من الدخل</p>
+          <p class="text-2xl font-black text-slate-900 mt-0.5 dir-ltr"><span id="currentBalance">0.000</span> <span class="text-xs text-slate-400 font-bold">TND</span></p>
+          <p class="text-[10px] text-slate-400 font-bold mt-0.5" id="balanceRatio">0% من الدخل</p>
         </div>
       </div>
 
-      <!-- كارت التنبيه الأصفر -->
-      <div id="alertBox" class="bg-amber-50 border border-amber-200/80 p-3.5 rounded-2xl flex items-center justify-between text-amber-800 text-xs">
-        <button onclick="closeAlert()" class="text-amber-500 hover:text-amber-900 font-bold text-sm px-1">✕</button>
-        <div class="flex items-center space-x-2 space-x-reverse text-right">
-          <p class="font-bold leading-relaxed"><span class="font-black text-amber-900">تنبيه:</span> استهلكت 80% من ميزانية المواصلات. حافظ على توازن مصاريفك.</p>
-          <span class="text-base">⚠️</span>
-        </div>
-      </div>
-
-      <!-- الرسم البياني وتوزيع المصاريف -->
+      <!-- الرسم البياني وتوزيع المصاريف المطابق تماماً للصورة -->
       <div class="bg-white p-5 rounded-[28px] shadow-sm border border-slate-100 space-y-3">
         <div class="flex items-center justify-end space-x-1.5 space-x-reverse text-slate-700">
           <h3 class="text-xs font-extrabold">توزيع المصاريف</h3>
@@ -231,11 +246,10 @@
             <path class="text-blue-900" stroke-dasharray="50, 100" stroke-width="4.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
             <path class="text-emerald-500" stroke-dasharray="25, 100" stroke-dashoffset="-50" stroke-width="4.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
             <path class="text-orange-500" stroke-dasharray="15, 100" stroke-dashoffset="-75" stroke-width="4.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-            <path class="text-purple-400" stroke-dasharray="10, 100" stroke-dashoffset="-90" stroke-width="4.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
           </svg>
           <div class="absolute text-center">
             <p class="text-[9px] text-slate-400 font-bold">المجموع</p>
-            <p class="text-sm font-black text-slate-900" id="chartTotal">1,620.00</p>
+            <p class="text-sm font-black text-slate-900" id="chartTotal">0.00</p>
             <p class="text-[8px] text-slate-400 font-bold">TND</p>
           </div>
         </div>
@@ -243,7 +257,7 @@
 
     </main>
 
-    <!-- شريط التنقل السفلي -->
+    <!-- شريط التنقل السفلي المطابق للصورة -->
     <nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 py-2.5 px-6 flex items-center justify-between z-40 max-w-md mx-auto">
       <button onclick="navigate('home')" class="flex flex-col items-center text-blue-600 font-black space-y-0.5">
         <span class="text-xl">🏠</span>
@@ -265,24 +279,38 @@
   </div>
 
   <script>
+    let loginMode = 'employee';
+    let loginLang = 'ar';
     let currentMode = 'employee';
     let currentLang = 'ar';
     let defaultPass = '2026';
     let adminEmail = 'jouinibelhassen715@gmail.com';
 
-    let incomeAmount = parseFloat(localStorage.getItem('ds_income') || '2850.000');
-    let expenseAmount = parseFloat(localStorage.getItem('ds_expense') || '1620.000');
+    // قواعد البيانات المنفصلة للموظف والحرفي
+    let employeeData = JSON.parse(localStorage.getItem('ds_emp_data') || JSON.stringify({
+      income: 2850.000,
+      expense: 1620.000,
+      incomesList: [{cat: 'أجر شهري', amount: 2850}],
+      expensesList: [{cat: 'نقل', amount: 400}, {cat: 'مطعم', amount: 500}, {cat: 'لباس', amount: 350}, {cat: 'تسوق', amount: 370}]
+    }));
 
-    function updateUI() {
-      document.getElementById('totalIncome').innerText = incomeAmount.toFixed(3);
-      document.getElementById('totalExpenses').innerText = expenseAmount.toFixed(3);
-      document.getElementById('chartTotal').innerText = expenseAmount.toFixed(2);
+    let artisanData = JSON.parse(localStorage.getItem('ds_art_data') || JSON.stringify({
+      income: 4200.000,
+      expense: 2100.000,
+      incomesList: [{cat: 'دخل ورشة', amount: 4200}],
+      expensesList: [{cat: 'مواد أولية', amount: 1000}, {cat: 'معدات', amount: 500}, {cat: 'إيجار ورشة', amount: 400}, {cat: 'نقل بضائع', amount: 200}]
+    }));
 
-      let balance = incomeAmount - expenseAmount;
-      document.getElementById('currentBalance').innerText = balance.toFixed(3);
+    function setLoginLang(lang) {
+      loginLang = lang;
+      document.getElementById('loginLangAr').className = lang === 'ar' ? "py-2 rounded-xl text-xs font-bold bg-[#082c60] text-white shadow" : "py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600";
+      document.getElementById('loginLangFr').className = lang === 'fr' ? "py-2 rounded-xl text-xs font-bold bg-[#082c60] text-white shadow" : "py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600";
+    }
 
-      let ratio = incomeAmount > 0 ? Math.round((balance / incomeAmount) * 100) : 0;
-      document.getElementById('balanceRatio').innerText = ratio + "% من الدخل";
+    function setLoginMode(mode) {
+      loginMode = mode;
+      document.getElementById('loginModeEmp').className = mode === 'employee' ? "py-2 rounded-xl text-xs font-bold bg-[#082c60] text-white shadow" : "py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600";
+      document.getElementById('loginModeArt').className = mode === 'artisan' ? "py-2 rounded-xl text-xs font-bold bg-[#082c60] text-white shadow" : "py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600";
     }
 
     function togglePassword(inputId, iconId) {
@@ -302,17 +330,120 @@
       const email = document.getElementById('loginEmail').value;
       const pass = document.getElementById('loginPassword').value;
       const err = document.getElementById('loginError');
-
       const activePass = localStorage.getItem('ds_pass') || defaultPass;
 
       if (email.toLowerCase() === adminEmail && pass === activePass) {
+        currentMode = loginMode;
+        currentLang = loginLang;
         document.getElementById('loginScreen').classList.add('hidden');
         document.getElementById('appContainer').classList.remove('hidden');
+        applyModeAndLangUI();
         updateUI();
       } else {
         err.innerText = "البريد الإلكتروني أو كلمة المرور غير صحيحة!";
         err.classList.remove('hidden');
       }
+    }
+
+    function switchMode(mode) {
+      currentMode = mode;
+      applyModeAndLangUI();
+      updateUI();
+    }
+
+    function applyModeAndLangUI() {
+      const empBtn = document.getElementById('modeEmployeeBtn');
+      const artBtn = document.getElementById('modeArtisanBtn');
+      const modeLabel = document.getElementById('headerModeLabel');
+
+      if (currentMode === 'employee') {
+        empBtn.className = "w-1/2 py-2.5 rounded-full flex items-center justify-center space-x-1.5 space-x-reverse bg-white text-slate-900 shadow-md font-extrabold";
+        artBtn.className = "w-1/2 py-2.5 rounded-full flex items-center justify-center space-x-1.5 space-x-reverse text-slate-300 font-bold";
+        modeLabel.innerText = "وضع الموظف";
+      } else {
+        artBtn.className = "w-1/2 py-2.5 rounded-full flex items-center justify-center space-x-1.5 space-x-reverse bg-white text-slate-900 shadow-md font-extrabold";
+        empBtn.className = "w-1/2 py-2.5 rounded-full flex items-center justify-center space-x-1.5 space-x-reverse text-slate-300 font-bold";
+        modeLabel.innerText = "وضع الحرفي";
+      }
+    }
+
+    function updateUI() {
+      let data = currentMode === 'employee' ? employeeData : artisanData;
+      document.getElementById('totalIncome').innerText = data.income.toFixed(3);
+      document.getElementById('totalExpenses').innerText = data.expense.toFixed(3);
+      document.getElementById('chartTotal').innerText = data.expense.toFixed(2);
+
+      let balance = data.income - data.expense;
+      document.getElementById('currentBalance').innerText = balance.toFixed(3);
+      let ratio = data.income > 0 ? Math.round((balance / data.income) * 100) : 0;
+      document.getElementById('balanceRatio').innerText = ratio + "% من الدخل";
+    }
+
+    function openTransactionModal(defaultType) {
+      document.getElementById('txType').value = defaultType || 'income';
+      updateCategoryOptions();
+      document.getElementById('txAmount').value = '';
+      document.getElementById('transactionModal').classList.remove('hidden');
+    }
+
+    function closeTransactionModal() {
+      document.getElementById('transactionModal').classList.add('hidden');
+    }
+
+    function updateCategoryOptions() {
+      let type = document.getElementById('txType').value;
+      let select = document.getElementById('txCategory');
+      select.innerHTML = '';
+
+      if (type === 'income') {
+        let opts = currentMode === 'employee' ? ['أجر شهري', 'دخل إضافي', 'نوع آخر'] : ['دخل ورشة', 'خدمات خارجية', 'نوع آخر'];
+        opts.forEach(o => select.innerHTML += `<option value="${o}">${o}</option>`);
+      } else {
+        let opts = currentMode === 'employee' ? ['نقل', 'مطعم', 'لباس', 'تسوق', 'نوع آخر'] : ['مواد أولية', 'معدات', 'إيجار ورشة', 'نقل بضائع', 'نوع آخر'];
+        opts.forEach(o => select.innerHTML += `<option value="${o}">${o}</option>`);
+      }
+      checkCustomCategory();
+    }
+
+    function checkCustomCategory() {
+      let cat = document.getElementById('txCategory').value;
+      let customDiv = document.getElementById('customCatDiv');
+      if (cat === 'نوع آخر') {
+        customDiv.classList.remove('hidden');
+      } else {
+        customDiv.classList.add('hidden');
+      }
+    }
+
+    function saveTransaction() {
+      let type = document.getElementById('txType').value;
+      let cat = document.getElementById('txCategory').value;
+      if (cat === 'نوع آخر') {
+        cat = document.getElementById('txCustomCategory').value.trim() || 'أخرى';
+      }
+      let amt = parseFloat(document.getElementById('txAmount').value);
+
+      if (isNaN(amt) || amt < 0) {
+        alert('يرجى إدخال مبلغ صحيح');
+        return;
+      }
+
+      let data = currentMode === 'employee' ? employeeData : artisanData;
+
+      if (type === 'income') {
+        data.income += amt;
+        data.incomesList.push({cat, amount: amt});
+        localStorage.setItem('ds_emp_data', JSON.stringify(employeeData));
+        localStorage.setItem('ds_art_data', JSON.stringify(artisanData));
+      } else {
+        data.expense += amt;
+        data.expensesList.push({cat, amount: amt});
+        localStorage.setItem('ds_emp_data', JSON.stringify(employeeData));
+        localStorage.setItem('ds_art_data', JSON.stringify(artisanData));
+      }
+
+      updateUI();
+      closeTransactionModal();
     }
 
     function togglePasswordResetModal() {
@@ -322,90 +453,29 @@
     function saveNewPassword() {
       const confirmEmail = document.getElementById('resetAdminEmail').value;
       const newPass = document.getElementById('newPassInput').value;
-
       if (confirmEmail.toLowerCase() !== adminEmail) {
-        alert('تنبيه: فقط بريد الأدمين ' + adminEmail + ' مخول بتغيير كلمة المرور!');
+        alert('فقط بريد الأدمين ' + adminEmail + ' مسموح له بتغيير كلمة المرور!');
         return;
       }
-
       if (newPass.trim().length > 0) {
         localStorage.setItem('ds_pass', newPass.trim());
-        alert('تم حفظ وتحديث كلمة المرور الجديدة للأدمين بنجاح!');
+        alert('تم تغيير كلمة المرور بنجاح!');
         togglePasswordResetModal();
-        document.getElementById('newPassInput').value = '';
       } else {
-        alert('يرجى كتابة كلمة مرور صالحة.');
-      }
-    }
-
-    function openTransactionModal(defaultType) {
-      document.getElementById('txType').value = defaultType || 'income';
-      document.getElementById('txAmount').value = defaultType === 'income' ? incomeAmount : expenseAmount;
-      document.getElementById('transactionModal').classList.remove('hidden');
-    }
-
-    function closeTransactionModal() {
-      document.getElementById('transactionModal').classList.add('hidden');
-    }
-
-    function saveTransaction() {
-      let type = document.getElementById('txType').value;
-      let amt = parseFloat(document.getElementById('txAmount').value);
-
-      if (isNaN(amt) || amt < 0) {
-        alert('يرجى إدخال مبلغ صحيح');
-        return;
-      }
-
-      if (type === 'income') {
-        incomeAmount = amt;
-        localStorage.setItem('ds_income', incomeAmount);
-      } else {
-        expenseAmount = amt;
-        localStorage.setItem('ds_expense', expenseAmount);
-      }
-
-      updateUI();
-      closeTransactionModal();
-    }
-
-    function setMode(mode) {
-      currentMode = mode;
-      const empBtn = document.getElementById('modeEmployeeBtn');
-      const artBtn = document.getElementById('modeArtisanBtn');
-
-      if (mode === 'employee') {
-        empBtn.className = "w-1/2 py-2.5 rounded-full flex items-center justify-center space-x-1.5 space-x-reverse bg-white text-slate-900 shadow-md font-extrabold";
-        artBtn.className = "w-1/2 py-2.5 rounded-full flex items-center justify-center space-x-1.5 space-x-reverse text-slate-300 font-bold";
-      } else {
-        artBtn.className = "w-1/2 py-2.5 rounded-full flex items-center justify-center space-x-1.5 space-x-reverse bg-white text-slate-900 shadow-md font-extrabold";
-        empBtn.className = "w-1/2 py-2.5 rounded-full flex items-center justify-center space-x-1.5 space-x-reverse text-slate-300 font-bold";
+        alert('يرجى إدخال كلمة مرور صالحة.');
       }
     }
 
     function setLanguage(lang) {
       currentLang = lang;
-      const arBtn = document.getElementById('langArBtn');
-      const frBtn = document.getElementById('langFrBtn');
-
-      if (lang === 'ar') {
-        arBtn.className = "px-3.5 py-1 rounded-full bg-white text-slate-900 font-extrabold shadow-sm";
-        frBtn.className = "px-3 py-1 rounded-full text-slate-300";
-        document.documentElement.dir = "rtl";
-      } else {
-        frBtn.className = "px-3.5 py-1 rounded-full bg-white text-slate-900 font-extrabold shadow-sm";
-        arBtn.className = "px-3 py-1 rounded-full text-slate-300";
-        document.documentElement.dir = "ltr";
-      }
-    }
-
-    function closeAlert() {
-      document.getElementById('alertBox').classList.add('hidden');
+      document.getElementById('langArBtn').className = lang === 'ar' ? "px-3.5 py-1 rounded-full bg-white text-slate-900 font-extrabold shadow-sm" : "px-3 py-1 rounded-full text-slate-300";
+      document.getElementById('langFrBtn').className = lang === 'fr' ? "px-3.5 py-1 rounded-full bg-white text-slate-900 font-extrabold shadow-sm" : "px-3 py-1 rounded-full text-slate-300";
+      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
     }
 
     function navigate(page) {
       if(page === 'home') return;
-      alert("قسم " + page + " مفعّل ويستجيب بنجاح!");
+      alert("القسم " + page + " متاح وجاهز للاستخدام!");
     }
   </script>
 </body>
