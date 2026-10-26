@@ -282,6 +282,17 @@
 }
 @media(prefers-reduced-motion:reduce){#app .ds-metric,#app .ds-panel,#app nav button{transition:none;transform:none}}
 
+
+/* Final premium pass: financial workspace hierarchy and mobile comfort */
+#app{max-width:1480px;margin-inline:auto}
+#app .ds-metric{border-radius:20px!important;position:relative;overflow:hidden}
+#app .ds-metric:before{content:"";position:absolute;inset-inline-start:0;top:0;width:3px;height:100%;background:linear-gradient(180deg,#38bdf8,#1769ff);opacity:.9}
+#app .ds-panel{border-radius:20px!important}
+#app button{transition:transform .16s ease,filter .16s ease,box-shadow .16s ease}
+#app button:active{transform:translateY(1px)}
+@media(min-width:1100px){#app main{max-width:1440px;margin-inline:auto}#app #dsMetrics{gap:18px}}
+@media(max-width:560px){#app .ds-metric{padding:14px!important}#app th,#app td{padding:9px 10px;font-size:13px}#app input,#app select,#app textarea{width:100%;min-width:0}}
+
 </style>
 </head>
 <body class="min-h-screen text-slate-800 select-none">
