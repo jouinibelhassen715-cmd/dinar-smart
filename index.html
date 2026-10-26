@@ -293,6 +293,19 @@
 @media(min-width:1100px){#app main{max-width:1440px;margin-inline:auto}#app #dsMetrics{gap:18px}}
 @media(max-width:560px){#app .ds-metric{padding:14px!important}#app th,#app td{padding:9px 10px;font-size:13px}#app input,#app select,#app textarea{width:100%;min-width:0}}
 
+
+/* UI refinement: wallet dashboard surfaces, financial hierarchy, and mobile layout */
+#app main{width:100%;max-width:1480px;margin-inline:auto;padding-inline:clamp(14px,2.2vw,30px)}
+#app main section#v-home>.grid>div{border:1px solid rgba(148,163,184,.16);box-shadow:0 14px 34px -25px rgba(8,27,61,.5),0 3px 10px rgba(23,105,255,.045)}
+#app main section#v-home>.grid>div:hover{box-shadow:0 18px 38px -24px rgba(8,27,61,.34);border-color:#c5d8f7}
+#app .view{animation:dsViewIn .22s ease both}
+#app .view.active{min-width:0}
+#app .eye{border:1px solid #dbe7f7;background:#f8fbff}
+#app .eye:focus-visible{outline:3px solid #60a5fa;outline-offset:2px}
+@keyframes dsViewIn{from{opacity:.65;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:700px){#app main{padding-inline:12px}#app main section#v-home>.grid{gap:10px}#app main section#v-home>.grid>div{min-width:0}#app .hdr{border-radius:0 0 24px 24px}}
+@media(prefers-reduced-motion:reduce){#app .view{animation:none}}
+
 </style>
 </head>
 <body class="min-h-screen text-slate-800 select-none">
