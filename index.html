@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dinar Smart - إدارة مالية ذكية</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   body{font-family:'Cairo',sans-serif;background:#f0f6ff}
@@ -39,16 +40,16 @@
       <p class="text-xs font-bold text-slate-400">إدارة مالية ذكية لحياة أفضل</p>
     </div>
     <form onsubmit="doLogin(event)" class="space-y-3">
-      <input id="email" type="email" value="jouinibelhassen715@gmail.com" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500">
+      <input id="email" type="email" autocomplete="username" placeholder="البريد الإلكتروني / E-mail" required class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500">
       <div class="relative">
-        <input id="pass" type="password" placeholder="كلمة المرور" required class="w-full p-3 pl-11 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500">
+        <input id="pass" type="password" autocomplete="current-password" placeholder="كلمة المرور / Mot de passe" required class="w-full p-3 pl-11 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold outline-none focus:border-blue-500">
         <button type="button" class="eye absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" data-t="pass" onclick="eye(this)"></button>
       </div>
-      <p id="err" class="hidden text-xs text-red-500 bg-red-50 p-2 rounded-xl text-center font-bold">البريد أو كلمة المرور غير صحيحة</p>
-      <button class="w-full navy text-white font-bold py-3 rounded-xl text-sm shadow-lg">تسجيل الدخول (Se connecter)</button>
+      <p id="err" class="hidden text-xs text-red-500 bg-red-50 p-2 rounded-xl text-center font-bold" role="alert"></p>
+      <button id="loginBtn" class="w-full navy text-white font-bold py-3 rounded-xl text-sm shadow-lg">تسجيل الدخول (Se connecter)</button>
     </form>
     <div class="text-center">
-      <button type="button" onclick="openPw(false)" class="text-xs font-bold text-blue-600 hover:underline">Mot de passe oublié ? / نسيت كلمة المرور</button>
+      <button type="button" onclick="sendReset()" class="text-xs font-bold text-blue-600 hover:underline">Mot de passe oublié ? / نسيت كلمة المرور</button>
     </div>
   </div>
 </div>
@@ -83,6 +84,7 @@
           <button id="lFr" onclick="setLang('fr')" class="px-3 py-1.5 rounded-full text-slate-200">Français</button>
         </div>
         <button onclick="openPw(true)" class="w-9 h-9 rounded-full bg-white/10 text-base" title="كلمة المرور">🔒</button>
+      <button onclick="sb.auth.signOut()" class="px-3 py-2 rounded-xl bg-white/10 text-xs font-bold" title="تسجيل الخروج">خروج</button>
       </div>
       <div class="flex items-center gap-3">
         <div class="text-right">
@@ -253,7 +255,9 @@
 </div>
 
 <script>
-const ADMIN='jouinibelhassen715@gmail.com', PASS='2026';
+const SUPABASE_URL='https://rfdrlwbnvtydumixmjel.supabase.co';
+const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJmZHJsd2JudnR5ZHVtaXhtamVsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTI0MTc5NzgsImV4cCI6MjEwNzk5Mzk3OH0.BirnHqaDLVDCMNKv6CYq8mrEch15s6mz8B9QosbcoQQ';
+const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 const COLORS=['#0b2a63','#1e9e57','#f5821f','#9b7fd1','#0ea5e9','#e11d48','#14b8a6','#a16207'];
 const EYE_OPEN='<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
 const EYE_CLOSED='<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><path d="M1 1l22 22"/></svg>';
@@ -286,10 +290,15 @@ function seed(){
    budgets:{'مواد أولية':1200,'معدات':600,'إيجار ورشة':400,'نقل بضائع':250},goals:[{name:'شراء آلة جديدة',target:5000,saved:1200}]}
  };
 }
-let S=null;
-try{S=JSON.parse(localStorage.getItem('ds_data2'))}catch(e){}
-if(!S||!S.employee||!S.artisan)S=seed();
-const save=()=>{try{localStorage.setItem('ds_data2',JSON.stringify(S))}catch(e){}};
+let authUser=null,S=seed();
+const dataKey=()=> 'ds_data2_'+(authUser?.id||'guest');
+const save=()=>{try{if(authUser)localStorage.setItem(dataKey(),JSON.stringify(S))}catch(e){}};
+function loadUserData(user){
+ authUser=user;
+ try{S=JSON.parse(localStorage.getItem(dataKey()))}catch(e){S=null}
+ if(!S||!S.employee||!S.artisan)S=seed();
+ applyFixed();
+}
 
 // الدخل الثابت: يُضاف تلقائياً لكل شهر جديد (لكل وضع على حدة)
 function applyFixed(){
@@ -303,8 +312,6 @@ function applyFixed(){
  });
  save();
 }
-applyFixed();
-
 let mode='employee', lang='ar', view='home', vm=CUR, loggedIn=false, pwInApp=false;
 const $=id=>document.getElementById(id);
 const f=n=>Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -322,33 +329,63 @@ function eye(btn){
  btn.setAttribute('aria-label',label);
  btn.title=label;
 }
-const curPass=()=>localStorage.getItem('ds_pass')||PASS;
-function doLogin(e){
+function authMessage(message){
+ const el=$('err');el.textContent=message;el.classList.remove('hidden');
+}
+async function doLogin(e){
  e.preventDefault();
- if($('email').value.trim().toLowerCase()===ADMIN&&$('pass').value===curPass()){
-  loggedIn=true;$('login').classList.add('hidden');$('app').classList.remove('hidden');setLang(lang);
- }else $('err').classList.remove('hidden');
+ const btn=$('loginBtn');btn.disabled=true;btn.textContent='جارٍ التحقق…';
+ $('err').classList.add('hidden');
+ try{
+  const {error}=await sb.auth.signInWithPassword({email:$('email').value.trim(),password:$('pass').value});
+  if(error)throw error;
+ }catch(err){
+  authMessage('تعذّر تسجيل الدخول. تأكّد من البريد وكلمة المرور، أو من تأكيد البريد الإلكتروني.');
+ }finally{btn.disabled=false;btn.textContent='تسجيل الدخول (Se connecter)';}
+}
+async function sendReset(){
+ const email=$('email').value.trim();
+ if(!email){authMessage('اكتب البريد الإلكتروني أولاً.');$('email').focus();return}
+ try{
+  const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});
+  if(error)throw error;
+  alert('إذا كان البريد مسجّلاً، سيصلك رابط آمن لتغيير كلمة المرور.');
+ }catch(e){authMessage('تعذّر إرسال رابط الاسترجاع. حاول لاحقاً.')}
 }
 function openPw(inApp){
  pwInApp=inApp;
- $('pwTitle').textContent=inApp?'تغيير كلمة المرور':'Mot de passe oublié / نسيت كلمة المرور';
- $('emailWrap').classList.toggle('hidden',inApp);
- $('oldWrap').classList.toggle('hidden',!inApp);
- $('pwOld').value='';$('pwNew').value='';
+ $('pwTitle').textContent='تغيير كلمة المرور';
+ $('emailWrap').classList.add('hidden');
+ $('oldWrap').classList.add('hidden');
+ $('pwNew').value='';
  $('pwModal').classList.remove('hidden');
 }
 function closePw(){$('pwModal').classList.add('hidden')}
-function savePw(){
- const n=$('pwNew').value.trim();
- if(pwInApp){
-  if($('pwOld').value!==curPass()){alert('كلمة المرور الحالية غير صحيحة');return}
- }else if($('pwEmail').value.trim().toLowerCase()!==ADMIN){
-  alert('فقط بريد الأدمين مسموح له بتعيين كلمة المرور');return;
- }
- if(n.length<4){alert('كلمة المرور قصيرة (4 أحرف على الأقل)');return}
- try{localStorage.setItem('ds_pass',n)}catch(e){}
- alert('تم تغيير كلمة المرور بنجاح ✅');closePw();
+async function savePw(){
+ const n=$('pwNew').value;
+ if(!authUser){alert('افتح رابط استرجاع كلمة المرور الذي وصلك بالبريد أولاً.');return}
+ if(n.length<8){alert('كلمة المرور يجب أن تكون 8 أحرف على الأقل.');return}
+ const {error}=await sb.auth.updateUser({password:n});
+ if(error){alert('تعذّر تغيير كلمة المرور. تأكّد من صلاحية الجلسة.');return}
+ alert('تم تغيير كلمة المرور بنجاح.');closePw();
 }
+function showApp(user){
+ loggedIn=!!user;
+ $('login').classList.toggle('hidden',loggedIn);
+ $('app').classList.toggle('hidden',!loggedIn);
+ if(loggedIn){loadUserData(user);setLang(lang);$('email').value=user.email||'';}
+ else {authUser=null;S=seed();}
+}
+sb.auth.onAuthStateChange((event,session)=>{
+ if(event==='PASSWORD_RECOVERY'){
+  authUser=session?.user||null;
+  if(authUser)openPw(true);
+  return;
+ }
+ if(event==='SIGNED_OUT'){showApp(null);return}
+ if(session?.user)showApp(session.user);
+});
+sb.auth.getSession().then(({data})=>{if(data.session?.user)showApp(data.session.user);else showApp(null)});
 
 // ---------- اللغة والتنقل ----------
 function setLang(l){
