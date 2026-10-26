@@ -44,6 +44,42 @@
   .eye:focus-visible{outline:2px solid #1677c8;outline-offset:2px}
   .eye svg{display:block;width:20px;height:20px;pointer-events:none}
   @media(min-width:640px){#app{margin-top:1.5rem;margin-bottom:1.5rem;border-radius:2rem;overflow:hidden;box-shadow:0 25px 80px -35px rgba(8,27,61,.35);background:#f4f8ff}#app nav{border-radius:0 0 2rem 2rem}}
+
+  /* Responsive polish: consistent cards, controls and safe-area spacing */
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{margin:0;overflow-x:hidden}
+  button,input,select,textarea{font:inherit}
+  button{touch-action:manipulation}
+  #app{width:100%;max-width:100%;min-height:100dvh;padding-bottom:calc(6rem + env(safe-area-inset-bottom))}
+  #app header{padding-left:clamp(1rem,4vw,1.5rem);padding-right:clamp(1rem,4vw,1.5rem)}
+  #app header>.flex:first-child{gap:.6rem;align-items:flex-start}
+  #app header>.flex:first-child>div:first-child{flex-wrap:wrap;min-width:0}
+  #app header>.flex:first-child>div:last-child{min-width:0}
+  #app main{padding-left:clamp(.75rem,3.5vw,1rem);padding-right:clamp(.75rem,3.5vw,1rem)}
+  #app .num{white-space:nowrap}
+  #app section .grid{min-width:0}
+  #app section .grid>div{min-width:0}
+  #app section .grid>div p.num{font-size:clamp(1rem,4.5vw,1.25rem);letter-spacing:-.025em}
+  #app nav{width:100%;max-width:32rem;padding-bottom:calc(.5rem + env(safe-area-inset-bottom));}
+  #app nav button{min-width:0;gap:.15rem;padding:.25rem 0}
+  #app nav button span:last-child{font-size:clamp(.62rem,2.6vw,.75rem);white-space:nowrap}
+  #txModal,#pwModal{overflow-y:auto}
+  #txModal>div,#pwModal>div{max-height:calc(100dvh - 2rem);overflow-y:auto}
+  input,select,textarea{max-width:100%;min-width:0}
+  @media(min-width:640px){
+    #app{max-width:28rem;margin:1.5rem auto;min-height:calc(100dvh - 3rem);padding-bottom:6rem}
+    #app header{border-radius:2rem 2rem 0 0}
+    #app nav{width:min(100%,28rem);border-radius:0 0 2rem 2rem}
+  }
+  @media(max-width:380px){
+    #app header{padding-top:1rem;padding-bottom:5.5rem}
+    #app header .text-xl{font-size:1rem}
+    #app header .text-sm{font-size:.75rem}
+    #app .balance-card{padding:1rem}
+    #app .balance-card .text-2xl{font-size:1.35rem}
+    #app nav{padding-left:.5rem;padding-right:.5rem}
+  }
+
   @media(prefers-reduced-motion:reduce){#app button,#app nav button,#app main section#v-home>.grid>div{transition:none}}
 </style>
 </head>
@@ -169,23 +205,28 @@
         </div>
       </div>
 
-      <div class="bg-white p-5 rounded-3xl shadow border border-slate-100 flex items-center justify-between">
-        <!-- محفظة رقمية بنفس هوية أيقونة الدخل -->
-        <div class="w-[72px] h-[72px] rounded-2xl flex items-center justify-center shadow-sm ring-1 ring-blue-100" style="background:linear-gradient(145deg,#eff8ff,#dbeafe)">
-          <svg viewBox="0 0 64 64" class="w-12 h-12 drop-shadow-sm" aria-label="محفظة رقمية" role="img">
-            <defs><linearGradient id="balanceWalletBlue" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#38bdf8"/><stop offset="1" stop-color="#1d4ed8"/></linearGradient></defs>
-            <path d="M14 19 42 8l4 9" fill="none" stroke="#2563eb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M12 20h37a6 6 0 0 1 6 6v24a6 6 0 0 1-6 6H12a6 6 0 0 1-6-6V26a6 6 0 0 1 6-6Z" fill="url(#balanceWalletBlue)"/>
-            <path d="M40 31h15v14H40a7 7 0 0 1 0-14Z" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
-            <circle cx="42" cy="38" r="2.5" fill="#2563eb"/>
-            <path d="M14 25h22" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".45"/>
-          </svg>
+      <div class="bg-white p-5 rounded-3xl shadow border border-slate-100 balance-card">
+        <div class="flex items-center justify-between gap-4">
+          <div class="w-[68px] h-[68px] shrink-0 rounded-2xl flex items-center justify-center ring-1 ring-blue-100" style="background:linear-gradient(145deg,#eff8ff,#dbeafe)">
+            <svg viewBox="0 0 64 64" class="w-12 h-12" aria-label="Digital wallet" role="img">
+              <defs><linearGradient id="balanceWalletBlue" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#38bdf8"/><stop offset="1" stop-color="#1d4ed8"/></linearGradient></defs>
+              <path d="M14 19 42 8l4 9" fill="none" stroke="#2563eb" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M12 20h37a6 6 0 0 1 6 6v24a6 6 0 0 1-6 6H12a6 6 0 0 1-6-6V26a6 6 0 0 1 6-6Z" fill="url(#balanceWalletBlue)"/>
+              <path d="M40 31h15v14H40a7 7 0 0 1 0-14Z" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2"/>
+              <circle cx="42" cy="38" r="2.5" fill="#2563eb"/>
+            </svg>
+          </div>
+          <div class="min-w-0 flex-1 text-right">
+            <p class="text-sm font-bold text-slate-500" data-i="bal">الرصيد المتبقي</p>
+            <p class="num text-2xl sm:text-3xl font-black tracking-tight text-[#0b2a63]"><span id="tBal">0.00</span> <span class="text-xs font-bold text-slate-500">TND</span></p>
+            <p id="ratio" class="text-xs font-bold text-blue-600 mt-1">0% من الدخل</p>
+          </div>
         </div>
-        <div class="text-right">
+      </div>
 
-      <div class="bg-white p-4 rounded-3xl shadow border border-slate-100 flex items-center justify-between">
-        <button onclick="editFixed()" class="navy text-white text-xs font-bold px-4 py-2 rounded-full" data-i="edit">تعديل</button>
-        <div class="text-right">
+      <div class="bg-white p-4 rounded-3xl shadow border border-slate-100 flex items-center justify-between gap-3">
+        <button onclick="editFixed()" class="navy text-white text-xs font-bold px-4 py-2.5 rounded-full shrink-0" data-i="edit">تعديل</button>
+        <div class="min-w-0 text-right">
           <p class="text-xs font-semibold text-slate-500" data-i="fixed">الدخل الشهري الثابت</p>
           <p class="num text-lg font-black text-[#0b2a63]"><span id="fixAmt">0.00</span> <span class="text-xs">TND</span></p>
           <p class="text-[11px] text-slate-400" data-i="fixedNote">يُضاف تلقائياً كل شهر</p>
