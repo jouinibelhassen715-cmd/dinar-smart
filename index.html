@@ -45,6 +45,20 @@
   .eye svg{display:block;width:20px;height:20px;pointer-events:none}
   @media(min-width:640px){#app{margin-top:1.5rem;margin-bottom:1.5rem;border-radius:2rem;overflow:hidden;box-shadow:0 25px 80px -35px rgba(8,27,61,.35);background:#f4f8ff}#app nav{border-radius:0 0 2rem 2rem}}
 
+  /* Professional income/expense arrows + responsive summary cards */
+  #app #v-home>.grid.grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(.5rem,2.5vw,.75rem)}
+  #app #v-home>.grid.grid-cols-2>div{min-width:0;padding:clamp(.7rem,3.5vw,1rem)}
+  #app #v-home>.grid.grid-cols-2>div>div:first-child{align-items:center}
+  #app #v-home>.grid.grid-cols-2>div span[data-i="exp"],
+  #app #v-home>.grid.grid-cols-2>div span[data-i="inc"]{min-width:0;max-width:calc(100% - 2.7rem);font-size:clamp(.65rem,2.6vw,.75rem);overflow-wrap:anywhere}
+  #app #v-home>.grid.grid-cols-2>div .num{font-variant-numeric:tabular-nums}
+  @media(max-width:360px){
+    #app #v-home>.grid.grid-cols-2{gap:.45rem}
+    #app #v-home>.grid.grid-cols-2>div{padding:.65rem;border-radius:1.1rem}
+    #app #v-home>.grid.grid-cols-2>div .num{font-size:.98rem}
+    #app #v-home>.grid.grid-cols-2>div span[data-i="exp"],
+    #app #v-home>.grid.grid-cols-2>div span[data-i="inc"]{font-size:.62rem}
+  }
   /* Responsive polish: consistent cards, controls and safe-area spacing */
   html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
   body{margin:0;overflow-x:hidden}
@@ -182,22 +196,18 @@
     <section id="v-home" class="view active space-y-4">
       <div class="grid grid-cols-2 gap-3">
         <div onclick="openTx('expense')" class="bg-white p-4 rounded-3xl shadow border border-red-100 cursor-pointer active:scale-95 transition">
-          <div class="flex items-center justify-between mb-3">
-            <div class="w-8 h-8 bg-red-100 text-red-500 rounded-full flex items-center justify-center font-black">↘</div>
+          <div class="flex items-center justify-between gap-2 mb-3 min-w-0">
+            <div class="w-9 h-9 shrink-0 rounded-xl bg-gradient-to-br from-rose-50 to-red-100 text-red-600 flex items-center justify-center ring-1 ring-red-100 shadow-sm" aria-label="المصاريف">
+              <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7l10 10M17 8v9H8"/><path d="M5 19l2-2"/></svg>
+            </div>
             <span class="text-xs font-extrabold text-red-600 leading-tight text-right" data-i="exp">المصاريف الإجمالية</span>
           </div>
           <p class="num text-xl font-black text-[#0b2a63]"><span id="tExp">0.00</span> <span class="text-xs text-slate-500">TND</span></p>
         </div>
         <div onclick="openTx('income')" class="bg-white p-4 rounded-3xl shadow border border-slate-100 cursor-pointer active:scale-95 transition">
           <div class="flex items-center justify-between mb-3">
-            <div class="w-8 h-8 bg-sky-100 text-sky-600 rounded-xl flex items-center justify-center shadow-sm" aria-label="محفظة رقمية">
-              <svg viewBox="0 0 32 32" class="w-6 h-6" aria-hidden="true">
-                <defs><linearGradient id="incomeWalletBlue" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#38bdf8"/><stop offset="1" stop-color="#2563eb"/></linearGradient></defs>
-                <path d="M7 9.5 21.5 4l2 4.5" fill="none" stroke="url(#incomeWalletBlue)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M6 10h19a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V13a3 3 0 0 1 3-3Z" fill="url(#incomeWalletBlue)"/>
-                <path d="M21 16h7v7h-7a3.5 3.5 0 0 1 0-7Z" fill="#dbeafe" stroke="#1d4ed8" stroke-width="1.5"/>
-                <circle cx="22" cy="19.5" r="1.2" fill="#2563eb"/>
-              </svg>
+            <div class="w-9 h-9 shrink-0 rounded-xl bg-gradient-to-br from-emerald-50 to-teal-100 text-emerald-700 flex items-center justify-center ring-1 ring-emerald-100 shadow-sm" aria-label="الدخل">
+              <svg viewBox="0 0 24 24" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
             </div>
             <span class="text-xs font-extrabold text-emerald-700" data-i="inc">الدخل الإجمالي</span>
           </div>
