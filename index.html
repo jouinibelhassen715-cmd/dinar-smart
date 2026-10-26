@@ -262,6 +262,26 @@
   }
   @media(prefers-reduced-motion:reduce){#app .view.active{animation:none}#app .ds-metric,#app .ds-panel,#app nav button{transition:none}}
 
+/* Premium wallet finish: crisp hierarchy, spacing and small-screen reliability */
+#app .ds-metric,#app .ds-panel{backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+#app .ds-metric{border:1px solid rgba(148,163,184,.14);box-shadow:0 12px 28px rgba(0,0,0,.16);transition:transform .18s,border-color .18s,box-shadow .18s}
+#app .ds-metric:hover{transform:translateY(-2px);border-color:rgba(59,130,246,.42);box-shadow:0 16px 32px rgba(0,0,0,.23)}
+#app .ds-panel{border:1px solid rgba(148,163,184,.13);box-shadow:0 14px 32px rgba(0,0,0,.13)}
+#app nav button{min-height:44px;transition:background .18s,color .18s,border-color .18s}
+#app input,#app select,#app textarea{min-height:44px;max-width:100%;font-size:16px}
+#app button,#app [role="button"]{touch-action:manipulation}
+#app :focus-visible{outline:3px solid #60a5fa;outline-offset:3px}
+#app table{width:100%;border-collapse:separate;border-spacing:0}
+#app th,#app td{padding:11px 12px;text-align:start}
+@media(max-width:899px){
+ #app #dsMetrics{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #app #dsAnalytics{grid-template-columns:minmax(0,1fr)}
+ #app .ds-metric{min-width:0}
+ #app main{min-width:0}
+ #app table{display:block;max-width:100%;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch}
+}
+@media(prefers-reduced-motion:reduce){#app .ds-metric,#app .ds-panel,#app nav button{transition:none;transform:none}}
+
 </style>
 </head>
 <body class="min-h-screen text-slate-800 select-none">
