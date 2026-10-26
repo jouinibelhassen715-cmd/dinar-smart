@@ -292,7 +292,8 @@ function seed(){
 }
 let authUser=null,S=seed();
 const dataKey=()=> 'ds_data2_'+(authUser?.id||'guest');
-const save=()=>{try{if(authUser)localStorage.setItem(dataKey(),JSON.stringify(S))}catch(e){}};
+let cloudReady=false, cloudSaveTimer=null, cloudSaveChain=Promise.resolve();
+const save=()=>{try{if(authUser)localStorage.setItem(dataKey(),JSON.stringify(S))}catch(e){} if(!authUser||!cloudReady)return; if(cloudSaveTimer)clearTimeout(cloudSaveTimer); cloudSaveTimer=setTimeout(()=>{const uid=authUser?.id,payload=JSON.parse(JSON.stringify(S));if(!uid)return;cloudSaveChain=cloudSaveChain.then(async()=>{if(authUser?.id!==uid)return;const {error}=await sb.from('dinar_smart_data').upsert({user_id:uid,payload,updated_at:new Date().toISOString()},{onConflict:'user_id'});if(error)throw error;}).catch(err=>console.error('Cloud save failed',err));},700);};
 function loadUserData(user){
  authUser=user;
  try{S=JSON.parse(localStorage.getItem(dataKey()))}catch(e){S=null}
