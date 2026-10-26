@@ -306,6 +306,27 @@
 @media(max-width:700px){#app main{padding-inline:12px}#app main section#v-home>.grid{gap:10px}#app main section#v-home>.grid>div{min-width:0}#app .hdr{border-radius:0 0 24px 24px}}
 @media(prefers-reduced-motion:reduce){#app .view{animation:none}}
 
+
+
+/* REAL REDESIGN OVERRIDE — Dinar Smart */
+:root{--ds-blue:#3478ff;--ds-cyan:#28d8ff}
+body{background:#050b16!important;background-image:radial-gradient(ellipse at 50% -10%,#16365b 0%,#07111f 48%,#030711 100%)!important}
+#app{max-width:1320px!important;margin:22px auto!important;border:1px solid #1a3555;border-radius:28px!important;overflow:hidden;box-shadow:0 30px 90px #0008!important;background:#071321!important}
+#app header.hdr{border:0!important;border-radius:0!important;background:linear-gradient(120deg,#0c2340 0%,#081626 55%,#0b1e36 100%)!important;padding:28px clamp(18px,3vw,42px)!important;box-shadow:inset 0 -1px #244565!important}
+#app header.hdr:before{content:"";position:absolute;inset:auto -4% -95px 42%;height:190px;border:1px solid #2b5d8a;border-radius:50%;box-shadow:0 0 0 24px #2b5d8a15,0 0 0 52px #2b5d8a0c;pointer-events:none}
+#app main{padding:clamp(18px,3vw,38px)!important}
+#app #dsMetrics{gap:16px!important}
+#app .ds-metric{background:linear-gradient(145deg,#102944,#091a2d)!important;border:1px solid #254664!important;border-radius:22px!important;padding:22px!important;box-shadow:0 18px 35px -26px #000!important}
+#app .ds-metric:nth-child(1){background:linear-gradient(135deg,#123d70,#0d2443)!important;border-color:#2a6ba5!important}
+#app .ds-metric .num{font-size:clamp(1.35rem,2.2vw,2rem)!important;letter-spacing:-.04em}
+#app .ds-panel{background:linear-gradient(145deg,#0d2035,#081626)!important;border:1px solid #1c3a57!important;border-radius:22px!important;padding:clamp(16px,2.2vw,26px)!important;box-shadow:0 18px 45px -32px #000!important}
+#app #dsAnalytics{gap:16px!important}
+#app nav{background:#06111f!important;border:1px solid #1b3653!important;border-radius:18px!important;box-shadow:0 12px 30px #0004!important}
+#app nav button{border-radius:12px!important}
+#app nav button:focus-visible,#app button:focus-visible{outline-color:#45c5ff!important}
+@media(min-width:900px){#app #dsAnalytics{grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr)!important}}
+@media(max-width:700px){#app{margin:0!important;border-radius:0!important;border-inline:0}#app header.hdr{padding:20px 16px!important}#app main{padding:16px 12px 24px!important}#app .ds-metric{padding:15px!important;border-radius:16px!important}#app .ds-panel{padding:15px!important;border-radius:17px!important}}
+
 </style>
 </head>
 <body class="min-h-screen text-slate-800 select-none">
