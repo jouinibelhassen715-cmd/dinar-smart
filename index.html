@@ -370,6 +370,7 @@ async function savePw(){
  alert('تم تغيير كلمة المرور بنجاح.');closePw();
 }
 function showApp(user){
+ if(user&&loggedIn&&authUser?.id===user.id)return;
  loggedIn=!!user;
  $('login').classList.toggle('hidden',loggedIn);
  $('app').classList.toggle('hidden',!loggedIn);
