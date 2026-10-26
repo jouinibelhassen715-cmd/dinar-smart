@@ -154,6 +154,70 @@
     #app main{padding-top:1rem!important}
   }
 
+
+  /* Premium reference-matched desktop dashboard */
+  .ds-welcome,.ds-metrics,.ds-analytics{display:none}
+  @media(min-width:900px){
+    #app header.hdr{position:relative}
+    #app header.hdr>div:first-child{flex-direction:row!important;align-items:center!important}
+    #app header.hdr>div:first-child>div:first-child{order:2}
+    #app header.hdr>div:first-child>div:last-child{order:1}
+    #app header.hdr>div:nth-child(2){margin-top:.8rem;padding-top:.8rem;border-top:1px solid #16304d}
+    #app header.hdr>div:nth-child(2)>div:first-child{order:2}
+    #app header.hdr>div:nth-child(2)>div:last-child{order:1}
+    #app main{display:flex;flex-direction:column;gap:1rem}
+    #app #v-home{display:flex;flex-direction:column;gap:1rem}
+    #app #v-home .ds-welcome{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.25rem 0 .35rem}
+    #app .ds-eyebrow{font-size:.68rem;letter-spacing:.18em;color:#39aaff;font-weight:800;margin-bottom:.35rem}
+    #app #dsGreeting{font-size:clamp(1.5rem,2.1vw,2.2rem);font-weight:800;color:#f4f8ff;line-height:1.2}
+    #app #dsGreetingSub{color:#9bb7d9;margin-top:.5rem;font-size:.95rem}
+    #app .ds-period{display:flex;flex-direction:column;gap:.3rem;color:#93afd1;font-size:.8rem;text-align:right}
+    #app .ds-period strong{color:#f4f8ff;font-size:1rem}
+    #app #dsMetrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.8rem}
+    #app .ds-metric{min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:.55rem;position:relative;overflow:hidden;padding:1.1rem;border:1px solid #183655;border-radius:.8rem;background:linear-gradient(145deg,#0a1c31,#071323);color:#a9bfdd}
+    #app .ds-metric:first-child{border-left:4px solid #2189ff}
+    #app .ds-metric:nth-child(2){border-left:4px solid #fb6075}
+    #app .ds-metric strong{font-size:clamp(1rem,1.3vw,1.35rem);font-weight:800;color:#f4f8ff;white-space:nowrap}
+    #app .ds-metric strong b{font-weight:800}
+    #app .ds-metric small{font-size:.72rem}
+    #app .ds-metric-icon{width:2.5rem;height:2.5rem;display:grid;place-items:center;border-radius:.7rem;font-size:1.25rem;font-weight:800}
+    #app .ds-income-icon{background:#123b68;color:#31b8ff}
+    #app .ds-expense-icon{background:#54243b;color:#ff8295}
+    #app .ds-goal-icon{background:#3e2371;color:#c3a1ff}
+    #app .ds-balance-icon{background:#115448;color:#43e0bd}
+    #app .ds-positive{color:#20d6b0!important}
+    #app .ds-negative{color:#ff6478!important}
+    #app #dsAnalytics{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,.9fr);gap:.8rem}
+    #app .ds-panel{min-width:0;padding:1rem;border:1px solid #183655;border-radius:.8rem;background:linear-gradient(145deg,#081a2e,#061222)}
+    #app .ds-panel-head{display:flex;justify-content:space-between;align-items:center;gap:.75rem;margin-bottom:1rem}
+    #app .ds-panel-head h3{font-size:1rem;font-weight:800;color:#f1f6ff}
+    #app .ds-panel-head p{font-size:.72rem;color:#91a9c8;margin-top:.2rem}
+    #app .ds-legend{display:flex;gap:.75rem;font-size:.68rem;color:#b7c9e1;white-space:nowrap}
+    #app .ds-legend span{display:flex;align-items:center;gap:.3rem}
+    #app .ds-dot{width:.55rem;height:.55rem;border-radius:.15rem;display:inline-block}
+    #app .income-dot{background:#258aff}
+    #app .expense-dot{background:#ff804e}
+    #app .ds-bars{height:190px;display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:.45rem;align-items:stretch;border-bottom:1px solid #25415d;background:repeating-linear-gradient(to bottom,transparent 0,transparent 46px,#17304a 47px,#17304a 48px)}
+    #app .ds-month{display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:.45rem;min-width:0}
+    #app .ds-bar-pair{height:165px;width:100%;display:flex;align-items:flex-end;justify-content:center;gap:3px}
+    #app .ds-bar{display:block;width:min(42%,13px);min-height:0;border-radius:3px 3px 0 0}
+    #app .ds-bar-income{background:linear-gradient(180deg,#2e9aff,#1465d8)}
+    #app .ds-bar-expense{background:linear-gradient(180deg,#ff9864,#f45d38)}
+    #app .ds-month small{font-size:.62rem;color:#9bb2d0;padding-bottom:.4rem}
+    #app .ds-recent-row{display:flex;align-items:center;gap:.65rem;padding:.65rem 0;border-bottom:1px solid #152d47;min-width:0}
+    #app .ds-recent-row:last-child{border-bottom:0}
+    #app .ds-recent-icon{flex:0 0 2rem;height:2rem;border-radius:50%;display:grid;place-items:center;font-weight:900}
+    #app .ds-recent-name{display:flex;flex-direction:column;gap:.15rem;min-width:0;flex:1}
+    #app .ds-recent-name strong{font-size:.8rem;color:#edf4ff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    #app .ds-recent-name small{font-size:.68rem;color:#91a9c8}
+    #app .ds-recent-row>strong{font-size:.76rem;white-space:nowrap}
+    #app .ds-empty{padding:1rem 0;color:#8da6c5;font-size:.8rem}
+    #app #v-home>.grid.grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+    #app #v-home .balance-card{max-width:none}
+    #app #v-home> .bg-white:not(.balance-card){max-width:none}
+  }
+  @media(max-width:899px){#app .ds-welcome,#app .ds-metrics,#app .ds-analytics{display:none!important}}
+
 </style>
 </head>
 <body class="min-h-screen text-slate-800 select-none">
@@ -274,6 +338,20 @@
         </div>
       </div>
 
+      <div id="dsWelcome" class="ds-welcome">
+        <div><p class="ds-eyebrow">DINAR SMART · FINANCES</p><h2 id="dsGreeting">Bonjour 👋</h2><p id="dsGreetingSub">Voici votre aperçu financier.</p></div>
+        <div class="ds-period"><span data-i="summary">ملخص الشهر</span><strong id="dsPeriod"></strong></div>
+      </div>
+      <div id="dsMetrics" class="ds-metrics">
+        <div class="ds-metric"><span class="ds-metric-icon ds-income-icon">▣</span><span data-i="inc">الدخل الإجمالي</span><strong><b id="dsIncome">0.00</b> DT</strong><small class="ds-positive">↗ <span id="dsIncomeCount">0</span> transactions</small></div>
+        <div class="ds-metric"><span class="ds-metric-icon ds-expense-icon">↘</span><span data-i="exp">المصاريف الإجمالية</span><strong><b id="dsExpense">0.00</b> DT</strong><small class="ds-negative">↘ <span id="dsExpenseCount">0</span> transactions</small></div>
+        <div class="ds-metric"><span class="ds-metric-icon ds-goal-icon">◎</span><span data-i="goals">الأهداف</span><strong><b id="dsSaved">0.00</b> DT</strong><small class="ds-positive">Épargne des objectifs</small></div>
+        <div class="ds-metric"><span class="ds-metric-icon ds-balance-icon">▣</span><span data-i="bal">الرصيد المتبقي</span><strong><b id="dsBalance">0.00</b> DT</strong><small class="ds-positive">Solde du mois</small></div>
+      </div>
+      <div id="dsAnalytics" class="ds-analytics">
+        <section class="ds-panel ds-chart-panel"><div class="ds-panel-head"><div><h3>Évolution mensuelle</h3><p>Revenus et dépenses · année sélectionnée</p></div><div class="ds-legend"><span><i class="ds-dot income-dot"></i>Revenus</span><span><i class="ds-dot expense-dot"></i>Dépenses</span></div></div><div id="dsChart" class="ds-chart" role="img" aria-label="Graphique mensuel des revenus et dépenses"></div></section>
+        <section class="ds-panel ds-recent-panel"><div class="ds-panel-head"><div><h3>Transactions récentes</h3><p>Vos dernières opérations</p></div><button type="button" onclick="nav('tx')">Voir tout →</button></div><div id="dsRecent"></div></section>
+      </div>
       <div class="bg-white p-5 rounded-3xl shadow border border-slate-100 balance-card">
         <div class="flex items-center justify-between gap-4">
           <div class="w-[68px] h-[68px] shrink-0 rounded-2xl flex items-center justify-center ring-1 ring-blue-100" style="background:linear-gradient(145deg,#eff8ff,#dbeafe)">
@@ -583,6 +661,21 @@ function render(){
  ['home','tx','budget','goals'].forEach(v=>$('n-'+v).className='flex flex-col items-center w-1/4 text-xs font-bold '+(v===view?'text-blue-600':'text-slate-400'));
  const{inc,exp,bal}=totals();
  $('tInc').textContent=f(inc);$('tExp').textContent=f(exp);$('tBal').textContent=f(bal);
+ // Premium dashboard widgets use the user's existing transaction and goal data.
+ const txData=D().tx||[], goalData=D().goals||[];
+ const countType=type=>monthTx().filter(x=>x.type===type).length;
+ const put=(id,value)=>{const el=$(id);if(el)el.textContent=value};
+ put('dsPeriod',MN[lang][mo-1]+' '+y);
+ put('dsGreeting',lang==='fr'?'Bonjour 👋':'أهلاً بيك 👋');
+ put('dsGreetingSub',lang==='fr'?'Voici un aperçu de votre situation financière.':'هاني نعطيك لمحة على وضعيتك المالية.');
+ put('dsIncome',f(inc));put('dsExpense',f(exp));put('dsBalance',f(bal));
+ put('dsSaved',f(goalData.reduce((sum,g)=>sum+(Number(g.saved)||0),0)));
+ put('dsIncomeCount',countType('income'));put('dsExpenseCount',countType('expense'));
+ const monthTotals=Array.from({length:12},(_,i)=>{const key=y+'-'+String(i+1).padStart(2,'0');const list=txData.filter(x=>x.m===key);return {month:MN[lang][i],inc:list.filter(x=>x.type==='income').reduce((s,x)=>s+(Number(x.amt)||0),0),exp:list.filter(x=>x.type==='expense').reduce((s,x)=>s+(Number(x.amt)||0),0)}});
+ const maxVal=Math.max(1,...monthTotals.flatMap(x=>[x.inc,x.exp]));
+ const chart=$('dsChart');if(chart)chart.innerHTML='<div class="ds-bars">'+monthTotals.map((x,i)=>'<div class="ds-month"><div class="ds-bar-pair"><span class="ds-bar ds-bar-income" title="Revenus: '+f(x.inc)+'" style="height:'+Math.max(x.inc?3:0,x.inc/maxVal*100)+'%"></span><span class="ds-bar ds-bar-expense" title="Dépenses: '+f(x.exp)+'" style="height:'+Math.max(x.exp?3:0,x.exp/maxVal*100)+'%"></span></div><small>'+x.month.slice(0,3)+'</small></div>').join('')+'</div>';
+ const recent=$('dsRecent');if(recent){const list=monthTx().slice().reverse().slice(0,4);recent.innerHTML=list.map(x=>'<div class="ds-recent-row"><span class="ds-recent-icon '+(x.type==='income'?'ds-income-icon':'ds-expense-icon')+'">'+(x.type==='income'?'↗':'↘')+'</span><div class="ds-recent-name"><strong>'+String(x.cat||'Transaction').replace(/[&<>"]/g,'')+'</strong><small>'+ (x.fixed?(lang==='fr'?'Revenu fixe':'دخل ثابت'):(x.type==='income'?(lang==='fr'?'Revenu':'دخل'):(lang==='fr'?'Dépense':'مصروف')))+'</small></div><strong class="'+(x.type==='income'?'ds-positive':'ds-negative')+'">'+(x.type==='income'?'+':'−')+f(x.amt)+' DT</strong></div>').join('')||'<p class="ds-empty">'+(lang==='fr'?'Aucune transaction ce mois-ci.':'ما فماش معاملات في الشهر هذا.')+'</p>'}
+
  $('ratio').textContent=(inc>0?Math.round(bal/inc*100):0)+T[lang].pct;
  $('fixAmt').textContent=f(D().fixed.amt);
  $('dTotal').textContent=f(exp);
