@@ -13,6 +13,9 @@
   .bg-white.shadow{box-shadow:0 8px 24px -10px rgba(11,42,99,.28)}
   .num{direction:ltr;unicode-bidi:embed}
   .view{display:none}.view.active{display:block}
+  .eye{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;min-width:44px;border:0;border-radius:12px;background:transparent;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+  .eye:focus-visible{outline:2px solid #1677c8;outline-offset:2px}
+  .eye svg{display:block;width:20px;height:20px;pointer-events:none}
 </style>
 </head>
 <body class="min-h-screen text-slate-800 select-none">
@@ -309,11 +312,15 @@ const D=()=>S[mode];
 const monthTx=()=>D().tx.filter(x=>x.m===vm);
 
 // ---------- الدخول وكلمة المرور ----------
-document.querySelectorAll('.eye').forEach(b=>b.innerHTML=EYE_CLOSED);
+document.querySelectorAll('.eye').forEach(b=>{b.innerHTML=EYE_OPEN;b.setAttribute('aria-pressed','false');b.setAttribute('aria-label','إظهار كلمة المرور');b.title='إظهار كلمة المرور'});
 function eye(btn){
  const i=$(btn.dataset.t),show=i.type==='password';
  i.type=show?'text':'password';
- btn.innerHTML=show?EYE_OPEN:EYE_CLOSED;
+ btn.innerHTML=show?EYE_CLOSED:EYE_OPEN;
+ btn.setAttribute('aria-pressed',String(show));
+ const label=show?'إخفاء كلمة المرور':'إظهار كلمة المرور';
+ btn.setAttribute('aria-label',label);
+ btn.title=label;
 }
 const curPass=()=>localStorage.getItem('ds_pass')||PASS;
 function doLogin(e){
