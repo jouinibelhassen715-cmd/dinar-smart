@@ -514,9 +514,14 @@ function saveTx(){
 function delTx(id){
  const tx=D().tx.find(x=>String(x.id)===String(id));
  if(!tx)return;
- const msg=tx.fixed
-  ?'هذا دخل ثابت يتعاود كل شهر. حذفُه يوقف الدخل الثابت ويحذف قيوده الثابتة من هذا الحساب. موافق؟'
-  :'حذف المعاملة؟';
+ let msg;
+ if(tx.fixed){
+  msg='هذا دخل ثابت يتعاود كل شهر. حذفُه يوقف تكراره ويحذف قيوده الثابتة من هذا الوضع. موافق؟';
+ }else if(tx.type==='expense'){
+  msg='تحب تحذف المصروف هذا؟ الحذف يخصّ المصروف المختار فقط.';
+ }else{
+  msg='تحب تحذف الدخل هذا؟ الحذف يخصّ الدخل المختار فقط.';
+ }
  if(!confirm(msg))return;
  if(tx.fixed){
   D().fixed.amt=0;
