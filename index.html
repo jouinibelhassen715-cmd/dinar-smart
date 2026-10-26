@@ -95,6 +95,65 @@
   }
 
   @media(prefers-reduced-motion:reduce){#app button,#app nav button,#app main section#v-home>.grid>div{transition:none}}
+
+  /* Dinar Smart — premium dark dashboard inspired by the approved reference */
+  :root{color-scheme:dark;--ds-navy:#061326;--ds-blue:#1677ff;--ds-sky:#29b6ff;--ds-ink:#eaf2ff;--ds-muted:#9fb6d8;--ds-line:#183454}
+  html,body{background:#020a15!important;color:#eaf2ff!important}
+  body{background:radial-gradient(ellipse at 12% 0%,#0b2340 0%,#030c19 42%,#020711 100%)!important;color:#eaf2ff!important}
+  #app{background:transparent!important;max-width:none!important;width:100%;margin:0;min-height:100dvh;padding-bottom:5.5rem}
+  #app header.hdr{background:linear-gradient(115deg,rgba(5,18,35,.98),rgba(3,11,23,.98))!important;border:1px solid #17375b;border-radius:0 0 1.3rem 1.3rem;box-shadow:0 14px 35px rgba(0,0,0,.25);padding:1.25rem clamp(1rem,3vw,2.5rem) 1.4rem!important}
+  #app header.hdr:after{display:none}
+  #app header .bg-white{background:#0d2038!important;color:#eaf2ff!important}
+  #app header .text-slate-300,#app header .text-slate-200{color:#a8bfdf!important}
+  #app main{padding:1.25rem clamp(1rem,2vw,2rem)!important;margin:0!important;max-width:none}
+  #app .bg-white{background:linear-gradient(145deg,#091a2e,#071426)!important;color:#eaf2ff!important}
+  #app .text-slate-500,#app .text-slate-400{color:#9ab0ce!important}
+  #app .text-\[\#0b2a63\],#app .text-\[\#0b2a63\]{color:#eef5ff!important}
+  #app .border,#app .border-slate-100,#app .border-red-100{border-color:#183655!important}
+  #app .rounded-3xl{border-radius:1rem!important}
+  #app .rounded-2xl{border-radius:.85rem!important}
+  #app .bg-blue-100{background:#102c4e!important;color:#c5e2ff!important}
+  #app .bg-amber-50{background:#2a210f!important}
+  #app .text-amber-900{color:#ffdf9a!important}
+  #app .shadow{box-shadow:0 8px 25px rgba(0,0,0,.18)!important}
+  #app .navy{background:linear-gradient(135deg,#1677ff,#0755c9)!important;box-shadow:0 5px 18px #0969da30}
+  #app nav{z-index:40;background:rgba(4,14,27,.97)!important;border-color:#183655!important;backdrop-filter:blur(18px);width:100%;max-width:100%;border-radius:0!important}
+  #app nav button{color:#9fb6d8!important}
+  #app nav button:focus,#app nav button:hover{color:#fff!important}
+  #app #v-home>.grid.grid-cols-2>div{background:linear-gradient(145deg,#0b2038,#071426)!important;border:1px solid #193957!important;position:relative;overflow:hidden}
+  #app #v-home>.grid.grid-cols-2>div:first-child:before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:#ff5b72}
+  #app #v-home>.grid.grid-cols-2>div:last-child:before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:#20d6b0}
+  #app #v-home .balance-card{background:linear-gradient(120deg,#0d2c53,#071426)!important;border-color:#1c4a7a!important}
+  #app #v-home .balance-card>div>div:first-child{background:linear-gradient(145deg,#113a68,#0b2340)!important}
+  #app #v-home #donut{filter:drop-shadow(0 0 12px #1479ff18)}
+  #app input,#app select,#app textarea{background:#071426!important;color:#eef5ff!important;border-color:#254564!important}
+  #app input::placeholder,#app textarea::placeholder{color:#7e96b7!important}
+  #app #txModal>div,#app #pwModal>div{background:#071426!important;color:#eef5ff!important;border:1px solid #244361}
+  @media(min-width:900px){
+    #app{padding:0 0 0 0!important;display:grid;grid-template-columns:250px minmax(0,1fr);grid-template-rows:auto 1fr;align-items:start}
+    #app header.hdr{grid-column:1 / -1;grid-row:1;border-radius:0 0 1rem 1rem;margin:0 1rem;min-height:96px}
+    #app header.hdr>div:first-child{max-width:100%;flex-direction:row-reverse;justify-content:space-between}
+    #app header.hdr>div:nth-child(2){max-width:100%;justify-content:flex-start;gap:2rem}
+    #app main{grid-column:2;grid-row:2;min-width:0;padding:1.5rem 1.5rem 2rem!important}
+    #app nav{grid-column:1;grid-row:2;position:sticky!important;inset:auto!important;top:0;align-self:stretch;height:calc(100dvh - 120px);width:100%;max-width:none;display:flex;flex-direction:column;justify-content:flex-start;gap:.5rem;padding:1.25rem .75rem!important;border:0!important;border-right:1px solid #142d49!important;background:rgba(3,12,24,.7)!important}
+    #app nav button{width:100%;min-height:52px;display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:.8rem;padding:.75rem .9rem!important;border-radius:.75rem;text-align:left;font-size:.9rem}
+    #app nav button span:first-child{font-size:1.25rem;min-width:26px}
+    #app nav button span:last-child{font-size:.9rem!important}
+    #app nav button[aria-current="page"],#app nav button.active{background:linear-gradient(110deg,#123a78,#0a1c34)!important;color:#4db8ff!important}
+    #app #v-home>.grid.grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
+    #app #v-home>.grid.grid-cols-2>div{padding:1.2rem}
+    #app #v-home .balance-card{padding:1.5rem}
+  }
+  @media(min-width:1200px){
+    #app{grid-template-columns:260px minmax(0,1fr)}
+    #app main{padding:1.75rem 2rem!important}
+    #app #v-home>.grid.grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  }
+  @media(max-width:899px){
+    #app header.hdr{padding-bottom:1.25rem!important;border-radius:0 0 1.25rem 1.25rem}
+    #app main{padding-top:1rem!important}
+  }
+
 </style>
 </head>
 <body class="min-h-screen text-slate-800 select-none">
