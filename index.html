@@ -511,7 +511,21 @@ function saveTx(){
  D().tx.push({id:Date.now(),type:$('txType').value,cat,amt,m:vm});
  save();closeTx();render();
 }
-function delTx(id){if(confirm('حذف المعاملة؟')){D().tx=D().tx.filter(x=>String(x.id)!==String(id));save();render()}}
+function delTx(id){
+ const tx=D().tx.find(x=>String(x.id)===String(id));
+ if(!tx)return;
+ const msg=tx.fixed
+  ?'هذا دخل ثابت يتعاود كل شهر. حذفُه يوقف الدخل الثابت ويحذف قيوده الثابتة من هذا الحساب. موافق؟'
+  :'حذف المعاملة؟';
+ if(!confirm(msg))return;
+ if(tx.fixed){
+  D().fixed.amt=0;
+  D().tx=D().tx.filter(x=>!x.fixed);
+ }else{
+  D().tx=D().tx.filter(x=>String(x.id)!==String(id));
+ }
+ save();render();
+}
 
 // ---------- الدخل الثابت ----------
 function editFixed(){
