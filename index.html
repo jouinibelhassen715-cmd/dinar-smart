@@ -327,6 +327,27 @@ body{background:#050b16!important;background-image:radial-gradient(ellipse at 50
 @media(min-width:900px){#app #dsAnalytics{grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr)!important}}
 @media(max-width:700px){#app{margin:0!important;border-radius:0!important;border-inline:0}#app header.hdr{padding:20px 16px!important}#app main{padding:16px 12px 24px!important}#app .ds-metric{padding:15px!important;border-radius:16px!important}#app .ds-panel{padding:15px!important;border-radius:17px!important}}
 
+
+
+/* FINAL POLISH — login, controls, and real mobile layout */
+:root{color-scheme:dark}
+#login{background:radial-gradient(ellipse at 50% 0%,#16385d 0%,#081321 54%,#030710 100%)!important}
+#login>div{color:#e8f3ff!important;background:linear-gradient(145deg,#11243a,#091626)!important;border:1px solid #294765!important;box-shadow:0 32px 90px #0009!important}
+#login h1{color:#f4f8ff!important}
+#login p{color:#9bb4d0!important}
+#login input,#pwModal input{background:#071321!important;color:#f2f8ff!important;border-color:#29445e!important}
+#login input::placeholder{color:#8298b4!important}
+#login .navy,#login button[type=submit]{background:linear-gradient(135deg,#1769ff,#16b9e9)!important;color:#fff!important;border:1px solid #4194ff!important}
+#app{color:#e7f2ff!important}
+#app input,#app select,#app textarea{background:#071523!important;color:#eef7ff!important;border-color:#28445f!important}
+#app .text-slate-800,#app .text-slate-700,#app .text-slate-600{color:#d8e7f7!important}
+#app .bg-white,#app .bg-slate-50,#app .bg-slate-100{background:#0c1b2d!important}
+#app .border-slate-200,#app .border-slate-300{border-color:#29435c!important}
+#app .text-slate-400{color:#91a8c2!important}
+#app button{transition:transform .18s ease,border-color .18s ease,filter .18s ease}
+#app button:active{transform:translateY(1px)}
+@media(max-width:700px){#login>div{max-width:430px!important;padding:22px!important}#app{min-height:100dvh!important}}
+
 </style>
 </head>
 <body class="min-h-screen text-slate-800 select-none">
