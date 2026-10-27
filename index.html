@@ -374,6 +374,28 @@ body{background:#050b16!important;background-image:radial-gradient(ellipse at 50
 #app nav button{pointer-events:auto;touch-action:manipulation}
 @media(max-width:420px){#app .ds-tx-row{padding:9px!important;gap:7px!important}#app .ds-tx-row .ds-action-edit,#app .ds-tx-row .ds-action-delete{width:36px;height:38px;min-width:36px}#app .ds-tx-row .ds-tx-category{font-size:.78rem}}
 
+
+/* Hotfix: transaction modal controls were rendered white-on-white on mobile */
+#txModal{z-index:9999!important;pointer-events:auto!important}
+#txModal>div{background:#071a2d!important;color:#eef6ff!important;max-height:calc(100dvh - 32px);overflow-y:auto}
+#txModal h3{color:#58a5ff!important}
+#txModal select,#txModal input:not([type=file]),#txModal textarea{
+ display:block;width:100%;min-height:52px;padding:14px 16px!important;
+ background:#f1f5fb!important;color:#132b46!important;
+ -webkit-text-fill-color:#132b46!important;opacity:1!important;
+ border:1px solid #cbd8e8!important;border-radius:15px!important;
+ font-size:16px!important;font-weight:800!important;line-height:1.4!important;
+ appearance:auto;-webkit-appearance:menulist
+}
+#txModal input::placeholder{color:#65758a!important;-webkit-text-fill-color:#65758a!important;opacity:1!important}
+#txModal select option{background:#fff!important;color:#132b46!important}
+#txModal label{background:#10304b!important;color:#eef6ff!important}
+#txModal button{min-height:52px!important;touch-action:manipulation!important;pointer-events:auto!important;z-index:2}
+#txModal button.navy{background:linear-gradient(135deg,#1769ff,#0846b8)!important;color:#fff!important}
+#txModal button[data-i="cancel"]{background:#19334c!important;color:#fff!important}
+#txModal .hidden{display:none!important}
+#txList .ds-tx-row button{pointer-events:auto!important;touch-action:manipulation!important;z-index:2}
+
 </style>
 </head>
 <body class="min-h-screen text-slate-800 select-none">
