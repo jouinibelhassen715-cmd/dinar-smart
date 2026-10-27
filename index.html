@@ -348,6 +348,32 @@ body{background:#050b16!important;background-image:radial-gradient(ellipse at 50
 #app button:active{transform:translateY(1px)}
 @media(max-width:700px){#login>div{max-width:430px!important;padding:22px!important}#app{min-height:100dvh!important}}
 
+
+/* Interaction and legibility fix: editable transactions and reliable tap targets */
+#app button,#app [onclick]{cursor:pointer;-webkit-tap-highlight-color:transparent}
+#app button{pointer-events:auto;position:relative}
+#app button:disabled{opacity:.55;cursor:not-allowed}
+#app .ds-tx-row{min-width:0;gap:10px!important;border:1px solid #1c3957!important;background:linear-gradient(145deg,#0e2035,#091727)!important}
+#app .ds-tx-row .ds-action-edit,#app .ds-tx-row .ds-action-delete{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;min-width:40px;border:1px solid #2c4a68;border-radius:12px;background:#132a43;color:#eaf4ff;font-size:16px;touch-action:manipulation}
+#app .ds-tx-row .ds-action-edit{border-color:#24578a;background:#102d4c}
+#app .ds-tx-row .ds-action-delete{border-color:#71384a;background:#351b2a}
+#app .ds-tx-row .ds-tx-amount{flex:0 0 auto;font-size:clamp(.75rem,2.7vw,.95rem);font-weight:900;white-space:nowrap}
+#app .ds-tx-row .ds-tx-income{color:#35e0b7!important}
+#app .ds-tx-row .ds-tx-expense{color:#ff7c91!important}
+#app .ds-tx-row .ds-tx-category{min-width:0;flex:1;color:#f0f6ff!important;font-weight:800;font-size:.85rem;overflow-wrap:anywhere}
+#app #v-home [data-i="exp"]{color:#ff8295!important}
+#app #v-home [data-i="inc"]{color:#35e0b7!important}
+#app .text-slate-400,#app .text-slate-500{color:#a8bdd7!important}
+#app .text-red-400,#app .text-red-500,#app .text-red-600{color:#ff8295!important}
+#app .text-emerald-600,#app .text-emerald-700{color:#35e0b7!important}
+#app .bg-slate-200{background:#1a2d43!important;color:#edf5ff!important}
+#txModal>div{background:#091a2d!important;color:#f0f6ff!important;border:1px solid #2a4968!important}
+#txModal label{background:#122b46!important;color:#ddecff!important}
+#txModal [data-i="save"]{min-height:44px}
+#txModal [data-i="cancel"]{min-height:44px;background:#1a2d43!important;color:#f0f6ff!important}
+#app nav button{pointer-events:auto;touch-action:manipulation}
+@media(max-width:420px){#app .ds-tx-row{padding:9px!important;gap:7px!important}#app .ds-tx-row .ds-action-edit,#app .ds-tx-row .ds-action-delete{width:36px;height:38px;min-width:36px}#app .ds-tx-row .ds-tx-category{font-size:.78rem}}
+
 </style>
 </head>
 <body class="min-h-screen text-slate-800 select-none">
@@ -831,10 +857,13 @@ function render(){
  if(top){$('alertText').innerHTML=T[lang].alert(top.p,top.c);$('alertBox').classList.remove('hidden')}else $('alertBox').classList.add('hidden');
 
  // المعاملات
- $('txList').innerHTML=monthTx().slice().reverse().map(x=>`<div class="bg-white rounded-2xl p-3 shadow flex items-center justify-between">
-  <button onclick="delTx('${x.id}')" class="text-red-400 text-lg px-2">🗑</button>
-  <span class="num font-black ${x.type==='income'?'text-emerald-600':'text-red-500'}">${x.type==='income'?'+':'-'}${f(x.amt)} TND</span>
-  <span class="font-bold text-sm">${x.fixed?'📌 ':''}${x.cat}</span></div>`).join('')||'<p class="text-center text-slate-400 text-sm py-6">لا توجد معاملات في هذا الشهر</p>';
+ $('txList').innerHTML=monthTx().slice().reverse().map(x=>`<div class="ds-tx-row bg-white rounded-2xl p-3 shadow flex items-center gap-2">
+  <div class="flex items-center gap-1 shrink-0">
+   ${x.fixed?'<span class="text-slate-400 text-xs px-2" title="دخل ثابت">📌</span>':`<button type="button" onclick="editTx('${x.id}')" class="ds-action-edit" aria-label="تعديل المعاملة" title="تعديل">✏️</button>`}
+   <button type="button" onclick="delTx('${x.id}')" class="ds-action-delete" aria-label="حذف المعاملة" title="حذف">🗑</button>
+  </div>
+  <span class="num ds-tx-amount ${x.type==='income'?'ds-tx-income':'ds-tx-expense'}">${x.type==='income'?'+':'−'}${f(x.amt)} TND</span>
+  <span class="ds-tx-category">${x.fixed?'📌 ':''}${String(x.cat||'').replace(/[&<>"]/g,'')}</span></div>`).join('')||'<p class="text-center text-slate-400 text-sm py-6">لا توجد معاملات في هذا الشهر</p>';
 
  // الميزانية
  $('budList').innerHTML=Object.entries(D().budgets).map(([c,b],i)=>{
@@ -849,12 +878,24 @@ function render(){
 }
 
 // ---------- المعاملات ----------
+let editingTxId=null;
 function openTx(t,scan){
+ editingTxId=null;
  $('txType').value=t||'income';fillCats();$('txAmt').value='';$('scanStatus').textContent='';
+ const title=$('txModal').querySelector('h3');if(title)title.textContent=lang==='fr'?'Ajouter une transaction':'إضافة معاملة جديدة';
+ $('txType').disabled=false;$('txCat').disabled=false;
  $('txModal').classList.remove('hidden');
  if(scan)$('scanCam').click();
 }
-function closeTx(){$('txModal').classList.add('hidden')}
+function closeTx(){$('txModal').classList.add('hidden');editingTxId=null;$('txType').disabled=false;$('txCat').disabled=false}
+function editTx(id){
+ const tx=D().tx.find(x=>String(x.id)===String(id));if(!tx||tx.fixed)return;
+ editingTxId=String(tx.id);$('txType').value=tx.type;fillCats();
+ if(![...$('txCat').options].some(o=>o.value===tx.cat))$('txCat').add(new Option(tx.cat,tx.cat));
+ $('txCat').value=tx.cat;$('txCustom').value='';customToggle();$('txAmt').value=String(tx.amt);$('scanStatus').textContent='';
+ const title=$('txModal').querySelector('h3');if(title)title.textContent=lang==='fr'?'Modifier la transaction':'تعديل المعاملة';
+ $('txType').disabled=true;$('txModal').classList.remove('hidden');
+}
 function fillCats(){
  const l=CATS[mode][$('txType').value];
  const extra=[...new Set(D().tx.filter(x=>x.type===$('txType').value).map(x=>x.cat))].filter(c=>!l.includes(c));
@@ -863,9 +904,16 @@ function fillCats(){
 function customToggle(){$('txCustom').classList.toggle('hidden',$('txCat').value!=='__o')}
 function saveTx(){
  const amt=parseFloat($('txAmt').value);
- if(isNaN(amt)||amt<=0){alert('يرجى إدخال مبلغ صحيح');return}
- let cat=$('txCat').value;if(cat==='__o')cat=$('txCustom').value.trim()||'أخرى';
- D().tx.push({id:Date.now(),type:$('txType').value,cat,amt,m:vm});
+ if(isNaN(amt)||amt<=0){alert(lang==='fr'?'Veuillez saisir un montant valide':'يرجى إدخال مبلغ صحيح');$('txAmt').focus();return}
+ let cat=$('txCat').value;if(cat==='__o')cat=$('txCustom').value.trim()||(lang==='fr'?'Autre':'أخرى');
+ if(!cat){alert(lang==='fr'?'Veuillez choisir une catégorie':'اختار الفئة أولاً');return}
+ if(editingTxId!==null){
+  const tx=D().tx.find(x=>String(x.id)===editingTxId);
+  if(!tx){alert(lang==='fr'?'Transaction introuvable':'المعاملة غير موجودة');closeTx();return}
+  tx.cat=cat;tx.amt=amt;
+ }else{
+  D().tx.push({id:Date.now(),type:$('txType').value,cat,amt,m:vm});
+ }
  save();closeTx();render();
 }
 function delTx(id){
