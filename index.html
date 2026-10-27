@@ -396,6 +396,16 @@ body{background:#050b16!important;background-image:radial-gradient(ellipse at 50
 #txModal .hidden{display:none!important}
 #txList .ds-tx-row button{pointer-events:auto!important;touch-action:manipulation!important;z-index:2}
 
+
+/* Emergency fund / savings goal edit controls */
+#goalList .ds-goal-card{background:linear-gradient(145deg,#0b2035,#071728)!important;border:1px solid #24435f!important;color:#f1f7ff!important}
+#goalList .ds-goal-name{color:#f1f7ff!important;font-weight:900;min-width:0;overflow-wrap:anywhere}
+#goalList .ds-goal-edit,#goalList .ds-goal-fund{min-height:40px;padding:8px 11px;border-radius:12px;font-size:12px;font-weight:900;white-space:nowrap;touch-action:manipulation}
+#goalList .ds-goal-edit{background:#12395b!important;border:1px solid #2b6593!important;color:#e7f4ff!important}
+#goalList .ds-goal-fund{background:#0757d9!important;border:1px solid #287cff!important;color:#fff!important}
+#goalList .ds-goal-amount{display:block;width:100%;text-align:right;color:#4da7ff!important;font-weight:900;min-height:42px;touch-action:manipulation}
+#goalList .ds-goal-card p{color:#adc2da!important}
+@media(max-width:380px){#goalList .ds-goal-edit,#goalList .ds-goal-fund{padding:7px 8px;font-size:11px}}
 </style>
 </head>
 <body class="min-h-screen text-slate-800 select-none">
@@ -894,7 +904,8 @@ function render(){
   <div class="h-2.5 bg-slate-100 rounded-full overflow-hidden"><div class="h-full rounded-full" style="width:${p}%;background:${col}"></div></div><p class="text-[11px] text-slate-400 mt-1">${p}%</p></div>`}).join('');
 
  // الأهداف
- $('goalList').innerHTML=D().goals.map((g,i)=>{const p=Math.min(100,Math.round(g.saved/g.target*100));
+ $('goalList').innerHTML=D().goals.map((g,i)=>{const target=Math.max(1,Number(g.target)||1),saved=Math.max(0,Number(g.saved)||0),p=Math.min(100,Math.round(saved/target*100));
+  return`<div class="bg-white rounded-2xl p-4 shadow ds-goal-card"><div class="flex items-center justify-between gap-2 text-sm font-bold mb-3"><span class="ds-goal-name">🎯 ${String(g.name||'هدف').replace(/[&<>"]/g,'')}</span><div class="flex gap-2"><button type="button" onclick="editGoal(${i})" class="ds-goal-edit" aria-label="تعديل الهدف">✏️ تعديل</button><button type="button" onclick="fundGoal(${i})" class="ds-goal-fund" aria-label="إضافة مدخرات">＋ ادخار</button></div></div><button type="button" onclick="fundGoal(${i})" class="num ds-goal-amount">${f(saved)} / ${f(target)} TND</button><div class="h-2.5 bg-slate-100 rounded-full overflow-hidden mt-3"><div class="h-full rounded-full bg-blue-600" style="width:${p}%"></div></div><p class="text-[11px] mt-2">${p}% · عدّل الهدف أو أضف مدخرات</p></div>`}).join('')||'<p class="text-center text-slate-400 text-sm py-6">أضف هدفك الأول</p>';
   return`<div class="bg-white rounded-2xl p-4 shadow"><div class="flex justify-between text-sm font-bold mb-2"><button onclick="fundGoal(${i})" class="num text-slate-500">${f(g.saved)} / ${f(g.target)} TND</button><span>🎯 ${g.name}</span></div>
   <div class="h-2.5 bg-slate-100 rounded-full overflow-hidden"><div class="h-full rounded-full bg-blue-600" style="width:${p}%"></div></div><p class="text-[11px] text-slate-400 mt-1">${p}% · اضغط المبلغ لإضافة مدخرات</p></div>`}).join('')||'<p class="text-center text-slate-400 text-sm py-6">أضف هدفك الأول</p>';
 }
@@ -986,11 +997,21 @@ function addGoal(){
  const t=parseFloat(prompt('المبلغ المطلوب (TND)'));
  if(t>0){D().goals.push({name:n,target:t,saved:0});save();render()}
 }
-function fundGoal(i){
- const v=parseFloat(prompt('أضف مبلغ إلى المدخرات (TND)'));
- if(v>0){D().goals[i].saved+=v;save();render()}
+function editGoal(i){
+ const g=D().goals[i];if(!g)return;
+ const name=prompt('اسم الهدف',g.name||'');if(name===null)return;
+ const targetRaw=prompt('المبلغ المستهدف (TND)',String(g.target));if(targetRaw===null)return;
+ const target=Number(targetRaw);
+ const savedRaw=prompt('المدخرات الحالية (TND)',String(g.saved||0));if(savedRaw===null)return;
+ const saved=Number(savedRaw);
+ if(!name.trim()||!Number.isFinite(target)||target<=0||!Number.isFinite(saved)||saved<0){alert('تثبت من اسم الهدف والمبلغ المستهدف والمدخرات. المبلغ المستهدف لازم يكون أكبر من صفر.');return}
+ g.name=name.trim();g.target=target;g.saved=saved;save();render();
 }
-
+function fundGoal(i){
+ const g=D().goals[i];if(!g)return;
+ const v=parseFloat(prompt('أضف مبلغ إلى المدخرات (TND)','0'));
+ if(Number.isFinite(v)&&v>0){g.saved=(Number(g.saved)||0)+v;save();render()}
+}
 // ---------- Scan (قراءة المبلغ من صورة) ----------
 let tessP;
 function loadTess(){
